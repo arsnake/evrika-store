@@ -1,0 +1,80 @@
+/* =======================================================
+   BASE.CSS — переменные, reset, типографика, глобальное
+   ======================================================= */
+
+*,*::before,*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Цвета — Тема 2 (зелёная + оранжевая) */
+  --primary:        #2D7A4F;
+  --primary-dark:   #1F5938;
+  --primary-mid:    #3D9464;
+  --primary-light:  #EBF5EF;
+  --accent:         #D4621A;
+  --accent-dark:    #B04E10;
+  --accent-light:   #FFF3EB;
+  --accent2:        #E8873A;
+  --highlight:      #1A6B8A;
+  --ink:            #1A1F16;
+  --ink-80:         #4A5046;
+  --ink-60:         #6B7567;
+  --ink-50:         #909690;
+  --ink-40:         #B4BAB0;
+  --ink-30:         #CDD4C8;
+  --ink-10:         #F2F5F0;
+  --surface:        #FFFFFF;
+  --body-bg:        #EEF2EB;
+  --topbar-bg:      #1A2E1E;
+
+  /* Алиасы для совместимости */
+  --red:        var(--accent);
+  --red-dark:   var(--accent-dark);
+  --red-light:  var(--accent-light);
+  --blue:       var(--primary);
+  --blue-mid:   var(--primary-mid);
+  --blue-light: var(--primary-light);
+  --green:      var(--highlight);
+
+  /* Радиусы */
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+
+  /* Шрифты */
+  --font-display: 'Unbounded', sans-serif;
+  --font-body:    'Onest', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--body-bg);
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── Хлебные крошки ── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  font-size: 12px;
+  color: var(--ink-60);
+  padding: 14px 0 8px;
+}
+.breadcrumb a {
+  color: var(--ink-60);
+  transition: color .15s;
+}
+.breadcrumb a:hover { color: var(--primary); }
+.bc-sep    { margin: 0 6px; color: var(--ink-30); }
+.bc-current { color: var(--ink); font-weight: 500; }

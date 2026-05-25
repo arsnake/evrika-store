@@ -1,0 +1,182 @@
+/* ============================================================
+   SPECIAL.CSS — Спецпредложения / акции
+   ============================================================ */
+
+/* БАННЕР АКЦИИ */
+.spc-banner {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: linear-gradient(125deg, var(--primary-dark) 0%, var(--primary) 60%, #3a9e68 100%);
+  padding: 36px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Декоративные круги */
+.spc-banner::before {
+  content: '';
+  position: absolute; top: -40px; right: 120px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  pointer-events: none;
+}
+
+.spc-banner::after {
+  content: '';
+  position: absolute; bottom: -60px; right: 40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  pointer-events: none;
+}
+
+.spc-banner-body { position: relative; z-index: 1; }
+
+.spc-banner-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+  padding: 4px 10px; border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.spc-banner-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 700;
+  color: #fff; line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.spc-banner-sub {
+  font-size: 14px; color: rgba(255,255,255,.75);
+  margin: 0 0 20px;
+}
+
+.spc-banner-timer {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+}
+
+.spc-timer-label {
+  font-size: 11px; color: rgba(255,255,255,.6);
+  font-family: var(--font-display); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+
+.spc-timer-blocks {
+  display: flex; align-items: center; gap: 4px;
+}
+
+.spc-timer-block {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(0,0,0,.25);
+  border-radius: var(--radius-s);
+  padding: 4px 8px;
+  min-width: 40px;
+}
+
+.spc-timer-num {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 700;
+  color: #fff; line-height: 1;
+}
+
+.spc-timer-unit {
+  font-size: 9px; color: rgba(255,255,255,.5);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+
+.spc-timer-sep {
+  font-size: 18px; font-weight: 700;
+  color: rgba(255,255,255,.4);
+  line-height: 1; margin-bottom: 10px;
+}
+
+.spc-banner-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff;
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  padding: 11px 22px; border-radius: var(--radius-m);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.spc-banner-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.2);
+}
+
+.spc-banner-visual {
+  position: relative; z-index: 1; flex-shrink: 0;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.spc-big-discount {
+  font-family: var(--font-display);
+  font-size: 72px; font-weight: 700;
+  color: rgba(255,255,255,.15);
+  line-height: 1;
+  letter-spacing: -4px;
+  user-select: none;
+}
+
+/* ТУЛБАР */
+.spc-toolbar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.spc-toolbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.spc-toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.spc-filter-tab {
+  padding: 6px 14px;
+  border: 1.5px solid var(--ink-10);
+  border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+  color: var(--ink-60); background: var(--surface);
+  cursor: pointer; transition: all .2s;
+  text-decoration: none; white-space: nowrap;
+}
+
+.spc-filter-tab:hover { border-color: var(--ink-30); color: var(--ink); }
+.spc-filter-tab.active { border-color: var(--accent); color: var(--accent); background: rgba(212,98,26,.07); }
+
+.spc-total {
+  font-size: 12px; color: var(--ink-40);
+  white-space: nowrap;
+}
+
+/* СЕТКА ТОВАРОВ — расширяет .products-row */
+.spc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* Бейдж скидки поверх карточки */
+.spc-discount-badge {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px;
+}
+
+/* Срок акции под ценой */
+.spc-deadline {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--ink-50);
+  margin-top: 4px;
+}
+
+.spc-deadline svg { color: var(--ink-30); flex-shrink: 0; }

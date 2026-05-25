@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Избранное — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/account.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="../information.html">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="../index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+      </div>
+      <div class="h-user-wrap" id="hUserWrap">
+        <div class="h-user" id="hUserBtn">
+          <div class="h-user-avatar">ИИ</div>
+          <span class="h-user-name">Иван И.</span>
+          <svg class="h-user-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="h-user-dropdown">
+          <a href="account.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Мой кабинет
+          </a>
+          <a href="order.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Мои заказы
+          </a>
+          <a href="edit.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Мои данные
+          </a>
+          <div class="h-user-dropdown-divider"></div>
+          <a href="../login.html" class="danger">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Выйти
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link" href="#">Скидки месяца</a>
+    <a class="nav-link" href="#">Реестр Минпромторга</a>
+    <a class="nav-link" href="#">Хит продаж</a>
+    <a class="nav-link" href="#">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="../index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="account.html">Личный кабинет</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Избранное</span>
+  </nav>
+
+  <div class="cab-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">ИИ</div>
+        <div>
+          <div class="cab-user-name">Иванов Иван</div>
+          <div class="cab-user-type">Физическое лицо</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link" href="account.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link" href="order.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+          <span class="cab-nav-badge">3</span>
+        </a>
+        <a class="cab-nav-link active" href="wishlist.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+          <span class="cab-nav-badge" style="background:var(--ink-30)">12</span>
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="edit.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="../login.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="cab-main">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h1 class="cab-page-title" style="margin:0">Избранное <span style="font-size:16px;color:var(--ink-40);font-weight:400">(12)</span></h1>
+        <button class="btn-outline" style="font-size:12px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Всё в корзину
+        </button>
+      </div>
+
+      <!-- PRODUCT GRID -->
+      <div class="cab-wish-grid">
+
+        <!-- Card 1 -->
+        <div class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#EBF5EF"/><rect x="25" y="20" width="30" height="4" rx="2" fill="#9ABFAA"/><rect x="25" y="30" width="22" height="3" rx="1.5" fill="#B0CEB8"/><rect x="25" y="38" width="26" height="3" rx="1.5" fill="#B0CEB8"/></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>400108</span></div>
+            <div class="prod-brand">BRAUBERG</div>
+            <a href="../product.html" class="prod-name">Тетрадь 96 листов А5, клетка, обложка ПВХ, синяя</a>
+            <div class="prod-price-block">
+              <div class="prod-price-row"><span class="prod-price">68 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="30" y="15" width="6" height="55" rx="3" fill="#EBF5EF"/><rect x="28" y="12" width="10" height="8" rx="2" fill="#9ABFAA"/><rect x="29" y="65" width="8" height="4" rx="1" fill="#B0CEB8"/></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>847898</span></div>
+            <div class="prod-brand">BIC</div>
+            <a href="../product.html" class="prod-name">Ручка шариковая Cristal, синяя, 0.4мм, упаковка 50 шт.</a>
+            <div class="prod-price-block">
+              <span class="prod-price-old">1 050 ₽</span>
+              <div class="prod-price-row"><span class="prod-price">890 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="prod-card">
+          <span class="prod-badge sale">−20%</span>
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="25" width="50" height="35" rx="4" fill="#EBF5EF"/><rect x="25" y="18" width="30" height="10" rx="3" fill="#9ABFAA"/><circle cx="25" cy="62" r="7" fill="#B0CEB8"/><circle cx="55" cy="62" r="7" fill="#B0CEB8"/></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>224624</span></div>
+            <div class="prod-brand">STAFF</div>
+            <a href="../product.html" class="prod-name">Степлер №24/6, до 30 листов, металлический, чёрный</a>
+            <div class="prod-price-block">
+              <span class="prod-price-old">320 ₽</span>
+              <div class="prod-price-row"><span class="prod-price">256 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="18" y="10" width="44" height="60" rx="3" fill="#EBF5EF"/><rect x="22" y="14" width="36" height="4" rx="1" fill="#9ABFAA"/><path d="M18 14h6v56h-6z" fill="#B0CEB8" opacity=".5"/></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>222644</span></div>
+            <div class="prod-brand">BRAUBERG</div>
+            <a href="../product.html" class="prod-name">Папка-скоросшиватель А4, 0.5мм, красная</a>
+            <div class="prod-price-block">
+              <div class="prod-price-row"><span class="prod-price">45 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="12" y="20" width="56" height="45" rx="3" fill="#EBF5EF"/><rect x="12" y="20" width="56" height="8" rx="3" fill="#9ABFAA"/><text x="40" y="55" font-size="12" text-anchor="middle" fill="#B0CEB8" font-family="sans-serif">A4</text></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>110088</span></div>
+            <div class="prod-brand">SVETOCOPY</div>
+            <a href="../product.html" class="prod-name">Бумага А4 Svetocopy 80г/м², 500 листов, белизна 146%</a>
+            <div class="prod-price-block">
+              <div class="prod-price-row"><span class="prod-price">520 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="prod-card">
+          <span class="prod-badge new">Новинка</span>
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="10" width="22" height="60" rx="2" fill="#EBF5EF"/><rect x="43" y="10" width="22" height="60" rx="2" fill="#EBF5EF"/><rect x="15" y="10" width="50" height="6" rx="2" fill="#9ABFAA"/></svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Арт.: <span>584623</span></div>
+            <div class="prod-brand">ATTACHE</div>
+            <a href="../product.html" class="prod-name">Ежедневник недатированный А5, 160 листов, кожзам, чёрный</a>
+            <div class="prod-price-block">
+              <div class="prod-price-row"><span class="prod-price">720 ₽</span></div>
+            </div>
+            <div class="prod-stock in-stock">
+              <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              В наличии
+            </div>
+            <div class="prod-actions">
+              <div class="prod-qty-ctrl">
+                <button class="prod-qty-btn" aria-label="−">−</button>
+                <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+                <button class="prod-qty-btn" aria-label="+">+</button>
+              </div>
+              <button class="prod-fav-btn active" title="Убрать из избранного" aria-label="Убрать из избранного">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="prod-cart-btn" title="В корзину" aria-label="В корзину">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /cab-wish-grid -->
+
+      <!-- LOAD MORE -->
+      <div style="text-align:center;margin-top:24px">
+        <button class="btn-outline" style="font-size:13px">Показать ещё 6 товаров</button>
+      </div>
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark" style="width:36px;height:36px">
+            <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+        </div>
+        <p class="footer-desc">Оптовые и розничные поставки канцелярских товаров с 2009 года.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Покупателям</div>
+        <a href="../information.html">Доставка и оплата</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">Возврат товара</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Компания</div>
+        <a href="#">О нас</a>
+        <a href="#">Контакты</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Контакты</div>
+        <a href="tel:88001100000">8-800-110-00-00</a>
+        <a href="mailto:info@evrika-shop.ru">info@evrika-shop.ru</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Эврика — Канцелярские товары</span>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site-content -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

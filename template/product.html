@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карандаш вечный Berlingo «Eternal» — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/product.css">
+</head>
+<body>
+
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Новым клиентам</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none">
+            <text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text>
+          </svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+        <button class="h-action" aria-label="Заказы">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Заказы
+        </button>
+      </div>
+
+      <button class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a class="nav-link">Скидки месяца</a>
+      <a class="nav-link">Реестр Минпромторга</a>
+      <a class="nav-link">Хит продаж</a>
+      <a class="nav-link">Честный знак</a>
+      <a class="nav-link">Новинки</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="#">Каталог</a>
+    <span class="bc-sep">›</span>
+    <a href="#">Письменные товары</a>
+    <span class="bc-sep">›</span>
+    <a href="#">Карандаши</a>
+    <span class="bc-sep">›</span>
+    <a href="category.html">Карандаши вечные</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Berlingo «Eternal» с металлическим наконечником</span>
+  </nav>
+
+  <!-- PRODUCT SECTION -->
+  <section class="product-section" aria-label="Карточка товара">
+
+    <!-- LEFT: GALLERY -->
+    <div class="gallery-wrap">
+
+      <!-- Main image area -->
+      <div class="gallery-main" id="galleryMain" role="button" aria-label="Увеличить изображение" tabindex="0">
+        <div class="gallery-main-placeholder" id="galleryMainPlaceholder">
+          <!-- View 1: Front view — golden pencil -->
+          <svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pencil body -->
+            <rect x="100" y="30" width="60" height="290" rx="8" fill="#D4A843"/>
+            <rect x="100" y="30" width="60" height="290" rx="8" fill="url(#woodGrain1)"/>
+            <!-- Wood grain texture -->
+            <defs>
+              <linearGradient id="woodGrain1" x1="100" y1="0" x2="160" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#C9902A" stop-opacity=".6"/>
+                <stop offset="35%" stop-color="#E8C060" stop-opacity="0"/>
+                <stop offset="65%" stop-color="#E8C060" stop-opacity="0"/>
+                <stop offset="100%" stop-color="#B07820" stop-opacity=".6"/>
+              </linearGradient>
+            </defs>
+            <!-- Metallic tip (gold) -->
+            <rect x="100" y="290" width="60" height="24" rx="0" fill="#8A7040"/>
+            <rect x="100" y="290" width="60" height="6" fill="#B09840"/>
+            <!-- Metal ferrule ring lines -->
+            <line x1="100" y1="296" x2="160" y2="296" stroke="#6A5820" stroke-width="1"/>
+            <line x1="100" y1="302" x2="160" y2="302" stroke="#6A5820" stroke-width="1"/>
+            <!-- Pencil tip (graphite point) -->
+            <path d="M100 314 L130 350 L160 314 Z" fill="#C8A84A"/>
+            <path d="M112 314 L130 345 L148 314 Z" fill="#F5E8B0"/>
+            <path d="M118 314 L130 342 L142 314 Z" fill="#888"/>
+            <ellipse cx="130" cy="348" rx="3" ry="2" fill="#555"/>
+            <!-- Eraser top (premium — no eraser, cap instead) -->
+            <rect x="108" y="18" width="44" height="16" rx="4" fill="#2D7A4F"/>
+            <rect x="114" y="22" width="32" height="8" rx="2" fill="#3D9464"/>
+            <!-- Brand text on body -->
+            <text x="130" y="185" font-size="11" font-family="Georgia,serif" fill="#7A5010" text-anchor="middle" font-weight="700" letter-spacing="1">BERLINGO</text>
+            <text x="130" y="200" font-size="8" font-family="Arial,sans-serif" fill="#9A7030" text-anchor="middle" letter-spacing="2">ETERNAL</text>
+            <!-- Shine highlight -->
+            <rect x="118" y="35" width="12" height="270" rx="6" fill="rgba(255,255,255,.18)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="gallery-thumbs" role="list" aria-label="Дополнительные изображения">
+
+        <!-- Thumb 1: Front view (active) -->
+        <button class="gallery-thumb active" role="listitem" aria-label="Вид спереди" data-svg='<svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="100" y="30" width="60" height="290" rx="8" fill="#D4A843"/><defs><linearGradient id="wg1" x1="100" y1="0" x2="160" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C9902A" stop-opacity=".6"/><stop offset="35%" stop-color="#E8C060" stop-opacity="0"/><stop offset="65%" stop-color="#E8C060" stop-opacity="0"/><stop offset="100%" stop-color="#B07820" stop-opacity=".6"/></linearGradient></defs><rect x="100" y="30" width="60" height="290" rx="8" fill="url(#wg1)"/><rect x="100" y="290" width="60" height="24" rx="0" fill="#8A7040"/><rect x="100" y="290" width="60" height="6" fill="#B09840"/><line x1="100" y1="296" x2="160" y2="296" stroke="#6A5820" stroke-width="1"/><line x1="100" y1="302" x2="160" y2="302" stroke="#6A5820" stroke-width="1"/><path d="M100 314 L130 350 L160 314 Z" fill="#C8A84A"/><path d="M112 314 L130 345 L148 314 Z" fill="#F5E8B0"/><path d="M118 314 L130 342 L142 314 Z" fill="#888"/><ellipse cx="130" cy="348" rx="3" ry="2" fill="#555"/><rect x="108" y="18" width="44" height="16" rx="4" fill="#2D7A4F"/><rect x="114" y="22" width="32" height="8" rx="2" fill="#3D9464"/><text x="130" y="185" font-size="11" font-family="Georgia,serif" fill="#7A5010" text-anchor="middle" font-weight="700" letter-spacing="1">BERLINGO</text><text x="130" y="200" font-size="8" font-family="Arial,sans-serif" fill="#9A7030" text-anchor="middle" letter-spacing="2">ETERNAL</text><rect x="118" y="35" width="12" height="270" rx="6" fill="rgba(255,255,255,.18)"/></svg>'>
+          <svg viewBox="0 0 260 380" fill="none">
+            <rect x="100" y="30" width="60" height="290" rx="8" fill="#D4A843"/>
+            <rect x="100" y="290" width="60" height="24" fill="#8A7040"/>
+            <path d="M100 314 L130 350 L160 314 Z" fill="#C8A84A"/>
+            <path d="M118 314 L130 342 L142 314 Z" fill="#888"/>
+            <rect x="108" y="18" width="44" height="16" rx="4" fill="#2D7A4F"/>
+          </svg>
+        </button>
+
+        <!-- Thumb 2: Side view -->
+        <button class="gallery-thumb" role="listitem" aria-label="Вид сбоку" data-svg='<svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="118" y="25" width="24" height="295" rx="12" fill="#C8901E"/><defs><linearGradient id="sg2" x1="118" y1="0" x2="142" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A07010" stop-opacity=".8"/><stop offset="50%" stop-color="#F0C050" stop-opacity="0"/><stop offset="100%" stop-color="#A07010" stop-opacity=".8"/></linearGradient></defs><rect x="118" y="25" width="24" height="295" rx="12" fill="url(#sg2)"/><rect x="118" y="295" width="24" height="25" rx="0" fill="#7A6030"/><ellipse cx="130" cy="322" rx="12" ry="4" fill="#B89040"/><path d="M121 322 Q130 355 139 322" fill="#B08030"/><ellipse cx="130" cy="353" rx="2" ry="1.5" fill="#555"/><rect x="120" y="14" width="20" height="14" rx="7" fill="#1F5938"/><rect x="118" y="35" width="5" height="275" rx="2.5" fill="rgba(255,255,255,.22)"/><text x="130" y="190" font-size="7" font-family="Arial,sans-serif" fill="#8A6020" text-anchor="middle" writing-mode="tb" letter-spacing="3">ETERNAL</text></svg>'>
+          <svg viewBox="0 0 260 380" fill="none">
+            <rect x="118" y="25" width="24" height="295" rx="12" fill="#C8901E"/>
+            <rect x="118" y="295" width="24" height="25" rx="0" fill="#7A6030"/>
+            <ellipse cx="130" cy="322" rx="12" ry="4" fill="#B89040"/>
+            <path d="M121 322 Q130 355 139 322" fill="#B08030"/>
+            <ellipse cx="130" cy="353" rx="2" ry="1.5" fill="#555"/>
+            <rect x="120" y="14" width="20" height="14" rx="7" fill="#1F5938"/>
+          </svg>
+        </button>
+
+        <!-- Thumb 3: Tip detail -->
+        <button class="gallery-thumb" role="listitem" aria-label="Наконечник крупным планом" data-svg='<svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="130" y="50" font-size="11" font-family="Georgia,serif" fill="#6B7567" text-anchor="middle">Металлический наконечник</text><rect x="80" y="70" width="100" height="160" rx="6" fill="#D4A843"/><defs><linearGradient id="mtp" x1="80" y1="0" x2="180" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A07820" stop-opacity=".7"/><stop offset="40%" stop-color="#F0D060" stop-opacity="0"/><stop offset="100%" stop-color="#A07820" stop-opacity=".7"/></linearGradient></defs><rect x="80" y="70" width="100" height="160" rx="6" fill="url(#mtp)"/><rect x="80" y="210" width="100" height="50" fill="#9A8040"/><rect x="80" y="210" width="100" height="10" fill="#C8A840"/><rect x="80" y="220" width="100" height="2" fill="#8A7030"/><rect x="80" y="230" width="100" height="2" fill="#8A7030"/><rect x="80" y="240" width="100" height="2" fill="#8A7030"/><rect x="80" y="250" width="100" height="2" fill="#8A7030"/><path d="M80 260 L130 340 L180 260 Z" fill="#B09840"/><path d="M94 260 L130 328 L166 260 Z" fill="#E8D08C"/><path d="M105 260 L130 320 L155 260 Z" fill="#AAAAAA"/><path d="M113 260 L130 315 L147 260 Z" fill="#888"/><ellipse cx="130" cy="313" rx="4" ry="2.5" fill="#555"/><circle cx="130" cy="313" r="1.5" fill="#333"/><rect x="96" y="76" width="18" height="148" rx="9" fill="rgba(255,255,255,.2)"/></svg>'>
+          <svg viewBox="0 0 260 380" fill="none">
+            <rect x="80" y="70" width="100" height="140" rx="6" fill="#D4A843"/>
+            <rect x="80" y="190" width="100" height="50" fill="#9A8040"/>
+            <path d="M80 240 L130 320 L180 240 Z" fill="#B09840"/>
+            <path d="M105 240 L130 310 L155 240 Z" fill="#888"/>
+            <ellipse cx="130" cy="309" rx="4" ry="2.5" fill="#555"/>
+          </svg>
+        </button>
+
+        <!-- Thumb 4: Gift box / packaging -->
+        <button class="gallery-thumb" role="listitem" aria-label="Упаковка" data-svg='<svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="130" y="40" font-size="11" font-family="Georgia,serif" fill="#6B7567" text-anchor="middle">Упаковка</text><rect x="55" y="60" width="150" height="220" rx="12" fill="#1F5938"/><rect x="55" y="60" width="150" height="220" rx="12" fill="url(#pkgGrad)"/><defs><linearGradient id="pkgGrad" x1="55" y1="60" x2="205" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2D7A4F" stop-opacity="1"/><stop offset="100%" stop-color="#1A3A28" stop-opacity="1"/></linearGradient></defs><rect x="66" y="72" width="128" height="196" rx="8" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/><text x="130" y="145" font-size="14" font-family="Georgia,serif" fill="#fff" text-anchor="middle" font-weight="700" letter-spacing="1.5">BERLINGO</text><text x="130" y="165" font-size="10" font-family="Arial,sans-serif" fill="rgba(255,255,255,.7)" text-anchor="middle" letter-spacing="4">ETERNAL</text><rect x="110" y="180" width="40" height="2" fill="rgba(255,255,255,.3)"/><text x="130" y="205" font-size="8" font-family="Arial,sans-serif" fill="rgba(255,255,255,.5)" text-anchor="middle">Карандаш вечный</text><text x="130" y="218" font-size="8" font-family="Arial,sans-serif" fill="rgba(255,255,255,.5)" text-anchor="middle">с металлическим наконечником</text><ellipse cx="130" cy="240" rx="20" ry="6" fill="rgba(255,255,255,.1)"/><path d="M120 234 L130 222 L140 234" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/><rect x="55" y="270" width="150" height="14" rx="0" fill="#D4A843" opacity=".85"/><text x="130" y="281" font-size="8" font-family="Arial,sans-serif" fill="#7A5010" text-anchor="middle" font-weight="600">BP01401</text><rect x="55" y="275" width="150" height="2" fill="rgba(0,0,0,.15)"/></svg>'>
+          <svg viewBox="0 0 260 380" fill="none">
+            <rect x="55" y="60" width="150" height="220" rx="12" fill="#1F5938"/>
+            <rect x="66" y="72" width="128" height="196" rx="8" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/>
+            <text x="130" y="160" font-size="14" font-family="Georgia,serif" fill="#fff" text-anchor="middle" font-weight="700">B</text>
+            <rect x="55" y="270" width="150" height="14" rx="0" fill="#D4A843" opacity=".85"/>
+          </svg>
+        </button>
+
+        <!-- Thumb 5: Group / set of pencils -->
+        <button class="gallery-thumb" role="listitem" aria-label="Группа карандашей" data-svg='<svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="130" y="35" font-size="10" font-family="Georgia,serif" fill="#6B7567" text-anchor="middle">Серия Eternal</text><rect x="58" y="50" width="30" height="270" rx="8" fill="#D4A843"/><rect x="58" y="295" width="30" height="20" rx="0" fill="#8A7040"/><path d="M58 315 L73 348 L88 315 Z" fill="#C8A84A"/><path d="M64 315 L73 342 L82 315 Z" fill="#888"/><rect x="64" y="42" width="18" height="12" rx="4" fill="#2D7A4F"/><rect x="67" y="56" width="8" height="260" rx="4" fill="rgba(255,255,255,.18)"/><rect x="98" y="60" width="30" height="260" rx="8" fill="#B0C8E0"/><rect x="98" y="295" width="30" height="20" rx="0" fill="#8090A8"/><path d="M98 315 L113 348 L128 315 Z" fill="#A0B8D0"/><path d="M104 315 L113 342 L122 315 Z" fill="#888"/><rect x="104" y="52" width="18" height="12" rx="4" fill="#1A6B8A"/><rect x="107" y="66" width="8" height="250" rx="4" fill="rgba(255,255,255,.2)"/><rect x="138" y="55" width="30" height="265" rx="8" fill="#E08878"/><rect x="138" y="295" width="30" height="20" rx="0" fill="#A06050"/><path d="M138 315 L153 348 L168 315 Z" fill="#D07868"/><path d="M144 315 L153 342 L162 315 Z" fill="#888"/><rect x="144" y="46" width="18" height="12" rx="4" fill="#D4621A"/><rect x="147" y="61" width="8" height="255" rx="4" fill="rgba(255,255,255,.18)"/><rect x="178" y="65" width="30" height="255" rx="8" fill="#A8D8A8"/><rect x="178" y="295" width="30" height="20" rx="0" fill="#70A870"/><path d="M178 315 L193 348 L208 315 Z" fill="#98C898"/><path d="M184 315 L193 342 L202 315 Z" fill="#888"/><rect x="184" y="56" width="18" height="12" rx="4" fill="#2D7A4F"/><rect x="187" y="71" width="8" height="245" rx="4" fill="rgba(255,255,255,.18)"/></svg>'>
+          <svg viewBox="0 0 260 380" fill="none">
+            <rect x="58" y="50" width="30" height="270" rx="8" fill="#D4A843"/>
+            <path d="M58 315 L73 348 L88 315 Z" fill="#C8A84A"/>
+            <path d="M64 315 L73 342 L82 315 Z" fill="#888"/>
+            <rect x="98" y="60" width="30" height="260" rx="8" fill="#B0C8E0"/>
+            <path d="M98 315 L113 348 L128 315 Z" fill="#A0B8D0"/>
+            <path d="M104 315 L113 342 L122 315 Z" fill="#888"/>
+            <rect x="138" y="55" width="30" height="265" rx="8" fill="#E08878"/>
+            <path d="M138 315 L153 348 L168 315 Z" fill="#D07868"/>
+            <path d="M144 315 L153 342 L162 315 Z" fill="#888"/>
+            <rect x="178" y="65" width="30" height="255" rx="8" fill="#A8D8A8"/>
+            <path d="M178 315 L193 348 L208 315 Z" fill="#98C898"/>
+            <path d="M184 315 L193 342 L202 315 Z" fill="#888"/>
+          </svg>
+        </button>
+
+      </div><!-- /gallery-thumbs -->
+    </div><!-- /gallery-wrap -->
+
+    <!-- RIGHT: PRODUCT INFO -->
+    <div class="product-info">
+
+      <!-- Badges -->
+      <div class="product-badges">
+        <span class="prod-badge new">Новинка</span>
+        <span class="prod-badge hit">Хит</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="product-title">Карандаш подарочный с металлическим наконечником Berlingo «Eternal», натуральное дерево</h1>
+
+      <!-- Availability -->
+      <div class="product-availability">
+        <span class="availability-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          В наличии
+        </span>
+      </div>
+
+      <!-- SKU block -->
+      <div class="sku-block">
+        <div class="sku-row">
+          <span class="sku-label">Код товара</span>
+          <span class="sku-value">339105</span>
+        </div>
+        <div class="sku-row">
+          <span class="sku-label">Артикул</span>
+          <span class="sku-value">BP01401</span>
+        </div>
+        <div class="sku-row">
+          <span class="sku-label">Штрихкод</span>
+          <span class="sku-value">4260709085951</span>
+        </div>
+      </div>
+
+      <!-- Brand + meta -->
+      <div class="product-meta">
+        <div class="product-brand">
+          Бренд: <a href="#">Berlingo</a>
+        </div>
+        <div class="product-country">
+          Страна: <span>Китай</span>
+        </div>
+        <div class="product-country">
+          Серия: <span>Eternal</span>
+        </div>
+      </div>
+
+      <!-- Short specs table -->
+      <div>
+        <table class="specs-short" aria-label="Основные характеристики">
+          <tbody>
+            <tr>
+              <td>Тип</td>
+              <td>Карандаш вечный (forever pencil)</td>
+            </tr>
+            <tr>
+              <td>Корпус</td>
+              <td>Натуральное дерево (кедр)</td>
+            </tr>
+            <tr>
+              <td>Наконечник</td>
+              <td>Металлический, позолоченный</td>
+            </tr>
+            <tr>
+              <td>Твёрдость</td>
+              <td>HB</td>
+            </tr>
+            <!-- Hidden rows -->
+            <tr class="specs-hidden">
+              <td>Длина</td>
+              <td>19 см</td>
+            </tr>
+            <tr class="specs-hidden">
+              <td>Диаметр корпуса</td>
+              <td>7 мм</td>
+            </tr>
+            <tr class="specs-hidden">
+              <td>Форма корпуса</td>
+              <td>Шестигранная</td>
+            </tr>
+            <tr class="specs-hidden">
+              <td>Цвет корпуса</td>
+              <td>Натуральное дерево</td>
+            </tr>
+            <tr class="specs-hidden">
+              <td>Упаковка</td>
+              <td>Индивидуальная подарочная коробка</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="specs-more-btn" aria-expanded="false">Все характеристики ↓</button>
+      </div>
+
+      <!-- Price block (guest — auth required) -->
+      <div class="price-block">
+        <div class="price-auth-msg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>
+            Цены доступны только для зарегистрированных B2B-клиентов.
+            <a href="#">Авторизуйтесь</a> или <a href="#">зарегистрируйтесь</a> для просмотра цен и оформления заказа.
+          </span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="product-actions">
+        <!-- Quantity -->
+        <div class="qty-control" aria-label="Количество">
+          <button class="qty-btn minus" aria-label="Уменьшить количество">−</button>
+          <input class="qty-input" type="number" value="1" min="1" max="9999" aria-label="Количество товара">
+          <button class="qty-btn plus" aria-label="Увеличить количество">+</button>
+        </div>
+
+        <!-- Add to cart -->
+        <button class="btn-cart" aria-label="Добавить в корзину">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          В корзину
+        </button>
+
+        <!-- Wishlist -->
+        <button class="btn-icon-action" aria-label="Добавить в избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+
+        <!-- Compare -->
+        <button class="btn-icon-action" aria-label="Добавить к сравнению">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </button>
+      </div>
+
+    </div><!-- /product-info -->
+  </section><!-- /product-section -->
+
+
+  <!-- =============================================
+       PRODUCT TABS
+       ============================================= -->
+  <div class="product-tabs-wrap">
+    <div class="tabs-nav" role="tablist" aria-label="Информация о товаре">
+      <button class="tab-btn active" data-tab="desc" role="tab" aria-selected="true" aria-controls="tab-desc">Описание</button>
+      <button class="tab-btn" data-tab="specs" role="tab" aria-selected="false" aria-controls="tab-specs">Характеристики</button>
+      <button class="tab-btn" data-tab="reviews" role="tab" aria-selected="false" aria-controls="tab-reviews">
+        Отзывы
+        <span class="tab-btn-count">0</span>
+      </button>
+      <button class="tab-btn" data-tab="qa" role="tab" aria-selected="false" aria-controls="tab-qa">
+        Вопрос-ответ
+        <span class="tab-btn-count">0</span>
+      </button>
+    </div>
+
+    <!-- TAB: Description -->
+    <div class="tab-panel active" id="tab-desc" role="tabpanel" aria-labelledby="tab-btn-desc">
+      <h3>О товаре</h3>
+      <p>Карандаш подарочный Berlingo «Eternal» с металлическим наконечником — это уникальный пишущий инструмент, который никогда не заканчивается и не требует заточки. Основа карандаша изготовлена из натурального кедра с мягкой текстурой, приятной на ощупь, а наконечник из позолоченного металла обеспечивает долговечность и придаёт изделию премиальный вид.</p>
+      <p>Принцип работы прост: металлический сплав на кончике карандаша оставляет на бумаге стойкий след, визуально идентичный стандартному карандашному, без использования графита. Следы легко стираются обычным ластиком. Карандаш подходит для письма, рисования, черчения и будет служить практически вечно при бережном использовании.</p>
+      <h3>Для кого</h3>
+      <p>Berlingo «Eternal» — идеальный выбор для корпоративных подарков, поощрения сотрудников, деловых сувениров на выставках и конференциях. Благодаря изысканному дизайну и подарочной упаковке карандаш создаёт впечатление дорогого и продуманного подарка. Подходит для учеников, студентов, архитекторов, дизайнеров и всех, кто ценит качество письменных принадлежностей.</p>
+      <h3>Особенности</h3>
+      <p>Корпус выполнен из шестигранного кедра натурального цвета — экологичный и антибактериальный материал. Металлический наконечник с позолоченным покрытием устойчив к коррозии и не оставляет следов на пальцах. Карандаш поставляется в индивидуальной подарочной коробке с оформлением в фирменном стиле Berlingo. Не требует точилки, заправки или замены стержней.</p>
+    </div>
+
+    <!-- TAB: Full specs -->
+    <div class="tab-panel" id="tab-specs" role="tabpanel" aria-labelledby="tab-btn-specs">
+      <table class="specs-full-table" aria-label="Полные характеристики товара">
+        <tbody>
+          <tr><td>Наименование товара</td><td>Карандаш подарочный с металлическим наконечником Berlingo «Eternal»</td></tr>
+          <tr><td>Бренд</td><td>Berlingo</td></tr>
+          <tr><td>Серия</td><td>Eternal</td></tr>
+          <tr><td>Страна производства</td><td>Китай</td></tr>
+          <tr><td>Тип</td><td>Карандаш вечный (forever pencil)</td></tr>
+          <tr><td>Вид товара</td><td>Карандаш подарочный</td></tr>
+          <tr><td>Материал корпуса</td><td>Натуральное дерево (кедр)</td></tr>
+          <tr><td>Форма корпуса</td><td>Шестигранная</td></tr>
+          <tr><td>Цвет корпуса</td><td>Натуральный (древесный)</td></tr>
+          <tr><td>Материал наконечника</td><td>Металлический сплав с позолотой</td></tr>
+          <tr><td>Твёрдость аналога</td><td>HB</td></tr>
+          <tr><td>Длина</td><td>190 мм</td></tr>
+          <tr><td>Диаметр корпуса</td><td>7 мм</td></tr>
+          <tr><td>Масса</td><td>6 г</td></tr>
+          <tr><td>Упаковка</td><td>Индивидуальная подарочная коробка</td></tr>
+          <tr><td>Количество в коробке</td><td>1 шт.</td></tr>
+          <tr><td>Код товара</td><td>339105</td></tr>
+          <tr><td>Артикул производителя</td><td>BP01401</td></tr>
+          <tr><td>Штрихкод EAN</td><td>4260709085951</td></tr>
+          <tr><td>Минимальная партия заказа</td><td>1 шт.</td></tr>
+          <tr><td>Количество в упаковке поставщика</td><td>24 шт.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TAB: Reviews -->
+    <div class="tab-panel" id="tab-reviews" role="tabpanel" aria-labelledby="tab-btn-reviews">
+      <div class="reviews-empty">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="var(--ink-10)"/>
+          <path d="M20 26h24M20 32h18M20 38h12" stroke="var(--ink-30)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="46" cy="42" r="8" fill="var(--ink-10)" stroke="var(--ink-30)" stroke-width="2"/>
+          <path d="M46 39v4" stroke="var(--ink-30)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="46" cy="45" r="1" fill="var(--ink-30)"/>
+        </svg>
+        <h3>Отзывов пока нет</h3>
+        <p>Будьте первым, кто оставит отзыв об этом товаре.<br>Ваш опыт поможет другим покупателям.</p>
+      </div>
+      <form class="review-form" onsubmit="return false;" aria-label="Форма отзыва">
+        <h3>Оставить отзыв</h3>
+        <div>
+          <label for="review-name">Ваше имя</label>
+          <input type="text" id="review-name" placeholder="Иван Иванов" autocomplete="name">
+        </div>
+        <div>
+          <label>Оценка товара</label>
+          <div class="rating-stars" role="group" aria-label="Оценка от 1 до 5 звёзд">
+            <button type="button" class="star-btn" aria-label="1 звезда">★</button>
+            <button type="button" class="star-btn" aria-label="2 звезды">★</button>
+            <button type="button" class="star-btn" aria-label="3 звезды">★</button>
+            <button type="button" class="star-btn" aria-label="4 звезды">★</button>
+            <button type="button" class="star-btn" aria-label="5 звёзд">★</button>
+          </div>
+        </div>
+        <div>
+          <label for="review-text">Текст отзыва</label>
+          <textarea id="review-text" placeholder="Расскажите о своём опыте использования товара..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Отправить отзыв</button>
+      </form>
+    </div>
+
+    <!-- TAB: Q&A -->
+    <div class="tab-panel" id="tab-qa" role="tabpanel" aria-labelledby="tab-btn-qa">
+      <div class="qa-empty">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="var(--ink-10)"/>
+          <text x="32" y="40" font-size="28" text-anchor="middle" fill="var(--ink-30)" font-weight="700">?</text>
+        </svg>
+        <h3>Вопросов пока нет</h3>
+        <p>Задайте вопрос о товаре — менеджеры Эврики<br>ответят в течение рабочего дня.</p>
+      </div>
+      <form class="qa-form" onsubmit="return false;" aria-label="Форма вопроса">
+        <h3>Задать вопрос</h3>
+        <div>
+          <label for="qa-name">Ваше имя</label>
+          <input type="text" id="qa-name" placeholder="Иван Иванов" autocomplete="name">
+        </div>
+        <div>
+          <label for="qa-email">Email для ответа</label>
+          <input type="email" id="qa-email" placeholder="example@company.ru" autocomplete="email">
+        </div>
+        <div>
+          <label for="qa-text">Ваш вопрос</label>
+          <textarea id="qa-text" placeholder="Укажите ваш вопрос по товару..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Отправить вопрос</button>
+      </form>
+    </div>
+
+  </div><!-- /product-tabs-wrap -->
+
+  <!-- =============================================
+       С ЭТИМ ТОВАРОМ ПОКУПАЮТ
+       ============================================= -->
+  <section class="bundle-section" aria-label="С этим товаром покупают">
+    <div class="section-head">
+      <h2 class="section-title">С этим товаром покупают</h2>
+    </div>
+    <div class="bundle-wrap">
+
+      <!-- Карточки сопутствующих товаров -->
+      <div class="bundle-items">
+
+        <article class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="20" y="25" width="40" height="30" rx="4" fill="#E8E0D0"/>
+              <rect x="22" y="27" width="36" height="26" rx="3" fill="#F5F0E8"/>
+              <line x1="26" y1="34" x2="54" y2="34" stroke="#CCC" stroke-width="1.5"/>
+              <line x1="26" y1="38" x2="54" y2="38" stroke="#CCC" stroke-width="1.5"/>
+              <line x1="26" y1="42" x2="44" y2="42" stroke="#CCC" stroke-width="1.5"/>
+              <rect x="28" y="52" width="24" height="4" rx="2" fill="#2D7A4F" opacity=".6"/>
+            </svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>110234</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <div class="prod-name">Блокнот Berlingo «Premium» А6, 80л, клетка, кожзам</div>
+            <div class="prod-auth"><a href="#">Авторизуйтесь</a> для цены</div>
+          </div>
+        </article>
+
+        <article class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="24" y="20" width="32" height="40" rx="6" fill="#D4621A" opacity=".15"/>
+              <rect x="26" y="22" width="28" height="36" rx="5" fill="#FFF3EB"/>
+              <path d="M34 28 L46 28" stroke="#D4621A" stroke-width="2" stroke-linecap="round"/>
+              <path d="M34 34 L46 34" stroke="#E8873A" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+              <path d="M34 40 L42 40" stroke="#E8873A" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+              <rect x="34" y="50" width="12" height="3" rx="1.5" fill="#D4621A" opacity=".4"/>
+            </svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>220567</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <div class="prod-name">Ежедневник недатированный Berlingo «Vivella» А5, 160л</div>
+            <div class="prod-auth"><a href="#">Авторизуйтесь</a> для цены</div>
+          </div>
+        </article>
+
+        <article class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="28" y="28" width="24" height="28" rx="4" fill="#E0E8FF"/>
+              <path d="M36 22 L44 22 L44 30 L36 30 Z" fill="#8090C0"/>
+              <rect x="30" y="32" width="20" height="2" rx="1" fill="#8090C0" opacity=".5"/>
+              <rect x="30" y="37" width="20" height="2" rx="1" fill="#8090C0" opacity=".5"/>
+              <rect x="30" y="42" width="14" height="2" rx="1" fill="#8090C0" opacity=".5"/>
+              <rect x="30" y="50" width="20" height="3" rx="1.5" fill="#1A4F9C" opacity=".3"/>
+            </svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>330891</span></div>
+            <div class="prod-brand">OfficeSpace</div>
+            <div class="prod-name">Пенал-тубус OfficeSpace «Crystal» мягкий, 1 отделение</div>
+            <div class="prod-auth"><a href="#">Авторизуйтесь</a> для цены</div>
+          </div>
+        </article>
+
+        <article class="prod-card">
+          <div class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="22" y="34" width="36" height="16" rx="8" fill="#E8E0C8"/>
+              <rect x="24" y="36" width="32" height="12" rx="6" fill="#F5EFE0"/>
+              <ellipse cx="40" cy="34" rx="8" ry="4" fill="#D0C0A0"/>
+              <ellipse cx="40" cy="50" rx="8" ry="4" fill="#B8A888"/>
+              <rect x="36" y="38" width="8" height="8" rx="1" fill="#8B7355" opacity=".3"/>
+            </svg>
+          </div>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>441123</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <div class="prod-name">Ластик Berlingo «Mega Top» прямоугольный, в индивид. упаковке</div>
+            <div class="prod-auth"><a href="#">Авторизуйтесь</a> для цены</div>
+          </div>
+        </article>
+
+      </div><!-- /bundle-items -->
+
+      <!-- CTA панель -->
+      <aside class="bundle-cta">
+        <div class="bundle-cta-title">Набор из 4 товаров</div>
+        <ul class="bundle-items-list">
+          <li>Карандаш вечный Berlingo Eternal</li>
+          <li>Блокнот Berlingo Premium А6</li>
+          <li>Ежедневник Berlingo Vivella А5</li>
+          <li>Ластик Berlingo Mega Top</li>
+        </ul>
+        <div class="bundle-total-row">
+          <span class="bundle-total-label">Итого:</span>
+          <span class="bundle-auth-note"><a href="#">Авторизуйтесь</a></span>
+        </div>
+        <button class="bundle-btn-all" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Добавить всё в корзину
+        </button>
+      </aside>
+
+    </div><!-- /bundle-wrap -->
+  </section>
+
+  <!-- =============================================
+       RELATED PRODUCTS SLIDER
+       ============================================= -->
+  <section class="related-section" aria-label="Похожие товары">
+    <div class="section-head">
+      <h2 class="section-title">Похожие товары</h2>
+      <a class="section-more" href="category.html">Смотреть все →</a>
+    </div>
+    <div class="related-slider-wrap">
+      <button class="slider-prev" aria-label="Прокрутить назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+
+      <div class="related-slider" role="list">
+
+        <!-- Card 1 -->
+        <article class="prod-card" role="listitem">
+          <span class="prod-badge hit">Хит</span>
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#B0C8E0"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#1A6B8A"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#8090A8"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>339106</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <a href="#" class="prod-name">Карандаш вечный Berlingo «Eternal Silver» с серебристым наконечником</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#D0D0D0"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#777"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#999"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>441200</span></div>
+            <div class="prod-brand">OfficeSpace</div>
+            <a href="#" class="prod-name">Карандаш вечный OfficeSpace «Ever Sharp» в пластиковом корпусе</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="prod-card" role="listitem">
+          <span class="prod-badge new">Новинка</span>
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#E8C868"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#D4621A"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#B89030"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>512340</span></div>
+            <div class="prod-brand">ГАММА</div>
+            <a href="#" class="prod-name">Карандаш вечный ГАММА художественный с резиновым держателем, HB</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="28" y="10" width="10" height="60" rx="4" fill="#2A2A2A"/>
+              <rect x="30" y="8" width="6" height="8" rx="1" fill="#555"/>
+              <ellipse cx="33" cy="72" rx="5" ry="2" fill="#111"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>678901</span></div>
+            <div class="prod-brand">Brauberg</div>
+            <a href="#" class="prod-name">Карандаш вечный Brauberg «Metallic» с металлическим корпусом, чёрный</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#A8D8A8"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#2D7A4F"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#70A870"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>221100</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <a href="#" class="prod-name">Карандаш вечный Berlingo «EcoLine» из бамбука с медным наконечником</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="prod-card" role="listitem">
+          <span class="prod-badge sale">Акция</span>
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#E0C0A0"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#C0A060"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#A08040"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>330210</span></div>
+            <div class="prod-brand">Bruno Visconti</div>
+            <a href="#" class="prod-name">Карандаш вечный Bruno Visconti «Premium» в кожаном чехле</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+      </div><!-- /related-slider -->
+
+      <button class="slider-next" aria-label="Прокрутить вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div><!-- /related-slider-wrap -->
+  </section>
+
+
+  <!-- =============================================
+       RECENTLY VIEWED SLIDER
+       ============================================= -->
+  <section class="related-section" aria-label="Вы смотрели">
+    <div class="section-head">
+      <h2 class="section-title">Вы смотрели</h2>
+    </div>
+    <div class="related-slider-wrap">
+      <button class="slider-prev" aria-label="Прокрутить назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+
+      <div class="related-slider" role="list">
+
+        <!-- Viewed 1 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="10" width="8" height="60" rx="4" fill="#var(--ink-30)" style="fill:#CDD4C8"/>
+              <rect x="32" y="8" width="4" height="8" rx="1" fill="#D4621A"/>
+              <ellipse cx="34" cy="72" rx="4" ry="2" fill="#6B7567"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>339105</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <a href="product.html" class="prod-name">Карандаш подарочный с металлическим наконечником Berlingo «Eternal»</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Viewed 2 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="28" y="8" width="12" height="64" rx="6" fill="#E8873A"/>
+              <rect x="30" y="6" width="8" height="6" rx="1" fill="#B04E10"/>
+              <ellipse cx="34" cy="73" rx="6" ry="2" fill="#D4621A"/>
+              <line x1="34" y1="6" x2="34" y2="72" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>198744</span></div>
+            <div class="prod-brand">Brauberg</div>
+            <a href="#" class="prod-name">Ручка шариковая Brauberg «Navigator» синяя, 0.5 мм, масляная</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Viewed 3 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="14" y="30" width="52" height="20" rx="4" fill="#F2F5F0"/>
+              <rect x="14" y="30" width="52" height="20" rx="4" fill="none" stroke="#CDD4C8" stroke-width="1.5"/>
+              <circle cx="22" cy="40" r="3" fill="#D4621A"/>
+              <rect x="28" y="37" width="20" height="2" rx="1" fill="#CDD4C8"/>
+              <rect x="28" y="41" width="14" height="2" rx="1" fill="#CDD4C8"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>401223</span></div>
+            <div class="prod-brand">Berlingo</div>
+            <a href="#" class="prod-name">Ластик Berlingo «Premium» из натурального каучука, белый, 60×22×10 мм</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+        <!-- Viewed 4 -->
+        <article class="prod-card" role="listitem">
+          <a href="#" class="prod-img">
+            <svg viewBox="0 0 80 80" fill="none">
+              <rect x="20" y="15" width="40" height="50" rx="4" fill="#1A6B8A"/>
+              <rect x="24" y="19" width="32" height="42" rx="2" fill="#1A5A78"/>
+              <rect x="26" y="22" width="28" height="3" rx="1" fill="rgba(255,255,255,.4)"/>
+              <rect x="26" y="27" width="22" height="2" rx="1" fill="rgba(255,255,255,.2)"/>
+              <rect x="26" y="31" width="25" height="2" rx="1" fill="rgba(255,255,255,.2)"/>
+              <rect x="26" y="35" width="18" height="2" rx="1" fill="rgba(255,255,255,.2)"/>
+              <path d="M24 55 L40 68 L56 55" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+            </svg>
+          </a>
+          <div class="prod-info">
+            <div class="prod-sku">Код: <span>574301</span></div>
+            <div class="prod-brand">OfficeSpace</div>
+            <a href="#" class="prod-name">Блокнот OfficeSpace «Stripe» А5, 96 л., клетка, твёрдая обложка</a>
+            <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a></div>
+          </div>
+        </article>
+
+      </div><!-- /related-slider -->
+
+      <button class="slider-next" aria-label="Прокрутить вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 38 38" fill="none"><text x="19" y="28" font-size="24" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="footer-logo-text">Эврика</div>
+        </div>
+        <div class="footer-desc">Товары оптом для офиса, школы и творчества</div>
+        <div class="footer-phones">
+          <a href="tel:88001100000">8-800-110-00-00</a>
+          <a href="tel:74912958000">+7 (4912) 958 000</a>
+        </div>
+        <div class="footer-addr">391111, Рязанская обл.,<br>г. Рыбное, ул. Берёзовая, д. 13</div>
+      </div>
+      <div class="footer-col">
+        <h4>Каталоги</h4>
+        <a href="#">Каталог товаров</a>
+        <a href="#">Хит продаж</a>
+        <a href="#">Новинки</a>
+      </div>
+      <div class="footer-col">
+        <h4>О компании</h4>
+        <a href="#">О компании</a>
+        <a href="#">Реквизиты</a>
+      </div>
+      <div class="footer-col">
+        <h4>Новым клиентам</h4>
+        <a href="#">Почему мы</a>
+        <a href="#">Зарегистрироваться</a>
+        <a href="#">Доставка и оплата</a>
+      </div>
+      <div class="footer-col">
+        <h4>Помощь</h4>
+        <a href="#">Вопросы и ответы</a>
+        <a href="#">Карта сайта</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Договор оферты</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Эврика. Все права защищены.</p>
+      <div class="footer-social">
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.976 0C5.364 0 0 5.364 0 11.976c0 5.292 3.432 9.804 8.208 11.376.6.108.816-.264.816-.576v-2.016c-3.348.72-4.044-1.608-4.044-1.608-.552-1.392-1.344-1.764-1.344-1.764-1.092-.744.084-.72.084-.72 1.212.084 1.848 1.236 1.848 1.236 1.08 1.848 2.82 1.308 3.504 1.008.108-.78.42-1.308.756-1.608-2.664-.3-5.46-1.332-5.46-5.928 0-1.308.468-2.376 1.236-3.216-.12-.3-.54-1.524.12-3.168 0 0 1.008-.324 3.3 1.236.96-.264 1.98-.396 3-.396s2.04.132 3 .396c2.292-1.56 3.3-1.236 3.3-1.236.66 1.644.24 2.868.12 3.168.768.84 1.236 1.908 1.236 3.216 0 4.608-2.808 5.616-5.484 5.916.432.372.816 1.104.816 2.22v3.288c0 .316.216.696.828.576C20.568 21.78 24 17.268 24 11.976 24 5.364 18.588 0 11.976 0z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm-3.07 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm5.2-9a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE SEARCH OVERLAY -->
+<div class="mob-search-overlay" id="mobSearch">
+  <input type="text" placeholder="Поиск по каталогу..." autofocus>
+  <button class="mob-search-close" onclick="closeMobSearch()" aria-label="Закрыть поиск">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-nav" aria-label="Мобильная навигация">
+  <button class="mob-nav-item" onclick="openCatalog()" aria-label="Каталог">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+    Каталог
+  </button>
+  <button class="mob-nav-item" onclick="openMobSearch()" aria-label="Поиск">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+    Поиск
+  </button>
+  <button class="mob-nav-item" style="position:relative" aria-label="Корзина">
+    <div class="mob-nav-badge">3</div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Корзина
+  </button>
+  <button class="mob-nav-item" aria-label="Избранное">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Избранное
+  </button>
+  <button class="mob-nav-item" aria-label="Войти">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Войти
+  </button>
+</nav>
+
+</div><!-- /site-content -->
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+  <button class="lightbox-close" aria-label="Закрыть">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+  <button class="lightbox-prev" aria-label="Предыдущее изображение">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <div class="lightbox-svg-wrap" id="lightboxContent">
+    <!-- content injected by JS -->
+  </div>
+  <button class="lightbox-next" aria-label="Следующее изображение">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- CATALOG MODAL -->
+<div class="modal-overlay" id="catalogModal" onclick="handleOverlayClick(event)">
+  <div class="catalog-modal">
+    <div class="cat-sidebar">
+      <div class="cat-header">
+        <h3>Каталог товаров</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть" aria-label="Развернуть на весь экран">
+            <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
+          </button>
+          <button class="cat-close" onclick="closeCatalog()" aria-label="Закрыть каталог">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cat-list" id="catList"></div>
+    </div>
+    <div class="cat-content">
+      <div class="cat-chips" id="catChips"></div>
+      <div class="cat-sub-grid" id="catSubGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/product.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

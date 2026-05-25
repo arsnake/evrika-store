@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika — Cart Badge: positions count (not total qty)</name>
+    <code>evrika-cart-count-fix</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!-- Фикс шапки: cart_count = кол-во позиций, не сумма количеств -->
+    <file path="catalog/controller/common/header.php">
+        <operation>
+            <search><![CDATA[$data['cart_count'] = $this->cart->countProducts()]]></search>
+            <add position="replace" trim="true"><![CDATA[$data['cart_count'] = count($this->cart->getProducts())]]></add>
+        </operation>
+    </file>
+
+    <!-- Фикс ответа cart/add: json['total'] тоже должен содержать кол-во позиций -->
+    <file path="catalog/controller/checkout/cart.php">
+        <operation>
+            <search><![CDATA[$json['total'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));]]></search>
+            <add position="replace" trim="true"><![CDATA[$json['total'] = sprintf($this->language->get('text_items'), count($this->cart->getProducts()) + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));]]></add>
+        </operation>
+    </file>
+
+</modification>

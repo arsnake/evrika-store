@@ -1,0 +1,199 @@
+{# ── ОФОРМЛЕНИЕ КАК ГОСТЬ ── #}
+{# Загружается в #collapse-payment-address (шаг 3) #}
+
+{% if customer_groups|length > 1 %}
+<div class="co-form-group" style="margin-bottom:14px;">
+  <label style="font-size:12px;font-weight:500;color:var(--ink-60);">{{ entry_customer_group }}</label>
+  <div style="display:flex;gap:16px;margin-top:4px;">
+    {% for customer_group in customer_groups %}
+    <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;">
+      {% if customer_group.customer_group_id == customer_group_id %}
+      <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" checked="checked" style="accent-color:var(--primary);" />
+      {% else %}
+      <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" style="accent-color:var(--primary);" />
+      {% endif %}
+      {{ customer_group.name }}
+    </label>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+{% for customer_group in customer_groups %}
+<input type="hidden" name="customer_group_id" value="{{ customer_group.customer_group_id }}" />
+{% endfor %}
+{% endif %}
+
+<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-60);margin:0 0 10px;">Контактные данные</div>
+
+<div class="co-form-grid co-form-grid--2">
+  <div class="co-form-group" id="fg-payment-firstname">
+    <label for="input-payment-firstname">{{ entry_firstname }} <span class="co-req">*</span></label>
+    <input type="text" name="firstname" value="{{ firstname }}" placeholder="Имя" id="input-payment-firstname" autocomplete="given-name" />
+  </div>
+  <div class="co-form-group" id="fg-payment-lastname">
+    <label for="input-payment-lastname">{{ entry_lastname }} <span class="co-req">*</span></label>
+    <input type="text" name="lastname" value="{{ lastname }}" placeholder="Фамилия" id="input-payment-lastname" autocomplete="family-name" />
+  </div>
+</div>
+
+<div class="co-form-group" id="fg-payment-email">
+  <label for="input-payment-email">{{ entry_email }} <span class="co-req">*</span></label>
+  <input type="text" name="email" value="{{ email }}" placeholder="email@company.ru" id="input-payment-email" autocomplete="email" />
+</div>
+
+<div class="co-form-group" id="fg-payment-telephone">
+  <label for="input-payment-telephone">{{ entry_telephone }} <span class="co-req">*</span></label>
+  <input type="text" name="telephone" value="{{ telephone }}" placeholder="+7 (xxx) xxx-xx-xx" id="input-payment-telephone" autocomplete="tel" />
+</div>
+
+<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-60);margin:16px 0 10px;">Адрес</div>
+
+<div class="co-form-group" id="fg-payment-company">
+  <label for="input-payment-company">{{ entry_company }}</label>
+  <input type="text" name="company" value="{{ company }}" placeholder="Название организации" id="input-payment-company" autocomplete="organization" />
+</div>
+
+<div class="co-form-group" id="fg-payment-address-1">
+  <label for="input-payment-address-1">{{ entry_address_1 }} <span class="co-req">*</span></label>
+  <input type="text" name="address_1" value="{{ address_1 }}" placeholder="Улица, дом, квартира" id="input-payment-address-1" autocomplete="address-line1" />
+</div>
+
+<div class="co-form-group" id="fg-payment-address-2">
+  <label for="input-payment-address-2">{{ entry_address_2 }}</label>
+  <input type="text" name="address_2" value="{{ address_2 }}" placeholder="Дополнение к адресу" id="input-payment-address-2" autocomplete="address-line2" />
+</div>
+
+<div class="co-form-grid co-form-grid--3">
+  <div class="co-form-group" id="fg-payment-city">
+    <label for="input-payment-city">{{ entry_city }} <span class="co-req">*</span></label>
+    <input type="text" name="city" value="{{ city }}" placeholder="Город" id="input-payment-city" autocomplete="address-level2" />
+  </div>
+  <div class="co-form-group" id="fg-payment-postcode">
+    <label for="input-payment-postcode">{{ entry_postcode }} <span class="co-req">*</span></label>
+    <input type="text" name="postcode" value="{{ postcode }}" placeholder="000000" id="input-payment-postcode" autocomplete="postal-code" />
+  </div>
+  <div class="co-form-group" id="fg-payment-country">
+    <label for="input-payment-country">{{ entry_country }} <span class="co-req">*</span></label>
+    <select name="country_id" id="input-payment-country">
+      <option value="">— Выберите —</option>
+      {% for country in countries %}
+      {% if country.country_id == country_id %}
+      <option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+      {% else %}
+      <option value="{{ country.country_id }}">{{ country.name }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<div class="co-form-group" id="fg-payment-zone">
+  <label for="input-payment-zone">{{ entry_zone }} <span class="co-req">*</span></label>
+  <select name="zone_id" id="input-payment-zone"></select>
+</div>
+
+{% for custom_field in custom_fields %}
+{% if custom_field.location == 'account' or custom_field.location == 'address' %}
+{% if custom_field.type == 'select' %}
+<div class="co-form-group custom-field" id="payment-custom-field{{ custom_field.custom_field_id }}" data-sort="{{ custom_field.sort_order }}">
+  <label for="input-payment-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}{% if custom_field.required %} <span class="co-req">*</span>{% endif %}</label>
+  <select name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" id="input-payment-custom-field{{ custom_field.custom_field_id }}">
+    <option value="">— Выберите —</option>
+    {% for custom_field_value in custom_field.custom_field_value %}
+    {% if guest_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id == guest_custom_field[custom_field.custom_field_id] %}
+    <option value="{{ custom_field_value.custom_field_value_id }}" selected="selected">{{ custom_field_value.name }}</option>
+    {% else %}
+    <option value="{{ custom_field_value.custom_field_value_id }}">{{ custom_field_value.name }}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+</div>
+{% endif %}
+{% if custom_field.type == 'radio' %}
+<div class="co-form-group custom-field" id="payment-custom-field{{ custom_field.custom_field_id }}" data-sort="{{ custom_field.sort_order }}">
+  <label>{{ custom_field.name }}{% if custom_field.required %} <span class="co-req">*</span>{% endif %}</label>
+  {% for custom_field_value in custom_field.custom_field_value %}
+  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+    {% if guest_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id == guest_custom_field[custom_field.custom_field_id] %}
+    <input type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" checked="checked" style="accent-color:var(--primary);" />
+    {% else %}
+    <input type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" style="accent-color:var(--primary);" />
+    {% endif %}
+    {{ custom_field_value.name }}
+  </label>
+  {% endfor %}
+</div>
+{% endif %}
+{% if custom_field.type == 'text' %}
+<div class="co-form-group custom-field" id="payment-custom-field{{ custom_field.custom_field_id }}" data-sort="{{ custom_field.sort_order }}">
+  <label for="input-payment-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}{% if custom_field.required %} <span class="co-req">*</span>{% endif %}</label>
+  <input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ guest_custom_field[custom_field.custom_field_id] is defined and guest_custom_field[custom_field.custom_field_id] ? guest_custom_field[custom_field.custom_field_id] : custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-payment-custom-field{{ custom_field.custom_field_id }}" />
+</div>
+{% endif %}
+{% if custom_field.type == 'textarea' %}
+<div class="co-form-group custom-field" id="payment-custom-field{{ custom_field.custom_field_id }}" data-sort="{{ custom_field.sort_order }}">
+  <label for="input-payment-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}{% if custom_field.required %} <span class="co-req">*</span>{% endif %}</label>
+  <textarea name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" rows="3" placeholder="{{ custom_field.name }}" id="input-payment-custom-field{{ custom_field.custom_field_id }}">{{ guest_custom_field[custom_field.custom_field_id] is defined and guest_custom_field[custom_field.custom_field_id] ? guest_custom_field[custom_field.custom_field_id] : custom_field.value }}</textarea>
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% if shipping_required %}
+<div style="margin-top:14px;">
+  <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;color:var(--ink);">
+    {% if shipping_address %}
+    <input type="checkbox" name="shipping_address" value="1" checked="checked" style="accent-color:var(--primary);" />
+    {% else %}
+    <input type="checkbox" name="shipping_address" value="1" style="accent-color:var(--primary);" />
+    {% endif %}
+    {{ entry_shipping }}
+  </label>
+</div>
+{% endif %}
+
+{{ captcha }}
+
+<div class="co-step-actions">
+  <button type="button" id="button-guest" class="btn btn-primary">Продолжить</button>
+</div>
+
+<script type="text/javascript">
+$('#collapse-payment-address input[name="customer_group_id"]').on('change', function() {
+  $.ajax({
+    url: 'index.php?route=checkout/checkout/customfield&customer_group_id=' + this.value,
+    dataType: 'json',
+    success: function(json) {
+      $('#collapse-payment-address .custom-field').hide().removeClass('required');
+      for (var i = 0; i < json.length; i++) {
+        $('#payment-custom-field' + json[i]['custom_field_id']).show();
+        if (json[i]['required']) $('#payment-custom-field' + json[i]['custom_field_id']).addClass('required');
+      }
+    }
+  });
+});
+$('#collapse-payment-address input[name="customer_group_id"]:checked').trigger('change');
+
+$('#collapse-payment-address select[name="country_id"]').on('change', function() {
+  $.ajax({
+    url: 'index.php?route=checkout/checkout/country&country_id=' + this.value,
+    dataType: 'json',
+    beforeSend: function() { $('#collapse-payment-address select[name="country_id"]').prop('disabled', true); },
+    complete:   function() { $('#collapse-payment-address select[name="country_id"]').prop('disabled', false); },
+    success: function(json) {
+      var html = '<option value="">— Выберите —</option>';
+      if (json['zone'] && json['zone'] !== '') {
+        for (var i = 0; i < json['zone'].length; i++) {
+          html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+          if (json['zone'][i]['zone_id'] == '{{ zone_id }}') html += ' selected="selected"';
+          html += '>' + json['zone'][i]['name'] + '</option>';
+        }
+      } else {
+        html += '<option value="0" selected="selected">Нет</option>';
+      }
+      $('#collapse-payment-address select[name="zone_id"]').html(html);
+    }
+  });
+});
+$('#collapse-payment-address select[name="country_id"]').trigger('change');
+</script>

@@ -1,0 +1,132 @@
+/* =======================================================
+   MOBILE.CSS — все медиазапросы
+   ======================================================= */
+
+/* ── Планшет 1024px ── */
+@media (max-width: 1024px) {
+  .products-row         { grid-template-columns: repeat(4, 1fr); }
+  .promo-grid           { grid-template-columns: 1fr; }
+  .promo-side           { flex-direction: row; }
+  .footer-grid          { grid-template-columns: 1fr 1fr 1fr; }
+  .cat-sub-grid         { grid-template-columns: 1fr 1fr; }
+  .page-with-sidebar    { grid-template-columns: 220px 1fr; }
+}
+
+/* ── Мобильный 640px ── */
+@media (max-width: 640px) {
+
+  /* Скрываем десктопные блоки */
+  .topbar             { display: none; }
+  .header-actions     { display: none; }
+  .btn-login          { display: none; }
+  .nav                { display: none; }
+  .scroll-top         { bottom: 80px; right: 12px; width: 38px; height: 38px; }
+
+  /* Шапка — фиксированная */
+  .header             { position: fixed; top: 0; left: 0; right: 0; z-index: 200; border-bottom: 1px solid var(--ink-10); }
+  .header-inner       { padding: 10px 16px; gap: 10px; }
+  .logo-mark          { width: 36px; height: 36px; border-radius: 8px; }
+  .logo-text          { font-size: 13px; }
+  .logo-text span     { font-size: 9px; }
+  .btn-catalog        { padding: 9px 12px; border-radius: var(--radius-m); min-width: 44px; justify-content: center; }
+  .btn-catalog .btn-catalog-text { display: none; }
+  .btn-catalog svg    { width: 18px; height: 18px; }
+  .search-wrap input  { padding: 9px 40px 9px 12px; font-size: 13px; }
+
+  /* Отступы под фиксированную шапку и нижнюю навигацию */
+  body                { padding-top: 64px; padding-bottom: 68px; }
+
+  /* Контентные отступы */
+  .wrap               { padding: 0 12px; }
+  .section            { padding: 14px 0; }
+  .section-title      { font-size: 14px; }
+
+  /* Промо-баннер */
+  .promo-section      { padding: 12px 0; }
+  .promo-grid         { grid-template-columns: 1fr; gap: 10px; }
+  .arrival-slider     { min-height: 220px; border-radius: var(--radius-m); }
+  .arrival-slide-content { padding: 16px 18px; }
+  .arrival-brand      { font-size: 22px; }
+  .arrival-desc       { font-size: 12px; margin-bottom: 14px; }
+  .arrival-cta        { padding: 9px 14px; font-size: 10px; }
+  .arrival-prev,
+  .arrival-next       { display: none; }
+  .arrival-count      { right: 14px; bottom: 16px; }
+  .promo-side         { flex-direction: row; gap: 10px; }
+  .promo-card         { padding: 14px; min-height: 90px; border-radius: var(--radius-m); }
+  .promo-card-title   { font-size: 12px; }
+  .promo-card-sub     { font-size: 10px; }
+  .promo-card-icon svg { width: 44px; height: 44px; }
+
+  /* Чипсы */
+  .chips-row          { gap: 6px; padding: 8px 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .chips-row::-webkit-scrollbar { display: none; }
+  .chip               { padding: 6px 12px; font-size: 11px; flex-shrink: 0; }
+
+  /* Популярные разделы — горизонтальный скролл */
+  .quick-cats         { display: flex; overflow-x: auto; gap: 8px; scrollbar-width: none; padding-bottom: 4px; grid-template-columns: unset; }
+  .quick-cats::-webkit-scrollbar { display: none; }
+  .q-cat              { flex-shrink: 0; width: 90px; padding: 12px 8px; gap: 8px; border-radius: var(--radius-m); }
+  .q-cat-icon         { width: 40px; height: 40px; border-radius: 8px; }
+  .q-cat-icon svg     { width: 22px; height: 22px; }
+  .q-cat-name         { font-size: 10px; }
+  .q-cat-count        { display: none; }
+
+  /* Карточки товаров — 2 в ряд */
+  .products-row       { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .prod-info          { padding: 8px; }
+  .prod-name          { font-size: 11px; -webkit-line-clamp: 2; }
+  .prod-sku           { display: none; }
+  .prod-auth          { font-size: 10px; }
+
+  /* Страница с сайдбаром — колонка */
+  .page-with-sidebar  { grid-template-columns: 1fr; }
+
+  /* Новости */
+  .news-grid          { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .news-body          { padding: 10px; }
+  .news-title         { font-size: 12px; }
+  .news-excerpt       { display: none; }
+
+  /* Футер */
+  .footer-grid        { grid-template-columns: 1fr; gap: 0; }
+  .footer-col         { display: none; }
+  .footer-brand       { padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .footer-bottom      { flex-direction: column; gap: 12px; text-align: center; }
+  footer              { padding: 24px 0 16px; }
+
+  /* Модалка каталога — на весь экран */
+  .modal-overlay      { padding: 0; }
+  .catalog-modal      { max-width: 100%; height: 100%; border-radius: 0; flex-direction: column; }
+  .cat-sidebar        { width: 100%; flex-shrink: 0; overflow: visible; padding: 0; display: flex; flex-direction: column; }
+  .cat-header         { position: sticky; top: 0; z-index: 10; flex-shrink: 0; }
+  .cat-list           { display: flex; flex-direction: row; padding: 0 8px 8px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; flex-shrink: 0; position: sticky; top: 53px; z-index: 9; background: var(--primary); }
+  .cat-list::-webkit-scrollbar { display: none; }
+  .cat-item           { flex-direction: column; align-items: center; text-align: center; padding: 10px 8px; min-width: 72px; gap: 4px; border-left: none; border-bottom: 3px solid transparent; flex-shrink: 0; }
+  .cat-item:hover,
+  .cat-item.active    { border-left: none; border-bottom-color: #fff; }
+  .cat-item-count     { display: none; }
+  .cat-item-name      { font-size: 10px; line-height: 1.2; }
+  .cat-content        { flex: 1; overflow-y: auto; padding: 14px; -webkit-overflow-scrolling: touch; }
+  .cat-sub-grid       { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cat-chips          { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 12px; }
+  .cat-chips::-webkit-scrollbar { display: none; }
+
+  /* Мобильная нижняя навигация */
+  .mob-nav {
+    display: flex;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--ink-10);
+    z-index: 200;
+    height: 60px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+  }
+}
+
+/* ── Очень маленькие экраны 380px ── */
+@media (max-width: 380px) {
+  .products-row   { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .news-grid      { grid-template-columns: 1fr; }
+  .q-cat          { width: 78px; }
+}

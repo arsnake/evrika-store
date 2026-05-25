@@ -1,0 +1,449 @@
+/* =======================================================
+   HOME.CSS — стили главной страницы
+   ======================================================= */
+
+/* ── Временно скрытые секции (соответствует index.html style.css) ── */
+/* Раскомментировать когда секция будет готова к показу              */
+.chips-row      { display: none; }
+.usp-section    { display: none; }
+#section-brands { display: none; }
+#section-news   { display: none; }
+
+/* ── Промо-секция: обёртка ── */
+.promo-section  { padding: 20px 0; }
+.promo-grid     { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+
+/* ── Слайдер новых поступлений ── */
+.arrival-slider {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  position: relative;
+  min-height: 300px;
+  background: var(--primary-dark);
+}
+
+.arrival-slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+}
+
+.arrival-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.arrival-slide-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.arrival-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(15,30,20,.88) 0%, rgba(15,30,20,.6) 50%, rgba(15,30,20,.15) 100%);
+}
+
+.arrival-slide-content {
+  position: relative;
+  z-index: 2;
+  padding: 28px 32px;
+  width: 100%;
+}
+
+.arrival-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.arrival-tag {
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.arrival-date {
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.arrival-date svg { width: 13px; height: 13px; opacity: .7; }
+
+.arrival-brand {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  letter-spacing: -.5px;
+}
+
+.arrival-desc {
+  color: rgba(255,255,255,.7);
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  max-width: 380px;
+}
+
+.arrival-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 11px 20px;
+  border-radius: var(--radius-m);
+  border: none;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  text-decoration: none;
+}
+.arrival-cta:hover { background: var(--accent-dark); transform: translateY(-2px); }
+.arrival-cta svg   { width: 16px; height: 16px; }
+
+/* Стрелки слайдера */
+.arrival-prev,
+.arrival-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+  backdrop-filter: blur(4px);
+}
+.arrival-prev         { left: 14px; }
+.arrival-next         { right: 14px; }
+.arrival-prev:hover,
+.arrival-next:hover   { background: rgba(255,255,255,.3); }
+.arrival-prev svg,
+.arrival-next svg     { width: 16px; height: 16px; color: #fff; }
+
+/* Счётчик слайдов */
+.arrival-count {
+  position: absolute;
+  right: 24px; bottom: 28px;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: rgba(255,255,255,.5);
+  display: flex; align-items: center; gap: 6px;
+}
+.arrival-count-cur { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
+
+/* Точки */
+.arrival-dots {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex; gap: 6px;
+}
+.arrival-dot {
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.35);
+  cursor: pointer;
+  transition: all .3s;
+  border: none;
+  padding: 0;
+}
+.arrival-dot.active {
+  width: 22px;
+  background: #fff;
+}
+
+/* ── Промо-карточки (правая колонка) ── */
+.promo-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.promo-card {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.promo-card:hover { transform: translateY(-3px); }
+
+.promo-card.orange {
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+}
+.promo-card.dark {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.promo-card-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.promo-card-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,.8);
+}
+
+.promo-card-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .25;
+}
+.promo-card-icon svg { width: 64px; height: 64px; color: #fff; }
+
+/* ── Популярные разделы (quick-cats) ── */
+.quick-cats {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.q-cat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-l);
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.q-cat:hover { border-color: var(--primary-mid); box-shadow: 0 6px 20px rgba(45,122,79,.1); transform: translateY(-3px); }
+
+.q-cat-icon {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-m);
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.q-cat:hover .q-cat-icon { background: var(--primary); }
+.q-cat-icon svg { width: 26px; height: 26px; color: var(--primary); transition: color .2s; }
+.q-cat:hover .q-cat-icon svg { color: #fff; }
+
+.q-cat-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.q-cat-count {
+  font-size: 10px;
+  color: var(--ink-60);
+}
+
+/* ── Преимущества (USP) ── */
+.usp-section { background: var(--surface); border-radius: var(--radius-l); padding: 28px; border: 1.5px solid var(--ink-10); }
+
+.usp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.usp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.usp-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-m);
+  background: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.usp-icon svg { width: 22px; height: 22px; color: var(--primary); }
+
+.usp-text h4 {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.usp-text p {
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.5;
+}
+
+.usp-b2b {
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-l);
+  padding: 20px 24px;
+  min-width: 200px;
+}
+.usp-b2b h3 {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.usp-b2b-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.usp-b2b-list li {
+  font-size: 12px;
+  opacity: .85;
+  padding-left: 14px;
+  position: relative;
+}
+.usp-b2b-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent2);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* ── Новости ── */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.news-card {
+  background: var(--surface);
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  transition: all .2s;
+  cursor: pointer;
+}
+.news-card:hover { border-color: var(--primary-mid); box-shadow: 0 6px 20px rgba(45,122,79,.1); transform: translateY(-2px); }
+
+.news-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.news-thumb svg { width: 40px; height: 40px; color: var(--ink-30); }
+
+.news-body    { padding: 14px 16px; }
+
+.news-date {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--ink-60);
+  margin-bottom: 8px;
+}
+.news-date svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.news-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.news-card:hover .news-title { color: var(--primary); }
+
+.news-excerpt {
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Планшет 1024px ── */
+@media (max-width: 1024px) {
+  .promo-grid  { grid-template-columns: 1fr; }
+  .promo-side  { flex-direction: row; }
+  .quick-cats  { grid-template-columns: repeat(6, 1fr); }
+  .usp-grid    { grid-template-columns: 1fr 1fr 1fr; }
+  .usp-b2b     { grid-column: 1 / -1; }
+  .news-grid   { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Мобильный 640px ── */
+@media (max-width: 640px) {
+  .promo-section      { padding: 12px 0; }
+  .promo-grid         { grid-template-columns: 1fr; gap: 10px; }
+  .arrival-slider     { min-height: 220px; border-radius: var(--radius-m); }
+  .arrival-slide-content { padding: 16px 18px; }
+  .arrival-brand      { font-size: 22px; }
+  .arrival-desc       { font-size: 12px; margin-bottom: 14px; }
+  .arrival-cta        { padding: 9px 14px; font-size: 10px; }
+  .arrival-prev,
+  .arrival-next       { display: none; }
+  .arrival-count      { right: 14px; bottom: 16px; }
+  .promo-side         { flex-direction: row; gap: 10px; }
+  .promo-card         { padding: 14px; min-height: 90px; border-radius: var(--radius-m); }
+  .promo-card-title   { font-size: 12px; }
+  .promo-card-sub     { font-size: 10px; }
+  .promo-card-icon svg { width: 44px; height: 44px; }
+
+  .usp-section { padding: 16px; border-radius: var(--radius-m); }
+  .usp-grid    { grid-template-columns: 1fr; gap: 16px; }
+  .usp-b2b     { grid-column: auto; }
+  .usp-icon    { width: 36px; height: 36px; }
+  .usp-icon svg { width: 18px; height: 18px; }
+  .usp-text h4 { font-size: 11px; }
+  .usp-text p  { font-size: 11px; }
+}

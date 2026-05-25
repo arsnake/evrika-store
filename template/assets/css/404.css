@@ -1,0 +1,84 @@
+/* ============================================================
+   404.CSS
+   ============================================================ */
+
+.e404-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  min-height: calc(100vh - 380px);
+  padding: 40px 0 60px;
+}
+
+/* ИЛЛЮСТРАЦИЯ */
+.e404-art { display: flex; align-items: center; justify-content: center; }
+.e404-svg { width: 100%; max-width: 460px; height: auto; }
+
+/* ТЕКСТ */
+.e404-code {
+  font-family: var(--font-display);
+  font-size: 96px; font-weight: 700; line-height: 1;
+  color: var(--ink-10);
+  margin-bottom: 8px; letter-spacing: -4px;
+}
+.e404-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 700;
+  color: var(--ink); margin: 0 0 12px;
+}
+.e404-desc {
+  font-size: 14px; color: var(--ink-60);
+  line-height: 1.6; margin: 0 0 28px;
+  max-width: 440px;
+}
+
+/* ПОИСК */
+.e404-search {
+  display: flex; gap: 8px; margin-bottom: 32px;
+}
+.e404-search-wrap {
+  flex: 1; position: relative;
+  display: flex; align-items: center;
+}
+.e404-search-wrap svg {
+  position: absolute; left: 12px;
+  color: var(--ink-40); pointer-events: none;
+}
+.e404-search-input {
+  width: 100%; height: 44px;
+  padding: 0 14px 0 40px;
+  border: 1.5px solid var(--ink-20); border-radius: var(--radius-m);
+  font-family: var(--font-body); font-size: 13px; color: var(--ink);
+  background: var(--surface); outline: none; transition: border-color .2s;
+}
+.e404-search-input:focus { border-color: var(--primary); }
+.e404-search-btn { height: 44px; padding: 0 18px; white-space: nowrap; font-size: 13px; }
+
+/* РАЗДЕЛЫ */
+.e404-sections-label {
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--ink-40); margin-bottom: 12px;
+}
+.e404-links {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 32px;
+}
+.e404-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-m);
+  font-size: 12px; font-weight: 500; color: var(--ink-80);
+  text-decoration: none; background: var(--surface);
+  transition: all .2s;
+}
+.e404-link:hover {
+  border-color: var(--primary); color: var(--primary);
+  background: var(--primary-light);
+}
+.e404-link svg { flex-shrink: 0; }
+
+/* КНОПКИ */
+.e404-actions { display: flex; gap: 12px; }

@@ -1,0 +1,117 @@
+/* ============================================================
+   SEARCH.CSS — Страница поиска
+   ============================================================ */
+
+/* SEARCH HEADING */
+.srch-head { margin-bottom: 16px; }
+.srch-head .cat-page-title em {
+  font-style: normal; color: var(--primary);
+}
+.srch-head-right { display: flex; align-items: center; }
+.srch-time { font-size: 11px; color: var(--ink-40); }
+
+/* SIDEBAR CATEGORIES */
+.srch-cats-sidebar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ink-10);
+}
+.srch-cats-label {
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--ink-40); margin-bottom: 8px;
+}
+.srch-cat-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.srch-cat-list li a {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 8px; border-radius: var(--radius-s);
+  font-size: 12px; color: var(--ink-80); text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.srch-cat-list li a:hover { background: var(--ink-10); color: var(--ink); }
+.srch-cat-list li.active a { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.srch-cat-list li a span {
+  font-size: 11px; color: var(--ink-40);
+  background: var(--ink-10); border-radius: 10px;
+  padding: 0 6px; min-width: 20px; text-align: center;
+}
+.srch-cat-list li.active a span { background: rgba(45,122,79,.15); color: var(--primary); }
+
+/* ── PRICE RANGE FILTER ─────────────────────────────────────── */
+.price-range-track {
+  position: relative;
+  height: 4px;
+  background: var(--ink-10);
+  border-radius: 2px;
+  margin: 16px 6px 20px;
+}
+.price-range-fill {
+  position: absolute; top: 0; height: 4px;
+  background: var(--primary); border-radius: 2px;
+  pointer-events: none;
+}
+.price-range-input {
+  position: absolute; top: 50%; width: 100%;
+  -webkit-appearance: none; appearance: none;
+  background: transparent; outline: none;
+  height: 4px; transform: translateY(-50%);
+  margin: 0; pointer-events: none;
+}
+.price-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  cursor: pointer; pointer-events: all;
+  transition: box-shadow .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+.price-range-input::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 4px rgba(45,122,79,.15);
+}
+.price-range-input::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--primary);
+  cursor: pointer; pointer-events: all;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+.price-range-inputs {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 4px;
+}
+.price-range-field {
+  flex: 1; display: flex; align-items: center;
+  border: 1.5px solid var(--ink-20); border-radius: var(--radius-m);
+  padding: 0 8px; height: 32px; gap: 4px;
+  transition: border-color .2s;
+}
+.price-range-field:focus-within { border-color: var(--primary); }
+.price-range-label {
+  font-size: 10px; color: var(--ink-40);
+  font-family: var(--font-display); font-weight: 600;
+  flex-shrink: 0;
+}
+.price-range-num {
+  flex: 1; border: none; background: none; outline: none;
+  font-size: 12px; font-weight: 600; color: var(--ink);
+  font-family: var(--font-display); width: 0;
+  -moz-appearance: textfield;
+}
+.price-range-num::-webkit-inner-spin-button,
+.price-range-num::-webkit-outer-spin-button { -webkit-appearance: none; }
+.price-range-cur { font-size: 11px; color: var(--ink-40); flex-shrink: 0; }
+.price-range-sep { font-size: 12px; color: var(--ink-30); flex-shrink: 0; }
+
+/* EMPTY STATE EXTRAS */
+.srch-empty-tips {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-top: 16px; text-align: left;
+}
+.srch-empty-tip {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-60);
+}
+.srch-empty-tip svg { color: var(--primary); flex-shrink: 0; }

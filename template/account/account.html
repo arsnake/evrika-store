@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Личный кабинет — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/account.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="information.html">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="../index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+      </div>
+      <!-- Logged-in user button -->
+      <div class="h-user-wrap" id="hUserWrap">
+        <div class="h-user" id="hUserBtn">
+          <div class="h-user-avatar">ИИ</div>
+          <span class="h-user-name">Иван И.</span>
+          <svg class="h-user-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="h-user-dropdown">
+          <a href="account.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Мой кабинет
+          </a>
+          <a href="order.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Мои заказы
+          </a>
+          <a href="edit.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Мои данные
+          </a>
+          <div class="h-user-dropdown-divider"></div>
+          <a href="../login.html" class="danger">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Выйти
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link" href="#">Скидки месяца</a>
+    <a class="nav-link" href="#">Реестр Минпромторга</a>
+    <a class="nav-link" href="#">Хит продаж</a>
+    <a class="nav-link" href="#">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="../index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Личный кабинет</span>
+  </nav>
+
+  <div class="cab-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">ИИ</div>
+        <div>
+          <div class="cab-user-name">Иванов Иван</div>
+          <div class="cab-user-type">Физическое лицо</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link active" href="account.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link" href="order.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+          <span class="cab-nav-badge">3</span>
+        </a>
+        <a class="cab-nav-link" href="wishlist.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+          <span class="cab-nav-badge" style="background:var(--ink-30)">12</span>
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="edit.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="../login.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="cab-main">
+      <h1 class="cab-page-title">Добро пожаловать, Иван!</h1>
+
+      <!-- STATS -->
+      <div class="cab-stats">
+        <div class="cab-stat">
+          <div class="cab-stat-label">Заказов всего</div>
+          <div class="cab-stat-value">24</div>
+          <div class="cab-stat-sub">с 2021 года</div>
+        </div>
+        <div class="cab-stat cab-stat--primary">
+          <div class="cab-stat-label">В обработке</div>
+          <div class="cab-stat-value">3</div>
+          <div class="cab-stat-sub">активных заказа</div>
+        </div>
+        <div class="cab-stat cab-stat--accent">
+          <div class="cab-stat-label">Потрачено</div>
+          <div class="cab-stat-value">48 290</div>
+          <div class="cab-stat-sub">рублей за всё время</div>
+        </div>
+        <div class="cab-stat">
+          <div class="cab-stat-label">Избранное</div>
+          <div class="cab-stat-value">12</div>
+          <div class="cab-stat-sub">товаров отложено</div>
+        </div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="cab-section-head">
+        <div class="cab-section-title">Быстрые действия</div>
+      </div>
+      <div class="cab-quick-links">
+        <a class="cab-quick-link" href="order.html">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Мои заказы</span>
+            <span class="cab-quick-link-sub">Посмотреть историю и статус</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="wishlist.html">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Избранное</span>
+            <span class="cab-quick-link-sub">12 сохранённых товаров</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="edit.html">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Редактировать профиль</span>
+            <span class="cab-quick-link-sub">Имя, email, пароль</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="#">
+          <div class="cab-quick-link-icon" style="background:rgba(212,98,26,.1); color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Адреса доставки</span>
+            <span class="cab-quick-link-sub">Добавить или изменить</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- LAST ORDERS -->
+      <div class="cab-section-head" style="margin-top:24px">
+        <div class="cab-section-title">Последние заказы</div>
+        <a class="cab-section-link" href="order.html">Все заказы →</a>
+      </div>
+
+      <table class="cab-orders-table">
+        <thead>
+          <tr>
+            <th>№ заказа</th>
+            <th>Дата</th>
+            <th>Состав</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a class="cab-order-num" href="order-info.html">#EV-2024-0312</a></td>
+            <td>14 мая 2024</td>
+            <td style="color:var(--ink-50);font-size:12px">Тетради BRAUBERG × 5, Ручки BIC × 10…</td>
+            <td><span class="cab-order-price">2 840 ₽</span></td>
+            <td><span class="cab-status cab-status--sent"><span class="cab-status-dot"></span>Отправлен</span></td>
+            <td><a href="order-info.html" style="font-size:12px;color:var(--primary);text-decoration:none">Подробнее</a></td>
+          </tr>
+          <tr>
+            <td><a class="cab-order-num" href="order-info.html">#EV-2024-0289</a></td>
+            <td>2 мая 2024</td>
+            <td style="color:var(--ink-50);font-size:12px">Бумага А4 Svetocopy × 3, Скрепки…</td>
+            <td><span class="cab-order-price">1 560 ₽</span></td>
+            <td><span class="cab-status cab-status--process"><span class="cab-status-dot"></span>В обработке</span></td>
+            <td><a href="order-info.html" style="font-size:12px;color:var(--primary);text-decoration:none">Подробнее</a></td>
+          </tr>
+          <tr>
+            <td><a class="cab-order-num" href="order-info.html">#EV-2024-0241</a></td>
+            <td>18 апр. 2024</td>
+            <td style="color:var(--ink-50);font-size:12px">Папки-регуляторы × 20, Маркеры…</td>
+            <td><span class="cab-order-price">4 120 ₽</span></td>
+            <td><span class="cab-status cab-status--done"><span class="cab-status-dot"></span>Доставлен</span></td>
+            <td><a href="order-info.html" style="font-size:12px;color:var(--primary);text-decoration:none">Подробнее</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark" style="width:36px;height:36px">
+            <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+        </div>
+        <p class="footer-desc">Оптовые и розничные поставки канцелярских товаров с 2009 года.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Покупателям</div>
+        <a href="../information.html">Доставка и оплата</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">Возврат товара</a>
+        <a href="#">Гарантии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Компания</div>
+        <a href="#">О нас</a>
+        <a href="#">Контакты</a>
+        <a href="#">Новости</a>
+        <a href="#">Вакансии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Контакты</div>
+        <a href="tel:88001100000">8-800-110-00-00</a>
+        <a href="tel:74912958000">+7 (4912) 958 000</a>
+        <a href="mailto:info@evrika-shop.ru">info@evrika-shop.ru</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Эврика — Канцелярские товары</span>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site-content -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

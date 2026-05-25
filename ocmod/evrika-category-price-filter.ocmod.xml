@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Price Range Filter</name>
+  <code>evrika-category-price-filter</code>
+  <version>1.0</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    1. catalog/model/catalog/product.php:
+       Добавляет поддержку filter_price_min / filter_price_max в getProducts() и getTotalProducts().
+       Патчит строку перед GROUP BY — она встречается в обоих методах, что и требуется.
+
+    2. catalog/controller/product/category.php:
+       Читает ?price_min / ?price_max из GET.
+       Делает запрос диапазона цен для категории.
+       Передаёт в $data: price_range_min, price_range_max, price_sel_min, price_sel_max, show_price_filter.
+       Добавляет filter_price_min / filter_price_max в $filter_data перед вызовом getProducts/getTotalProducts.
+  -->
+
+  <file path="catalog/model/catalog/product.php">
+    <operation>
+      <search><![CDATA[$sql .= " GROUP BY p.product_id";]]></search>
+      <add position="before"><![CDATA[			if (isset($data['filter_price_min'])) {
+				$sql .= " AND p.price >= '" . (float)$data['filter_price_min'] . "'";
+			}
+			if (isset($data['filter_price_max'])) {
+				$sql .= " AND p.price <= '" . (float)$data['filter_price_max'] . "'";
+			}]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA[$product_total = $this->model_catalog_product->getTotalProducts($filter_data);]]></search>
+      <add position="before"><![CDATA[			// ── Evrika: price range filter ──
+			$_price_min_get = isset($this->request->get['price_min']) ? (float)$this->request->get['price_min'] : null;
+			$_price_max_get = isset($this->request->get['price_max']) ? (float)$this->request->get['price_max'] : null;
+			$_prange = $this->db->query("SELECT MIN(p.price) AS mn, MAX(p.price) AS mx FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON p.product_id = p2c.product_id WHERE p2c.category_id = '" . (int)$category_id . "' AND p.status = '1'");
+			$_cat_price_min = isset($_prange->row['mn']) && $_prange->row['mn'] !== null ? (float)$_prange->row['mn'] : 0;
+			$_cat_price_max = isset($_prange->row['mx']) && $_prange->row['mx'] !== null ? (float)$_prange->row['mx'] : 0;
+			$data['price_range_min'] = (int)floor($_cat_price_min);
+			$data['price_range_max'] = (int)ceil($_cat_price_max);
+			$data['price_sel_min'] = ($_price_min_get !== null) ? (int)$_price_min_get : (int)floor($_cat_price_min);
+			$data['price_sel_max'] = ($_price_max_get !== null) ? (int)$_price_max_get : (int)ceil($_cat_price_max);
+			$data['show_price_filter'] = ($_cat_price_max > $_cat_price_min);
+			if ($_price_min_get !== null) $filter_data['filter_price_min'] = $_price_min_get;
+			if ($_price_max_get !== null) $filter_data['filter_price_max'] = $_price_max_get;
+]]></add>
+    </operation>
+  </file>
+
+</modification>

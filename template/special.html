@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Спецпредложения и акции — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/special.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="information.html">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Новым клиентам</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+      </div>
+      <button class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link nav-link--active">Скидки месяца</a>
+    <a class="nav-link">Реестр Минпромторга</a>
+    <a class="nav-link">Хит продаж</a>
+    <a class="nav-link">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Спецпредложения</span>
+  </nav>
+
+  <!-- БАННЕР АКЦИИ -->
+  <div class="spc-banner">
+    <div class="spc-banner-body">
+      <div class="spc-banner-tag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        Акция месяца
+      </div>
+      <h1 class="spc-banner-title">Скидки до 40%<br>на канцелярию</h1>
+      <p class="spc-banner-sub">Тетради, папки, ручки, степлеры — лучшие цены сезона</p>
+
+      <div class="spc-banner-timer">
+        <span class="spc-timer-label">Осталось:</span>
+        <div class="spc-timer-blocks">
+          <div class="spc-timer-block">
+            <span class="spc-timer-num" id="timerDays">11</span>
+            <span class="spc-timer-unit">дн</span>
+          </div>
+          <span class="spc-timer-sep">:</span>
+          <div class="spc-timer-block">
+            <span class="spc-timer-num" id="timerHours">07</span>
+            <span class="spc-timer-unit">ч</span>
+          </div>
+          <span class="spc-timer-sep">:</span>
+          <div class="spc-timer-block">
+            <span class="spc-timer-num" id="timerMins">43</span>
+            <span class="spc-timer-unit">мин</span>
+          </div>
+          <span class="spc-timer-sep">:</span>
+          <div class="spc-timer-block">
+            <span class="spc-timer-num" id="timerSecs">22</span>
+            <span class="spc-timer-unit">сек</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#products" class="spc-banner-cta">
+        Смотреть все акции
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+    </div>
+    <div class="spc-banner-visual">
+      <div class="spc-big-discount">−40%</div>
+    </div>
+  </div>
+
+  <!-- ТУЛБАР -->
+  <div class="spc-toolbar" id="products">
+    <div class="spc-toolbar-left">
+      <a class="spc-filter-tab active" href="#">Все (128)</a>
+      <a class="spc-filter-tab" href="#">Бумага и тетради</a>
+      <a class="spc-filter-tab" href="#">Ручки и карандаши</a>
+      <a class="spc-filter-tab" href="#">Папки и файлы</a>
+      <a class="spc-filter-tab" href="#">Степлеры</a>
+      <a class="spc-filter-tab" href="#">Прочее</a>
+    </div>
+    <div class="spc-toolbar-right">
+      <span class="spc-total">128 товаров</span>
+      <select class="cat-sort-select" style="height:34px;font-size:12px;border:1.5px solid var(--ink-20);border-radius:var(--radius-m);padding:0 10px;font-family:var(--font-body);color:var(--ink);background:var(--surface);outline:none">
+        <option>По размеру скидки</option>
+        <option>По популярности</option>
+        <option>Цена: по возрастанию</option>
+        <option>Цена: по убыванию</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- СЕТКА ТОВАРОВ -->
+  <div class="spc-grid">
+
+    <!-- Карточка 1 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−40%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#EBF5EF"/><rect x="25" y="20" width="30" height="4" rx="2" fill="#9ABFAA"/><rect x="25" y="30" width="22" height="3" rx="1.5" fill="#B0CEB8"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>400108</span></div>
+        <div class="prod-brand">BRAUBERG</div>
+        <div class="prod-name">Тетрадь 96 листов А5, клетка, обложка ПВХ</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">113 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">68 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 31 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 2 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−30%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="30" y="10" width="6" height="55" rx="3" fill="#EBF5EF"/><rect x="28" y="12" width="10" height="8" rx="2" fill="#9ABFAA"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>847898</span></div>
+        <div class="prod-brand">BIC</div>
+        <div class="prod-name">Ручка шариковая Cristal, синяя, 50 шт.</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">1 271 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">890 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 25 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 3 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−20%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="25" width="50" height="35" rx="4" fill="#EBF5EF"/><rect x="25" y="18" width="30" height="10" rx="3" fill="#9ABFAA"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>228424</span></div>
+        <div class="prod-brand">BRAUBERG</div>
+        <div class="prod-name">Степлер №10, до 20 листов, металлический</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">400 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">320 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 31 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 4 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−35%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="12" y="20" width="56" height="45" rx="3" fill="#EBF5EF"/><rect x="12" y="20" width="56" height="8" rx="3" fill="#9ABFAA"/><text x="40" y="55" font-size="12" text-anchor="middle" fill="#B0CEB8" font-family="sans-serif">A4</text></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>110088</span></div>
+        <div class="prod-brand">SVETOCOPY</div>
+        <div class="prod-name">Бумага А4 80г/м², 500 листов, белизна 146%</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">800 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">520 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 28 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 5 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−25%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="18" y="10" width="44" height="60" rx="3" fill="#EBF5EF"/><path d="M18 14h6v56h-6z" fill="#B0CEB8" opacity=".5"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>222644</span></div>
+        <div class="prod-brand">BRAUBERG</div>
+        <div class="prod-name">Папка-скоросшиватель А4, 0.5мм</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">60 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">45 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 31 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 6 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−15%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="10" width="22" height="60" rx="2" fill="#EBF5EF"/><rect x="43" y="10" width="22" height="60" rx="2" fill="#EBF5EF"/><rect x="15" y="10" width="50" height="6" rx="2" fill="#9ABFAA"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>584623</span></div>
+        <div class="prod-brand">ATTACHE</div>
+        <div class="prod-name">Ежедневник недатированный А5, 160 листов, кожзам</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">847 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">720 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 20 июня
+        </div>
+        <div class="prod-stock low-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>Мало
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 7 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−40%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="15" width="40" height="50" rx="3" fill="#EBF5EF"/><rect x="25" y="20" width="30" height="4" rx="1" fill="#9ABFAA"/><rect x="25" y="28" width="20" height="3" rx="1" fill="#B0CEB8"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>584001</span></div>
+        <div class="prod-brand">ERICH KRAUSE</div>
+        <div class="prod-name">Блокнот А6, 80 листов, в клетку, пружина сверху</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">115 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">69 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 31 мая
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 8 -->
+    <div class="prod-card">
+      <span class="spc-discount-badge">−20%</span>
+      <div class="prod-img">
+        <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="30" width="40" height="28" rx="3" fill="#EBF5EF"/><circle cx="30" cy="60" r="7" fill="#B0CEB8"/><circle cx="50" cy="60" r="7" fill="#B0CEB8"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-sku">Арт.: <span>224625</span></div>
+        <div class="prod-brand">STAFF</div>
+        <div class="prod-name">Дырокол до 30 листов, металлический механизм</div>
+        <div class="prod-price-block">
+          <span class="prod-price-old">356 ₽</span>
+          <div class="prod-price-row"><span class="prod-price">285 ₽</span></div>
+        </div>
+        <div class="spc-deadline">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          До 15 июня
+        </div>
+        <div class="prod-stock in-stock">
+          <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>В наличии
+        </div>
+        <div class="prod-actions">
+          <div class="prod-qty-ctrl">
+            <button class="prod-qty-btn">−</button>
+            <input class="prod-qty-input" type="number" value="1" min="1">
+            <button class="prod-qty-btn">+</button>
+          </div>
+          <button class="prod-fav-btn" title="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <button class="prod-cart-btn" title="В корзину"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /spc-grid -->
+
+  <!-- ПАГИНАЦИЯ -->
+  <div class="cat-pagination">
+    <a class="cat-page-btn active">1</a>
+    <a class="cat-page-btn" href="#">2</a>
+    <a class="cat-page-btn" href="#">3</a>
+    <span class="cat-page-btn" style="border:none;color:var(--ink-30)">…</span>
+    <a class="cat-page-btn" href="#">6</a>
+    <a class="cat-page-next" href="#">
+      Следующая
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+    </a>
+  </div>
+
+</div><!-- /wrap -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark" style="width:36px;height:36px">
+            <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+        </div>
+        <p class="footer-desc">Оптовые и розничные поставки канцелярских товаров с 2009 года.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Покупателям</div>
+        <a href="information.html">Доставка и оплата</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">Возврат товара</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Компания</div>
+        <a href="#">О нас</a>
+        <a href="#">Контакты</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Контакты</div>
+        <a href="tel:88001100000">8-800-110-00-00</a>
+        <a href="mailto:info@evrika-shop.ru">info@evrika-shop.ru</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Эврика — Канцелярские товары</span>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site-content -->
+<script>
+(function () {
+  /* Обратный отсчёт */
+  var end = new Date();
+  end.setDate(end.getDate() + 11);
+  end.setHours(end.getHours() + 7, end.getMinutes() + 43, 22, 0);
+
+  function tick() {
+    var diff = Math.max(0, end - Date.now());
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    var pad = function(n) { return String(n).padStart(2, '0'); };
+    var dEl = document.getElementById('timerDays');
+    var hEl = document.getElementById('timerHours');
+    var mEl = document.getElementById('timerMins');
+    var sEl = document.getElementById('timerSecs');
+    if (dEl) dEl.textContent = pad(d);
+    if (hEl) hEl.textContent = pad(h);
+    if (mEl) mEl.textContent = pad(m);
+    if (sEl) sEl.textContent = pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  /* Фильтр-табы */
+  document.querySelectorAll('.spc-filter-tab').forEach(function (tab) {
+    tab.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.spc-filter-tab').forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

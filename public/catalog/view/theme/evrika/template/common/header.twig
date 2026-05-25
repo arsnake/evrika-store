@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+{% if robots %}<meta name="robots" content="{{ robots }}">{% endif %}
+<base href="{{ base }}">
+{% if description %}<meta name="description" content="{{ description }}">{% endif %}
+{% if keywords %}<meta name="keywords" content="{{ keywords }}">{% endif %}
+<meta property="og:title" content="{{ title }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:image" content="{{ og_image ? og_image : logo }}">
+<meta property="og:site_name" content="{{ name }}">
+
+{# jQuery + Bootstrap JS — порядок критичен: bootstrap до common.js #}
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+{# Google Fonts #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+{# Динамические стили от модулей/расширений (Bootstrap и др. — грузим ПЕРВЫМИ) #}
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}">
+{% endfor %}
+
+{# Стили темы evrika — грузим ПОСЛЕ Bootstrap, наши правила выигрывают #}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/base.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/components.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/layout.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/header.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/footer.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/home.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/mobile.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/category.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/product.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/cart.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/checkout.css">
+
+{# Скрипты для <head> (из document->getScripts('header')) #}
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}">
+{% endfor %}
+
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+</head>
+<body>
+
+<div class="site-content">
+
+{# ── ТОПБАР ── #}
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="{{ contact }}">Мелитополь</a>
+    </div>
+    <div class="topbar-right">
+      {% if telephone %}
+      <a class="phone" href="tel:{{ telephone|replace({' ':''}) }}">{{ telephone }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{# ── ШАПКА ── #}
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+
+      {# Логотип #}
+      <a class="logo" href="{{ home }}" aria-label="{{ name }}">
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">{{ name }}<span>Канцелярские товары</span></div>
+      </a>
+
+      {# Кнопка каталога #}
+      <button class="btn-catalog" onclick="openCatalog()" aria-haspopup="dialog" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        <span class="btn-catalog-text">Каталог</span>
+      </button>
+
+      {# Поиск #}
+      <form class="search-wrap" action="index.php?route=product/search" method="get">
+        <input type="text" name="search" placeholder="Поиск по каталогу — название, артикул, производитель..." aria-label="Поиск">
+        <button class="search-btn" type="submit" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </form>
+
+      {# Действия в шапке #}
+      <div class="header-actions">
+
+        {# Избранное #}
+        <a class="h-action" href="{{ wishlist }}" id="wishlist-total" aria-label="{{ text_wishlist }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </a>
+
+        {# Корзина #}
+        <a class="h-action cart" href="{{ shopping_cart }}" aria-label="Корзина">
+          <span class="h-badge" id="cart-badge"{% if cart_count == 0 %} style="display:none"{% endif %}>{{ cart_count }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </a>
+
+      </div>
+
+      {# Вход / кабинет #}
+      {% if logged %}
+        <div class="h-user-wrap" id="hUserWrap">
+          <button class="btn-login" id="hUserBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Кабинет
+          </button>
+          <div class="h-user-drop">
+            <a href="{{ account }}">Мой кабинет</a>
+            <a href="{{ order }}">Мои заказы</a>
+            <a href="{{ wishlist }}">Избранное</a>
+            <hr class="sep">
+            <a href="{{ logout }}" class="logout">Выйти</a>
+          </div>
+        </div>
+      {% else %}
+        <a class="btn-login" href="{{ login }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Войти
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+</header>
+
+{# ── НАВИГАЦИОННАЯ ПОЛОСКА ── #}
+<nav class="nav" aria-label="Быстрые ссылки">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a class="nav-link special" href="{{ special }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        Скидки месяца
+      </a>
+      <a class="nav-link" href="#">Реестр Минпромторга</a>
+      <a class="nav-link" href="{{ special }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Хит продаж
+      </a>
+      <a class="nav-link" href="#">Честный знак</a>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Новинки
+      </a>
+      <a class="nav-link nav-link--sale" href="{{ special }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Распродажа
+      </a>
+      {% if not logged %}
+      <a class="nav-link nav-link--b2b" href="{{ register }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Для юрлиц
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+{# ── МОБИЛЬНЫЙ ПОИСК ── #}
+<div class="mob-search-overlay" id="mobSearch">
+  <form action="index.php?route=product/search" method="get" style="flex:1;display:flex;">
+    <input type="text" name="search" placeholder="Поиск по каталогу..." aria-label="Поиск" style="flex:1;padding:10px 14px;border:1.5px solid var(--primary);border-radius:var(--radius-m);font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--ink-10);outline:none;">
+  </form>
+  <button class="mob-search-close" onclick="closeMobSearch()" aria-label="Закрыть" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+</div>
+
+{# ── МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ ── #}
+<nav class="mob-nav" aria-label="Мобильная навигация">
+  <button class="mob-nav-item active" onclick="openCatalog()" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+    Каталог
+  </button>
+  <button class="mob-nav-item" onclick="openMobSearch()" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+    Поиск
+  </button>
+  <a class="mob-nav-item" href="{{ shopping_cart }}" style="position:relative">
+    <span class="mob-nav-badge" id="mob-cart-badge"{% if cart_count == 0 %} style="display:none"{% endif %}>{{ cart_count }}</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Корзина
+  </a>
+  <a class="mob-nav-item" href="{{ wishlist }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Избранное
+  </a>
+  {% if logged %}
+  <a class="mob-nav-item" href="{{ account }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Кабинет
+  </a>
+  {% else %}
+  <a class="mob-nav-item" href="{{ login }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+    Войти
+  </a>
+  {% endif %}
+</nav>
+
+{# ── МОДАЛКА КАТАЛОГА ── #}
+<div class="modal-overlay" id="catalogModal" onclick="handleOverlayClick(event)" role="dialog" aria-modal="true" aria-label="Каталог товаров">
+  <div class="catalog-modal">
+    <div class="cat-sidebar">
+      <div class="cat-header">
+        <h3>Каталог товаров</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть" type="button">
+            <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
+          </button>
+          <button class="cat-close" onclick="closeCatalog()" type="button" aria-label="Закрыть">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cat-list" id="catList"></div>
+    </div>
+    <div class="cat-content">
+      <div class="cat-chips" id="catChips"></div>
+      <div class="cat-sub-grid" id="catSubGrid"></div>
+    </div>
+  </div>
+</div>
+
+{# Данные каталога для JS #}
+<script>
+window.EVRIKA_CATALOG = [];
+</script>

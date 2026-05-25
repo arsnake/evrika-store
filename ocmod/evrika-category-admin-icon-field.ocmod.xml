@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Category Admin — Icon field</name>
+    <code>evrika-category-admin-icon-field</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет поле "icon" (slug иконки) к категориям в админке.
+        Патчит 3 файла:
+          1. admin/model/catalog/category.php   — сохранение icon в addCategory/editCategory
+          2. admin/controller/catalog/category.php — передача icon + evrika_icons в форму
+          3. admin/view/template/catalog/category_form.twig — визуальный пикер иконок + JS
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         1. admin/model/catalog/category.php
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/model/catalog/category.php">
+
+        <!-- addCategory: вставляем UPDATE icon ПЕРЕД первым foreach category_description (index="0") -->
+        <operation>
+            <search index="0"><![CDATA[foreach ($data['category_description']]]></search>
+            <add position="before"><![CDATA[		$this->db->query("UPDATE " . DB_PREFIX . "category SET icon = '" . $this->db->escape(isset($data['icon']) ? $data['icon'] : '') . "' WHERE category_id = '" . (int)$category_id . "'");
+]]></add>
+        </operation>
+
+        <!-- editCategory: вставляем UPDATE icon ПЕРЕД первым DELETE category_description (index="0").
+             Второй DELETE с таким же текстом — в deleteCategory (index="1"), его не трогаем. -->
+        <operation>
+            <search index="0"><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "category_description WHERE category_id = '"]]></search>
+            <add position="before"><![CDATA[		$this->db->query("UPDATE " . DB_PREFIX . "category SET icon = '" . $this->db->escape(isset($data['icon']) ? $data['icon'] : '') . "' WHERE category_id = '" . (int)$category_id . "'");
+
+]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         2. admin/controller/catalog/category.php
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/controller/catalog/category.php">
+
+        <!-- Вставляем icon POST + evrika_icons ПЕРЕД $this->load->model('tool/image') -->
+        <operation>
+            <search><![CDATA[$this->load->model('tool/image');]]></search>
+            <add position="before"><![CDATA[		if (isset($this->request->post['icon'])) {
+			$data['icon'] = $this->request->post['icon'];
+		} elseif (!empty($category_info)) {
+			$data['icon'] = $category_info['icon'];
+		} else {
+			$data['icon'] = '';
+		}
+
+		require_once(DIR_TEMPLATE . '../../../catalog/view/theme/evrika/php/icons.php');
+		$data['evrika_icons'] = evrika_get_icons();
+
+]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         3. admin/view/template/catalog/category_form.twig
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/view/template/catalog/category_form.twig">
+
+        <!-- Вставляем пикер иконок после блока image.
+             Заменяем 5 строк (offset="4"): input-image + 2 закрывающих div + открывающий form-group + label input-top.
+             trim="true": убирает обёрточный \n из CDATA, prefix-пробелы исходной строки сохраняются. -->
+        <operation>
+            <search><![CDATA[<input type="hidden" name="image" value="{{ image }}" id="input-image" />]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+                  <input type="hidden" name="image" value="{{ image }}" id="input-image" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Иконка раздела</label>
+                <div class="col-sm-10">
+                  <input type="hidden" name="icon" id="input-icon" value="{{ icon }}" />
+                  <div id="evrika-icon-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+                    {% for slug, item in evrika_icons %}
+                    <div class="evrika-icon-item" data-slug="{{ slug }}"
+                         title="{{ item.label }}"
+                         style="width:52px;height:52px;border:2px solid {% if icon == slug %}#2D7A4F{% else %}#ddd{% endif %};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{% if icon == slug %}#EBF5EF{% else %}#fff{% endif %}">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="{% if icon == slug %}#2D7A4F{% else %}#666{% endif %}" stroke-width="1.8" width="26" height="26">{{ item.svg|raw }}</svg>
+                    </div>
+                    {% endfor %}
+                    <div class="evrika-icon-item" data-slug=""
+                         title="Без иконки"
+                         style="width:52px;height:52px;border:2px solid {% if icon == '' %}#2D7A4F{% else %}#ddd{% endif %};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{% if icon == '' %}#EBF5EF{% else %}#fff{% endif %};color:#999;font-size:11px;text-align:center;line-height:1.2">нет</div>
+                  </div>
+                  {% if icon %}
+                  <p class="help-block">Выбрана: <strong id="evrika-icon-label">{{ evrika_icons[icon] ? evrika_icons[icon].label : icon }}</strong></p>
+                  {% else %}
+                  <p class="help-block">Иконка не выбрана</p>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-top">
+]]></add>
+        </operation>
+
+        <!-- Вставляем JS пикера после закрывающего тега скрипта с '#language a:first'.
+             offset="1" = вставка через строку после найденной (после закрывающего тега того скрипта). -->
+        <operation>
+            <search><![CDATA[$('#language a:first').tab('show');]]></search>
+            <add position="after" offset="1"><![CDATA[
+<script type="text/javascript"><!--
+(function() {
+  var icons = {
+    {% for slug, item in evrika_icons %}'{{ slug }}': '{{ item.label }}',{% endfor %}
+    '': 'Без иконки'
+  };
+  $('#evrika-icon-picker').on('click', '.evrika-icon-item', function() {
+    var slug = $(this).data('slug');
+    $('#input-icon').val(slug);
+    $('#evrika-icon-picker .evrika-icon-item').css({
+      'border-color': '#ddd', 'background': '#fff'
+    }).find('svg').attr('stroke', '#666');
+    $(this).css({'border-color': '#2D7A4F', 'background': '#EBF5EF'})
+      .find('svg').attr('stroke', '#2D7A4F');
+    var label = icons[slug] || slug;
+    $('#evrika-icon-label').text(label);
+    $('.help-block').html('Выбрана: <strong id="evrika-icon-label">' + label + '</strong>');
+  });
+})();
+//--></script>]]></add>
+        </operation>
+
+    </file>
+</modification>

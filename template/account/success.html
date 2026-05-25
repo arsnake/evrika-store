@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Регистрация завершена — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/account.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="../information.html">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="../index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">0</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+      </div>
+      <a class="btn-login" href="../login.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link" href="#">Скидки месяца</a>
+    <a class="nav-link" href="#">Реестр Минпромторга</a>
+    <a class="nav-link" href="#">Хит продаж</a>
+    <a class="nav-link" href="#">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="../index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="../register.html">Регистрация</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Подтверждение</span>
+  </nav>
+
+  <!-- SUCCESS BLOCK -->
+  <div class="acc-success-wrap">
+
+    <!-- Иллюстрация -->
+    <div class="acc-success-icon">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="40" fill="rgba(45,122,79,.1)"/>
+        <circle cx="40" cy="40" r="28" fill="rgba(45,122,79,.15)"/>
+        <circle cx="40" cy="40" r="18" fill="var(--primary)"/>
+        <path d="M30 40l7 7 13-14" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="acc-success-tag">Регистрация завершена</div>
+    <h1 class="acc-success-title">Добро пожаловать в Эврику!</h1>
+    <p class="acc-success-desc">
+      Ваш аккаунт успешно создан. На адрес <strong>ivan.ivanov@example.com</strong> отправлено
+      письмо с подтверждением — перейдите по ссылке в нём, чтобы активировать учётную запись.
+    </p>
+
+    <!-- Что дальше -->
+    <div class="acc-success-steps">
+      <div class="acc-success-step">
+        <div class="acc-success-step-num">1</div>
+        <div class="acc-success-step-body">
+          <div class="acc-success-step-title">Проверьте почту</div>
+          <div class="acc-success-step-text">Найдите письмо от noreply@evrika-shop.ru и перейдите по ссылке подтверждения</div>
+        </div>
+      </div>
+      <div class="acc-success-step">
+        <div class="acc-success-step-num">2</div>
+        <div class="acc-success-step-body">
+          <div class="acc-success-step-title">Войдите в кабинет</div>
+          <div class="acc-success-step-text">Используйте e-mail и пароль, которые указали при регистрации</div>
+        </div>
+      </div>
+      <div class="acc-success-step">
+        <div class="acc-success-step-num">3</div>
+        <div class="acc-success-step-body">
+          <div class="acc-success-step-title">Начните покупать</div>
+          <div class="acc-success-step-text">Добавляйте товары в корзину, отслеживайте заказы и сохраняйте избранное</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="acc-success-actions">
+      <a href="../login.html" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти в кабинет
+      </a>
+      <a href="../index.html" class="btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        На главную
+      </a>
+    </div>
+
+    <!-- Повторная отправка -->
+    <div class="acc-success-resend">
+      Письмо не пришло?
+      <button class="acc-success-resend-btn" onclick="resendEmail()">Отправить повторно</button>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 38 38" fill="none"><text x="19" y="28" font-size="24" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="footer-logo-text">Эврика</div>
+        </div>
+        <div class="footer-desc">Товары оптом для офиса, школы и творчества</div>
+        <div class="footer-phones">
+          <a href="tel:88001100000">8-800-110-00-00</a>
+          <a href="tel:74912958000">+7 (4912) 958 000</a>
+        </div>
+        <div class="footer-addr">391111, Рязанская обл.,<br>г. Рыбное, ул. Берёзовая, д. 13</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Каталог</div>
+        <a href="../category.html">Все товары</a>
+        <a href="#">Хит продаж</a>
+        <a href="#">Новинки</a>
+        <a href="../special.html">Спецпредложения</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Покупателям</div>
+        <a href="../information.html">Доставка и оплата</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">Возврат товара</a>
+        <a href="#">Гарантии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Компания</div>
+        <a href="#">О нас</a>
+        <a href="#">Контакты</a>
+        <a href="#">Новости</a>
+        <a href="#">Вакансии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Контакты</div>
+        <a href="tel:88001100000">8-800-110-00-00</a>
+        <a href="tel:74912958000">+7 (4912) 958 000</a>
+        <a href="mailto:info@evrika-shop.ru">info@evrika-shop.ru</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Эврика — Канцелярские товары</span>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site-content -->
+
+<style>
+/* ── Страница подтверждения регистрации ── */
+.acc-success-wrap {
+  max-width: 540px;
+  margin: 48px auto 64px;
+  text-align: center;
+}
+
+.acc-success-icon {
+  width: 80px; height: 80px;
+  margin: 0 auto 20px;
+}
+
+.acc-success-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(45,122,79,.1);
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+  padding: 4px 12px; border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.acc-success-title {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 12px;
+  line-height: 1.2;
+}
+
+.acc-success-desc {
+  font-size: 14px; color: var(--ink-60);
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+.acc-success-desc strong { color: var(--ink); font-weight: 600; }
+
+/* Шаги */
+.acc-success-steps {
+  display: flex; flex-direction: column; gap: 12px;
+  text-align: left;
+  background: #f7f9f7;
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-l);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+
+.acc-success-step {
+  display: flex; align-items: flex-start; gap: 14px;
+}
+
+.acc-success-step-num {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+
+.acc-success-step-title {
+  font-size: 13px; font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.acc-success-step-text {
+  font-size: 12px; color: var(--ink-60);
+  line-height: 1.5;
+}
+
+/* Кнопки */
+.acc-success-actions {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Повторная отправка */
+.acc-success-resend {
+  font-size: 12px; color: var(--ink-50);
+}
+
+.acc-success-resend-btn {
+  background: none; border: none; padding: 0;
+  color: var(--primary); font-size: 12px;
+  font-family: var(--font-body);
+  cursor: pointer; text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.acc-success-resend-btn:hover { color: var(--primary-dark); }
+</style>
+
+<script>
+function resendEmail() {
+  var btn = document.querySelector('.acc-success-resend-btn');
+  btn.textContent = 'Письмо отправлено';
+  btn.disabled = true;
+  btn.style.color = 'var(--ink-40)';
+  btn.style.textDecoration = 'none';
+}
+</script>
+</body>
+</html>

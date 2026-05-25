@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оформление заказа — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/checkout.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Новым клиентам</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge" id="headerCartBadge">8</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+        <button class="h-action" aria-label="Заказы">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Заказы
+        </button>
+      </div>
+      <button class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV (скрыта) -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link">Скидки месяца</a>
+    <a class="nav-link">Реестр Минпромторга</a>
+    <a class="nav-link">Хит продаж</a>
+    <a class="nav-link">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="cart.html">Корзина</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Оформление заказа</span>
+  </nav>
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="co-page-head">
+    <h1 class="co-page-title">Оформление заказа</h1>
+  </div>
+
+  <!-- ИНДИКАТОР ПРОГРЕССА -->
+  <div class="co-progress" id="coProgress">
+    <div class="co-prog-step co-prog--done" data-step="1">
+      <div class="co-prog-bubble">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="co-prog-label">Авторизация</div>
+    </div>
+    <div class="co-prog-line co-prog-line--done"></div>
+    <div class="co-prog-step co-prog--active" data-step="2">
+      <div class="co-prog-bubble">2</div>
+      <div class="co-prog-label">Способ доставки</div>
+    </div>
+    <div class="co-prog-line"></div>
+    <div class="co-prog-step co-prog--pending" data-step="3">
+      <div class="co-prog-bubble">3</div>
+      <div class="co-prog-label">Адрес доставки</div>
+    </div>
+    <div class="co-prog-line"></div>
+    <div class="co-prog-step co-prog--pending" data-step="4">
+      <div class="co-prog-bubble">4</div>
+      <div class="co-prog-label">Оплата</div>
+    </div>
+    <div class="co-prog-line"></div>
+    <div class="co-prog-step co-prog--pending" data-step="5">
+      <div class="co-prog-bubble">5</div>
+      <div class="co-prog-label">Подтверждение</div>
+    </div>
+  </div>
+
+  <!-- ОСНОВНОЙ ЛЕЙАУТ -->
+  <div class="co-layout">
+
+    <!-- ============================================================
+         ЛЕВАЯ КОЛОНКА — шаги
+         ============================================================ -->
+    <div class="co-steps-col">
+
+      <!-- ======================================================
+           ШАГ 1 — Авторизация (выполнен)
+           ====================================================== -->
+      <div class="co-step co-step--done" data-step="1">
+        <div class="co-step-head">
+          <div class="co-step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="co-step-info">
+            <div class="co-step-title">Авторизация</div>
+            <div class="co-step-summary" id="step1Summary">Иванов Иван Иванович · ivan@company.ru</div>
+          </div>
+          <button class="co-step-edit" onclick="editStep(1)">Изменить</button>
+        </div>
+
+        <div class="co-step-body">
+          <!-- Auth step content (shown only when re-opened) -->
+          <div class="co-auth-wrap">
+            <div class="co-auth-cols">
+              <div class="co-auth-col">
+                <h3 class="co-auth-title">Уже клиент</h3>
+                <div class="co-form-group">
+                  <label for="authEmail">Email</label>
+                  <input type="email" id="authEmail" value="ivan@company.ru" placeholder="email@company.ru">
+                </div>
+                <div class="co-form-group">
+                  <label for="authPassword">Пароль</label>
+                  <input type="password" id="authPassword" value="••••••••" placeholder="Пароль">
+                </div>
+                <div class="co-auth-links">
+                  <a href="#">Забыли пароль?</a>
+                </div>
+                <button class="btn-primary co-btn-full" onclick="nextStep()">Войти и продолжить</button>
+              </div>
+              <div class="co-auth-divider"><span>или</span></div>
+              <div class="co-auth-col">
+                <h3 class="co-auth-title">Новый клиент</h3>
+                <p class="co-auth-desc">Зарегистрируйтесь, чтобы видеть цены, отслеживать заказы и получать специальные предложения для B2B-клиентов.</p>
+                <a href="register.html" class="btn-outline co-btn-full" style="display:block;text-align:center;padding:11px 20px;border-radius:var(--radius-m);text-decoration:none;font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;color:var(--primary);border:1.5px solid var(--primary)">Зарегистрироваться</a>
+                <button class="co-guest-btn" onclick="nextStep()">Продолжить без регистрации</button>
+              </div>
+            </div>
+          </div>
+          <div class="co-step-actions">
+            <button class="btn-primary" onclick="nextStep()">Продолжить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           ШАГ 2 — Способ доставки (активен)
+           ====================================================== -->
+      <div class="co-step co-step--active" data-step="2">
+        <div class="co-step-head">
+          <div class="co-step-num">2</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Способ доставки</div>
+            <div class="co-step-summary" id="step2Summary"></div>
+          </div>
+          <button class="co-step-edit" onclick="editStep(2)">Изменить</button>
+        </div>
+
+        <div class="co-step-body">
+          <div class="delivery-options">
+
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="pickup" checked>
+              <div class="delivery-option-card">
+                <div class="delivery-option-radio"></div>
+                <div class="delivery-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div class="delivery-option-info">
+                  <div class="delivery-option-name">Самовывоз со склада</div>
+                  <div class="delivery-option-desc">Рязанская обл., г. Рыбное, ул. Берёзовая, д. 13<br>Пн–Пт 8:00–18:00, Сб 9:00–14:00</div>
+                </div>
+                <div class="delivery-option-price free">Бесплатно</div>
+              </div>
+            </label>
+
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="tk">
+              <div class="delivery-option-card">
+                <div class="delivery-option-radio"></div>
+                <div class="delivery-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="delivery-option-info">
+                  <div class="delivery-option-name">Транспортная компания</div>
+                  <div class="delivery-option-desc">СДЭК, ПЭК, Деловые Линии или другая ТК по выбору<br>Доставка от 1 до 7 рабочих дней</div>
+                </div>
+                <div class="delivery-option-price">По тарифу ТК</div>
+              </div>
+            </label>
+
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="courier">
+              <div class="delivery-option-card">
+                <div class="delivery-option-radio"></div>
+                <div class="delivery-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4l3 3"/></svg>
+                </div>
+                <div class="delivery-option-info">
+                  <div class="delivery-option-name">Курьерская доставка</div>
+                  <div class="delivery-option-desc">В пределах г. Рыбное и Рязани<br>На следующий рабочий день при заказе до 14:00</div>
+                </div>
+                <div class="delivery-option-price">Рассчитывается</div>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="co-step-actions">
+            <button class="btn-primary" onclick="nextStep()">Продолжить</button>
+            <a href="cart.html" class="co-back-link">← Вернуться в корзину</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           ШАГ 3 — Адрес доставки (ожидает, пропускается при Самовывозе)
+           ====================================================== -->
+      <div class="co-step co-step--pending" data-step="3" id="stepAddress">
+        <div class="co-step-head">
+          <div class="co-step-num">3</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Адрес доставки</div>
+            <div class="co-step-summary" id="step3Summary"></div>
+          </div>
+          <button class="co-step-edit" onclick="editStep(3)">Изменить</button>
+        </div>
+
+        <div class="co-step-body">
+          <div class="co-form-grid co-form-grid--3">
+            <div class="co-form-group">
+              <label for="coLastName">Фамилия <span class="co-req">*</span></label>
+              <input type="text" id="coLastName" placeholder="Иванов">
+            </div>
+            <div class="co-form-group">
+              <label for="coFirstName">Имя <span class="co-req">*</span></label>
+              <input type="text" id="coFirstName" placeholder="Иван">
+            </div>
+            <div class="co-form-group">
+              <label for="coMiddleName">Отчество</label>
+              <input type="text" id="coMiddleName" placeholder="Иванович">
+            </div>
+          </div>
+
+          <div class="co-form-grid co-form-grid--2">
+            <div class="co-form-group">
+              <label for="coCompany">Компания</label>
+              <input type="text" id="coCompany" placeholder="ООО «Организация»">
+            </div>
+            <div class="co-form-group">
+              <label for="coPosition">Должность</label>
+              <input type="text" id="coPosition" placeholder="Менеджер по закупкам">
+            </div>
+          </div>
+
+          <div class="co-form-grid co-form-grid--2">
+            <div class="co-form-group">
+              <label for="coPhone">Телефон <span class="co-req">*</span></label>
+              <input type="tel" id="coPhone" placeholder="+7 (000) 000-00-00">
+            </div>
+            <div class="co-form-group">
+              <label for="coEmail">Email <span class="co-req">*</span></label>
+              <input type="email" id="coEmail" placeholder="email@company.ru">
+            </div>
+          </div>
+
+          <div class="co-form-grid co-form-grid--2">
+            <div class="co-form-group">
+              <label for="coRegion">Регион <span class="co-req">*</span></label>
+              <select id="coRegion">
+                <option value="">Выберите регион</option>
+                <option value="moscow_city">Москва</option>
+                <option value="moscow_reg">Московская область</option>
+                <option value="spb">Санкт-Петербург</option>
+                <option value="ryazan" selected>Рязанская область</option>
+                <option value="other">Другой регион</option>
+              </select>
+            </div>
+            <div class="co-form-group">
+              <label for="coCity">Город <span class="co-req">*</span></label>
+              <input type="text" id="coCity" placeholder="Рязань">
+            </div>
+          </div>
+
+          <div class="co-form-group">
+            <label for="coAddress">Адрес (улица, дом, офис/квартира) <span class="co-req">*</span></label>
+            <input type="text" id="coAddress" placeholder="ул. Ленина, д. 12, оф. 305">
+          </div>
+
+          <div class="co-form-grid co-form-grid--2">
+            <div class="co-form-group">
+              <label for="coZip">Почтовый индекс <span class="co-req">*</span></label>
+              <input type="text" id="coZip" placeholder="390000" maxlength="6">
+            </div>
+            <div class="co-form-group"><!-- spacer --></div>
+          </div>
+
+          <div class="co-step-actions">
+            <button class="btn-primary" onclick="nextStep()">Продолжить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           ШАГ 4 — Способ оплаты (ожидает)
+           ====================================================== -->
+      <div class="co-step co-step--pending" data-step="4">
+        <div class="co-step-head">
+          <div class="co-step-num">4</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Способ оплаты</div>
+            <div class="co-step-summary" id="step4Summary"></div>
+          </div>
+          <button class="co-step-edit" onclick="editStep(4)">Изменить</button>
+        </div>
+
+        <div class="co-step-body">
+          <div class="payment-options">
+
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="bank" checked>
+              <div class="payment-option-card">
+                <div class="payment-option-radio"></div>
+                <div class="payment-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                </div>
+                <div class="payment-option-info">
+                  <div class="payment-option-name">Безналичный расчёт</div>
+                  <div class="payment-option-desc">Счёт на оплату + платёжное поручение. Для юридических лиц и ИП.</div>
+                </div>
+                <div class="payment-option-badge">Рекомендуем</div>
+              </div>
+            </label>
+
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="cash">
+              <div class="payment-option-card">
+                <div class="payment-option-radio"></div>
+                <div class="payment-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h7a4 4 0 0 1 0 8H6m0-8v16m0-8h9"/></svg>
+                </div>
+                <div class="payment-option-info">
+                  <div class="payment-option-name">Наличными при получении</div>
+                  <div class="payment-option-desc">Оплата наличными при самовывозе или курьерской доставке.</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="card">
+              <div class="payment-option-card">
+                <div class="payment-option-radio"></div>
+                <div class="payment-option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path stroke-linecap="round" d="M6 15h4"/></svg>
+                </div>
+                <div class="payment-option-info">
+                  <div class="payment-option-name">Банковская карта онлайн</div>
+                  <div class="payment-option-desc">Visa, Mastercard, МИР. Безопасная оплата через платёжный шлюз.</div>
+                </div>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="co-form-group" style="margin-top:20px">
+            <label for="coComment">Комментарий к заказу</label>
+            <textarea id="coComment" rows="3" placeholder="Особые пожелания, удобное время доставки, и т.д."></textarea>
+          </div>
+
+          <div class="co-step-actions">
+            <button class="btn-primary" onclick="nextStep()">Продолжить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           ШАГ 5 — Подтверждение заказа (ожидает)
+           ====================================================== -->
+      <div class="co-step co-step--pending" data-step="5">
+        <div class="co-step-head">
+          <div class="co-step-num">5</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Подтверждение заказа</div>
+          </div>
+        </div>
+
+        <div class="co-step-body">
+
+          <!-- Итоговые данные -->
+          <div class="co-confirm-grid">
+            <div class="co-confirm-block">
+              <div class="co-confirm-label">Получатель</div>
+              <div class="co-confirm-val" id="confirmRecipient">Иванов Иван Иванович</div>
+              <div class="co-confirm-sub" id="confirmContact">+7 (912) 345-67-89 · ivan@company.ru</div>
+            </div>
+            <div class="co-confirm-block">
+              <div class="co-confirm-label">Адрес доставки</div>
+              <div class="co-confirm-val" id="confirmAddress">390000, Рязань, ул. Ленина, д. 12, оф. 305</div>
+            </div>
+            <div class="co-confirm-block">
+              <div class="co-confirm-label">Способ доставки</div>
+              <div class="co-confirm-val" id="confirmDelivery">Самовывоз со склада</div>
+              <div class="co-confirm-sub">г. Рыбное, ул. Берёзовая, д. 13</div>
+            </div>
+            <div class="co-confirm-block">
+              <div class="co-confirm-label">Способ оплаты</div>
+              <div class="co-confirm-val" id="confirmPayment">Безналичный расчёт</div>
+              <div class="co-confirm-sub">Счёт на оплату будет отправлен на email</div>
+            </div>
+          </div>
+
+          <!-- Товары в подтверждении -->
+          <div class="co-confirm-items">
+            <div class="co-confirm-items-title">Товары (8 позиций)</div>
+
+            <div class="co-confirm-item">
+              <div class="co-confirm-item-img">
+                <svg viewBox="0 0 60 60" fill="none"><rect x="8" y="12" width="44" height="8" rx="4" fill="#F0A000" opacity=".85"/><rect x="8" y="12" width="44" height="36" rx="4" fill="#F0C000" opacity=".3"/><rect x="8" y="12" width="6" height="36" rx="3" fill="#2D7A4F" opacity=".7"/><rect x="46" y="24" width="6" height="6" rx="2" fill="#888" opacity=".5"/></svg>
+              </div>
+              <div class="co-confirm-item-info">
+                <div class="co-confirm-item-name">Карандаш подарочный с металлическим наконечником Berlingo «Eternal»</div>
+                <div class="co-confirm-item-sku">Код: 339105 · Berlingo</div>
+              </div>
+              <div class="co-confirm-item-qty">2 шт.</div>
+              <div class="co-confirm-item-total">250,00 ₽</div>
+            </div>
+
+            <div class="co-confirm-item">
+              <div class="co-confirm-item-img">
+                <svg viewBox="0 0 60 60" fill="none"><rect x="10" y="8" width="40" height="44" rx="4" fill="#E8F0FE"/><rect x="16" y="16" width="28" height="2" rx="1" fill="#4A90D9" opacity=".5"/><rect x="16" y="22" width="28" height="2" rx="1" fill="#4A90D9" opacity=".3"/><rect x="16" y="28" width="20" height="2" rx="1" fill="#4A90D9" opacity=".3"/><rect x="10" y="8" width="40" height="6" rx="4" fill="#4A90D9" opacity=".15"/></svg>
+              </div>
+              <div class="co-confirm-item-info">
+                <div class="co-confirm-item-name">Блокнот Premium А5, 96 л., твёрдая обложка, клетка, синий</div>
+                <div class="co-confirm-item-sku">Код: 445201 · OfficeSpace</div>
+              </div>
+              <div class="co-confirm-item-qty">1 шт.</div>
+              <div class="co-confirm-item-total">89,50 ₽</div>
+            </div>
+
+            <div class="co-confirm-item">
+              <div class="co-confirm-item-img">
+                <svg viewBox="0 0 60 60" fill="none"><rect x="14" y="20" width="32" height="20" rx="6" fill="#F5F5F5"/><rect x="16" y="22" width="28" height="16" rx="5" fill="#E0E0E0"/><rect x="22" y="26" width="16" height="8" rx="3" fill="#BDBDBD" opacity=".5"/></svg>
+              </div>
+              <div class="co-confirm-item-info">
+                <div class="co-confirm-item-name">Ластик Berlingo Mega Top, белый, прямоугольный</div>
+                <div class="co-confirm-item-sku">Код: 118340 · Berlingo</div>
+              </div>
+              <div class="co-confirm-item-qty">5 шт.</div>
+              <div class="co-confirm-item-total">90,00 ₽</div>
+            </div>
+
+          </div>
+
+          <!-- Итоги в шаге 5 -->
+          <div class="co-confirm-totals">
+            <div class="co-confirm-total-row">
+              <span>Подытог (8 позиций)</span>
+              <span>429,50 ₽</span>
+            </div>
+            <div class="co-confirm-total-row co-confirm-promo">
+              <span>Скидка (промокод EVRIKA10)</span>
+              <span>−42,95 ₽</span>
+            </div>
+            <div class="co-confirm-total-row">
+              <span>Доставка</span>
+              <span class="co-free-delivery">Бесплатно</span>
+            </div>
+            <div class="co-confirm-total-row co-confirm-total-final">
+              <span>Итого</span>
+              <span>386,55 ₽</span>
+            </div>
+          </div>
+
+          <!-- Согласие и кнопка -->
+          <div class="co-agree-wrap">
+            <label class="co-agree-label">
+              <input type="checkbox" id="coAgree">
+              <div class="co-agree-box" id="coAgreeBox"></div>
+              <span>Я ознакомился с <a href="#">условиями оферты</a> и <a href="#">политикой конфиденциальности</a></span>
+            </label>
+          </div>
+
+          <div class="co-confirm-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4M12 8h.01"/></svg>
+            После подтверждения заказа мы отправим счёт на оплату на указанный email. Заказ будет обработан в течение 1 рабочего дня.
+          </div>
+
+          <div class="co-step-actions">
+            <button class="btn-accent co-btn-confirm" id="coConfirmBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Подтвердить заказ
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /co-steps-col -->
+
+    <!-- ============================================================
+         ПРАВАЯ КОЛОНКА — сводка заказа
+         ============================================================ -->
+    <aside class="co-summary">
+
+      <div class="co-summary-head">
+        <h3 class="co-summary-title">Ваш заказ</h3>
+        <button class="co-summary-toggle" id="summaryToggle" aria-expanded="true">
+          <span>8 позиций</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" id="summaryToggleIcon"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="co-summary-items" id="summaryItemsList">
+
+        <div class="co-sum-item">
+          <div class="co-sum-item-img">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="6" rx="3" fill="#F0A000" opacity=".85"/><rect x="4" y="8" width="32" height="26" rx="3" fill="#F0C000" opacity=".3"/><rect x="4" y="8" width="5" height="26" rx="2.5" fill="#2D7A4F" opacity=".7"/></svg>
+          </div>
+          <div class="co-sum-item-info">
+            <div class="co-sum-item-name">Карандаш Berlingo «Eternal»</div>
+            <div class="co-sum-item-qty">2 × 125,00 ₽</div>
+          </div>
+          <div class="co-sum-item-total">250,00 ₽</div>
+        </div>
+
+        <div class="co-sum-item">
+          <div class="co-sum-item-img">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="6" y="4" width="28" height="32" rx="3" fill="#E8F0FE"/><rect x="10" y="10" width="20" height="2" rx="1" fill="#4A90D9" opacity=".5"/><rect x="10" y="16" width="20" height="2" rx="1" fill="#4A90D9" opacity=".3"/><rect x="10" y="22" width="14" height="2" rx="1" fill="#4A90D9" opacity=".3"/></svg>
+          </div>
+          <div class="co-sum-item-info">
+            <div class="co-sum-item-name">Блокнот Premium А5</div>
+            <div class="co-sum-item-qty">1 × 89,50 ₽</div>
+          </div>
+          <div class="co-sum-item-total">89,50 ₽</div>
+        </div>
+
+        <div class="co-sum-item">
+          <div class="co-sum-item-img">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="14" width="24" height="14" rx="5" fill="#F5F5F5"/><rect x="10" y="16" width="20" height="10" rx="4" fill="#E0E0E0"/><rect x="14" y="19" width="12" height="4" rx="2" fill="#BDBDBD" opacity=".5"/></svg>
+          </div>
+          <div class="co-sum-item-info">
+            <div class="co-sum-item-name">Ластик Berlingo Mega Top</div>
+            <div class="co-sum-item-qty">5 × 18,00 ₽</div>
+          </div>
+          <div class="co-sum-item-total">90,00 ₽</div>
+        </div>
+
+      </div><!-- /summaryItemsList -->
+
+      <div class="co-summary-sep"></div>
+
+      <div class="co-summary-rows">
+        <div class="co-summary-row">
+          <span>Подытог</span>
+          <span>429,50 ₽</span>
+        </div>
+        <div class="co-summary-row co-summary-promo">
+          <span>Скидка (EVRIKA10)</span>
+          <span>−42,95 ₽</span>
+        </div>
+        <div class="co-summary-row">
+          <span>Доставка</span>
+          <span class="co-delivery-val" id="summaryDelivery">Рассчитывается</span>
+        </div>
+      </div>
+
+      <div class="co-summary-total">
+        <span>Итого</span>
+        <span id="summaryTotalVal">386,55 ₽</span>
+      </div>
+
+      <a href="cart.html" class="co-summary-edit-cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Изменить корзину
+      </a>
+
+    </aside>
+
+  </div><!-- /co-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 38 38" fill="none"><text x="19" y="28" font-size="24" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="footer-logo-text">Эврика</div>
+        </div>
+        <div class="footer-desc">Товары оптом для офиса, школы и творчества</div>
+        <div class="footer-phones">
+          <a href="tel:88001100000">8-800-110-00-00</a>
+          <a href="tel:74912958000">+7 (4912) 958 000</a>
+        </div>
+        <div class="footer-addr">391111, Рязанская обл.,<br>г. Рыбное, ул. Берёзовая, д. 13</div>
+      </div>
+      <div class="footer-col">
+        <h4>Каталоги</h4>
+        <a href="#">Каталог товаров</a>
+        <a href="#">Хит продаж</a>
+        <a href="#">Новинки</a>
+      </div>
+      <div class="footer-col">
+        <h4>О компании</h4>
+        <a href="#">О компании</a>
+        <a href="#">Реквизиты</a>
+      </div>
+      <div class="footer-col">
+        <h4>Новым клиентам</h4>
+        <a href="#">Почему мы</a>
+        <a href="#">Зарегистрироваться</a>
+        <a href="#">Доставка и оплата</a>
+      </div>
+      <div class="footer-col">
+        <h4>Помощь</h4>
+        <a href="#">Вопросы и ответы</a>
+        <a href="#">Карта сайта</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Договор оферты</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Эврика. Все права защищены.</p>
+      <div class="footer-social">
+        <div class="social-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></div>
+        <div class="social-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm-3.07 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm5.2-9a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- МОБИЛЬНЫЙ ПОИСК -->
+<div class="mob-search-overlay" id="mobSearch">
+  <input type="text" placeholder="Поиск по каталогу..." autofocus>
+  <button class="mob-search-close" onclick="closeMobSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<!-- МОБИЛЬНАЯ НАВИГАЦИЯ -->
+<nav class="mob-nav">
+  <button class="mob-nav-btn" onclick="openMobSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+    Поиск
+  </button>
+  <button class="mob-nav-btn" onclick="openCatalog()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    Каталог
+  </button>
+  <a class="mob-nav-btn" href="cart.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Корзина
+  </a>
+  <button class="mob-nav-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Войти
+  </button>
+</nav>
+
+</div><!-- /site-content -->
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+
+<!-- CATALOG MODAL -->
+<div class="modal-overlay" id="catalogModal" onclick="handleOverlayClick(event)">
+  <div class="catalog-modal">
+    <div class="cat-sidebar">
+      <div class="cat-header">
+        <h3>Каталог товаров</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть">
+            <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
+          </button>
+          <button class="cat-close" onclick="closeCatalog()" aria-label="Закрыть">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cat-list" id="catList"></div>
+    </div>
+    <div class="cat-content">
+      <div class="cat-chips" id="catChips"></div>
+      <div class="cat-sub-grid" id="catSubGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/checkout.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

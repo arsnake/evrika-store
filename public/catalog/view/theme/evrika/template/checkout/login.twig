@@ -1,0 +1,68 @@
+<div class="co-auth-cols">
+
+  {# ── ПРАВАЯ КОЛОНКА: Вход ── #}
+  <div class="co-auth-col">
+    <h3 class="co-auth-title">Уже есть аккаунт?</h3>
+    <p class="co-auth-desc">Войдите, чтобы использовать сохранённые адреса и историю заказов.</p>
+
+    <div class="co-form-group" id="fg-email">
+      <label for="input-email">E-mail <span class="co-req">*</span></label>
+      <input type="text" name="email" value="" placeholder="your@email.com" id="input-email" autocomplete="email" />
+    </div>
+
+    <div class="co-form-group" id="fg-password">
+      <label for="input-password">Пароль <span class="co-req">*</span></label>
+      <input type="password" name="password" value="" placeholder="Пароль" id="input-password" autocomplete="current-password" />
+    </div>
+
+    <div class="co-auth-links">
+      <a href="{{ forgotten }}">Забыли пароль?</a>
+    </div>
+
+    <button type="button" id="button-login" class="btn btn-primary" style="width:100%;">
+      Войти
+    </button>
+  </div>
+
+  {# ── РАЗДЕЛИТЕЛЬ ── #}
+  <div class="co-auth-divider"><span>или</span></div>
+
+  {# ── ЛЕВАЯ КОЛОНКА: Новый покупатель ── #}
+  <div class="co-auth-col">
+    <h3 class="co-auth-title">Новый покупатель</h3>
+    <p class="co-auth-desc">Зарегистрируйтесь для доступа к истории заказов и персональным ценам, или оформите заказ как гость.</p>
+
+    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink);padding:8px 10px;border-radius:var(--radius-s);transition:background .15s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+        {% if account == 'register' %}
+        <input type="radio" name="account" value="register" checked="checked" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
+        {% else %}
+        <input type="radio" name="account" value="register" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
+        {% endif %}
+        <span>Зарегистрироваться</span>
+      </label>
+
+      {% if checkout_guest %}
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink);padding:8px 10px;border-radius:var(--radius-s);transition:background .15s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+        {% if account == 'guest' %}
+        <input type="radio" name="account" value="guest" checked="checked" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
+        {% else %}
+        <input type="radio" name="account" value="guest" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
+        {% endif %}
+        <span>Оформить как гость</span>
+      </label>
+      {% endif %}
+    </div>
+
+    <button type="button" id="button-account" class="btn btn-primary" style="width:100%;">
+      Продолжить
+    </button>
+
+    {% if checkout_guest %}
+    <button type="button" id="button-account-guest-shortcut" class="co-guest-btn" onclick="$('input[name=\'account\'][value=\'guest\']').prop('checked',true);$('#button-account').trigger('click');">
+      Оформить без регистрации
+    </button>
+    {% endif %}
+  </div>
+
+</div>

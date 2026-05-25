@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Filters Panel</name>
+  <code>evrika-category-filters</code>
+  <version>1.0</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    catalog/controller/product/category.php:
+    Добавляет в $data:
+      filter_groups  — массив групп фильтров категории (из oc_category_filter)
+      filter_array   — массив активных filter_id (из GET-параметра filter=1,2,3)
+      filter_base_url — базовый URL без filter-параметра (для построения ссылок)
+    Формат URL фильтра: &filter=1,3,12 (filter_id через запятую)
+    model_catalog_category уже загружен контроллером, повторная загрузка безопасна.
+  -->
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA[$data['sort'] = $sort;]]></search>
+      <add position="before" trim="true"><![CDATA[// ── Evrika: filter_groups + filter_array для сайдбара ──
+			$data['filter_groups'] = $this->model_catalog_category->getCategoryFilters($category_id);
+			$filter_array = array();
+			if ($filter) {
+				foreach (explode(',', $filter) as $_fid) {
+					$_fid = (int)trim($_fid);
+					if ($_fid > 0) $filter_array[] = $_fid;
+				}
+			}
+			$data['filter_array'] = $filter_array;
+			// Mark each filter group: does it contain any active filter?
+			foreach ($data['filter_groups'] as &$_fg) {
+				$_fg['has_active'] = false;
+				foreach ($_fg['filter'] as $_f) {
+					if (in_array((int)$_f['filter_id'], $filter_array)) { $_fg['has_active'] = true; break; }
+				}
+			}
+			unset($_fg);
+			$_fbase = 'path=' . (int)$category_id;
+			if (isset($this->request->get['sort']))  $_fbase .= '&sort='  . $this->request->get['sort'];
+			if (isset($this->request->get['order'])) $_fbase .= '&order=' . $this->request->get['order'];
+			if (isset($this->request->get['limit'])) $_fbase .= '&limit=' . $this->request->get['limit'];
+			$data['filter_base_url'] = html_entity_decode($this->url->link('product/category', $_fbase), ENT_QUOTES, 'UTF-8');
+			// ── Evrika: sidebar nav — родитель + список ──
+			$_path_parts = array_values(array_filter(array_map('intval', explode('_', (string)$this->request->get['path']))));
+			$data['sidebar_siblings'] = array();
+			// Родитель: на уровень выше (или «Каталог» для корневых)
+			if (count($_path_parts) >= 2) {
+				$_parent_id   = $_path_parts[count($_path_parts) - 2];
+				$_parent_path = implode('_', array_slice($_path_parts, 0, -1));
+				$_parent_info = $this->model_catalog_category->getCategory($_parent_id);
+				$data['sidebar_parent'] = array(
+					'name' => $_parent_info ? $_parent_info['name'] : 'Каталог',
+					'href' => $this->url->link('product/category', 'path=' . $_parent_path),
+				);
+			} else {
+				$data['sidebar_parent'] = array(
+					'name' => 'Каталог',
+					'href' => $this->url->link('product/category', ''),
+				);
+			}
+			// Список: дети текущей (если есть) — иначе сиблинги (дети родителя)
+			$_children = $this->model_catalog_category->getCategories($category_id);
+			if (!empty($_children)) {
+				// У текущей есть подкатегории — показываем их
+				$_current_path = implode('_', $_path_parts);
+				foreach ($_children as $_child) {
+					$_sc = $this->model_catalog_product->getTotalProducts(array(
+						'filter_category_id'  => $_child['category_id'],
+						'filter_sub_category' => true,
+						'filter_status'       => 1,
+					));
+					$data['sidebar_siblings'][] = array(
+						'name'       => $_child['name'],
+						'href'       => $this->url->link('product/category', 'path=' . $_current_path . '_' . (int)$_child['category_id']),
+						'count'      => $_sc,
+						'is_current' => false,
+					);
+				}
+			} elseif (count($_path_parts) >= 2) {
+				// Лист с родителем — показываем сиблингов
+				$_parent_id   = $_path_parts[count($_path_parts) - 2];
+				$_parent_path = implode('_', array_slice($_path_parts, 0, -1));
+				foreach ($this->model_catalog_category->getCategories($_parent_id) as $_sib) {
+					$_sc = $this->model_catalog_product->getTotalProducts(array(
+						'filter_category_id'  => $_sib['category_id'],
+						'filter_sub_category' => true,
+						'filter_status'       => 1,
+					));
+					$data['sidebar_siblings'][] = array(
+						'name'       => $_sib['name'],
+						'href'       => $this->url->link('product/category', 'path=' . $_parent_path . '_' . (int)$_sib['category_id']),
+						'count'      => $_sc,
+						'is_current' => ((int)$_sib['category_id'] === (int)$category_id),
+					);
+				}
+			} else {
+				// Корневой лист (нет ни детей, ни родителя) — показываем все корневые
+				foreach ($this->model_catalog_category->getCategories(0) as $_sib) {
+					$_sc = $this->model_catalog_product->getTotalProducts(array(
+						'filter_category_id'  => $_sib['category_id'],
+						'filter_sub_category' => true,
+						'filter_status'       => 1,
+					));
+					if ($_sc == 0 && count($this->model_catalog_category->getCategories($_sib['category_id'])) == 0) continue;
+					$data['sidebar_siblings'][] = array(
+						'name'       => $_sib['name'],
+						'href'       => $this->url->link('product/category', 'path=' . (int)$_sib['category_id']),
+						'count'      => $_sc,
+						'is_current' => ((int)$_sib['category_id'] === (int)$category_id),
+					);
+				}
+			}
+]]></add>
+    </operation>
+  </file>
+
+</modification>

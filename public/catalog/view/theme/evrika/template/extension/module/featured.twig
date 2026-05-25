@@ -1,0 +1,86 @@
+{% if products %}
+<div class="section">
+  <div class="section-head">
+    <h2 class="section-title">{{ heading_title }}</h2>
+  </div>
+
+  <div class="products-row">
+    {% for product in products %}
+    <div class="prod-card" data-pid="{{ product.product_id }}">
+
+      <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
+        {% if product.thumb %}
+          <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
+        {% else %}
+          <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
+        {% endif %}
+      </a>
+
+      <div class="prod-info">
+        {% if product.model is defined and product.model %}
+          <div class="prod-sku">Код: <span>{{ product.model }}</span></div>
+        {% endif %}
+
+        {% if product.manufacturer is defined and product.manufacturer %}
+          <div class="prod-brand">{{ product.manufacturer }}</div>
+        {% endif %}
+
+        <a href="{{ product.href }}" class="prod-name">{{ product.name }}</a>
+
+        {% if product.price %}
+          <div class="prod-price-block">
+            {% if product.special %}
+              <span class="prod-price-old">{{ product.price }}</span>
+              <div class="prod-price-row">
+                <span class="prod-price">{{ product.special }}</span>
+                <span class="prod-price-unit">/ шт.</span>
+              </div>
+            {% else %}
+              <div class="prod-price-row">
+                <span class="prod-price">{{ product.price }}</span>
+                <span class="prod-price-unit">/ шт.</span>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="prod-actions">
+            <div class="prod-qty-ctrl">
+              <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
+              <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
+              <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
+            </div>
+            <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
+              onclick="wishlist.add('{{ product.product_id }}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
+              data-pid="{{ product.product_id }}"
+              data-href="{{ product.href }}"
+              data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+              onclick="cardCartAdd(this, false)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+            <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
+              data-pid="{{ product.product_id }}"
+              data-href="{{ product.href }}"
+              data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+              onclick="cardCartAdd(this, true)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </button>
+          </div>
+
+        {% else %}
+          <div class="prod-auth">
+            Чтобы увидеть цены —
+            <a href="index.php?route=account/login">авторизуйтесь</a>
+            или
+            <a href="index.php?route=account/register">зарегистрируйтесь</a>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

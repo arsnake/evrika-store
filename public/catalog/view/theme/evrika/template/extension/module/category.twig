@@ -1,0 +1,50 @@
+{#
+  Evrika — Categories module (Популярные разделы)
+  Переопределяет стандартный extension/module/category.twig.
+
+  Переменные от контроллера:
+    categories[].category_id  — ID категории
+    categories[].name         — название
+    categories[].icon_svg     — готовый <svg> тег (или пустая строка)
+    categories[].total        — кол-во товаров (integer)
+    categories[].total_label  — "1 248 товаров" / "384 товара" / "1 товар"
+    categories[].href         — ссылка на категорию
+    category_id               — ID активной категории
+#}
+
+{% if categories %}
+<div class="section">
+  <div class="section-head">
+    <h2 class="section-title">Популярные разделы</h2>
+    <a class="section-more" href="index.php?route=product/category">
+      Все разделы
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="quick-cats">
+    {% for cat in categories %}
+    <a href="{{ cat.href }}"
+       class="q-cat{% if cat.category_id == category_id %} active{% endif %}"
+       aria-label="{{ cat.name }}">
+
+      <div class="q-cat-icon">
+        {% if cat.icon_svg %}
+          {{ cat.icon_svg|raw }}
+        {% else %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/>
+          </svg>
+        {% endif %}
+      </div>
+
+      <div class="q-cat-name">{{ cat.name }}</div>
+      <div class="q-cat-count">{{ cat.total_label }}</div>
+
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

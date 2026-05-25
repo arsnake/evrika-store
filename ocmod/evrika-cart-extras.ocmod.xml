@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika — Cart Extras (manufacturer, product_id, minimum)</name>
+    <code>evrika-cart-extras</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/cart.php">
+
+        <!-- Op 1: добавить запрос производителя перед $data['products'][] -->
+        <operation>
+            <search><![CDATA[$data['products'][] = array(]]></search>
+            <add position="before"><![CDATA[				$mfr_q = $this->db->query("SELECT m.name FROM `" . DB_PREFIX . "product` p LEFT JOIN `" . DB_PREFIX . "manufacturer` m ON (p.manufacturer_id = m.manufacturer_id) WHERE p.product_id = '" . (int)$product['product_id'] . "'");
+				$evrika_manufacturer = !empty($mfr_q->row['name']) ? $mfr_q->row['name'] : '';]]></add>
+        </operation>
+
+        <!-- Op 2: добавить manufacturer, product_id, minimum, price_raw в массив товара -->
+        <!-- Ищем последнее поле 'href' — уникально в блоке cart controller index() -->
+        <operation>
+            <search><![CDATA['href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])]]></search>
+            <add position="replace" trim="true"><![CDATA[
+					'price_raw'    => ($this->customer->isLogged() || !$this->config->get('config_customer_price')) ? (float)$unit_price : 0,
+					'product_id'   => $product['product_id'],
+					'minimum'      => (int)$product['minimum'] > 0 ? (int)$product['minimum'] : 1,
+					'manufacturer' => $evrika_manufacturer,
+					'href'         => $this->url->link('product/product', 'product_id=' . $product['product_id'])
+]]></add>
+        </operation>
+
+    </file>
+
+</modification>

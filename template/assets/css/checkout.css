@@ -1,0 +1,1170 @@
+/* =============================================
+   CHECKOUT PAGE CSS — checkout/checkout
+   Эврика B2B Канцелярский магазин
+   ============================================= */
+
+/* =============================================
+   1. ЗАГОЛОВОК СТРАНИЦЫ
+   ============================================= */
+.co-page-head {
+  margin: 16px 0 20px;
+}
+.co-page-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* =============================================
+   2. ПРОГРЕСС-БАР
+   ============================================= */
+.co-progress {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+}
+
+.co-prog-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-width: 80px;
+}
+
+.co-prog-bubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--ink-30);
+  color: var(--ink-60);
+  transition: background .25s, color .25s;
+  position: relative;
+  z-index: 1;
+}
+
+.co-prog-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-60);
+  text-align: center;
+  white-space: nowrap;
+  transition: color .25s;
+}
+
+/* Done step */
+.co-prog--done .co-prog-bubble {
+  background: var(--primary);
+  color: #fff;
+}
+.co-prog--done .co-prog-label {
+  color: var(--primary);
+}
+
+/* Active step */
+.co-prog--active .co-prog-bubble {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--primary-light);
+}
+.co-prog--active .co-prog-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Connecting lines */
+.co-prog-line {
+  flex: 1;
+  height: 2px;
+  background: var(--ink-30);
+  margin-bottom: 22px; /* align with circles */
+  transition: background .25s;
+}
+.co-prog-line--done {
+  background: var(--primary);
+}
+
+/* =============================================
+   3. ОСНОВНОЙ ЛЕЙАУТ
+   ============================================= */
+.co-layout {
+  display: grid;
+  grid-template-columns: 1fr 316px;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 60px;
+}
+
+.co-steps-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* =============================================
+   4. КАРТОЧКИ ШАГОВ
+   ============================================= */
+.co-step {
+  background: var(--surface);
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.co-step--done {
+  border-color: var(--primary-mid);
+}
+
+.co-step--active {
+  border-color: var(--primary);
+  box-shadow: 0 4px 20px rgba(45, 122, 79, .1);
+}
+
+/* Пропущенный шаг (адрес при самовывозе) */
+.co-step--skipped {
+  border-color: var(--ink-30);
+  opacity: .55;
+  pointer-events: none;
+}
+.co-step--skipped .co-step-num {
+  background: var(--ink-30);
+}
+.co-step--skipped .co-step-title::after {
+  content: ' — пропускается';
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-60);
+  font-family: 'Onest', sans-serif;
+}
+
+/* Step header */
+.co-step-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: default;
+  min-height: 64px;
+}
+
+.co-step--done .co-step-head {
+  cursor: pointer;
+}
+.co-step--done .co-step-head:hover {
+  background: var(--primary-light);
+}
+
+/* Number badge */
+.co-step-num {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--ink-30);
+  color: var(--ink-60);
+  transition: background .2s, color .2s;
+}
+
+.co-step--done .co-step-num,
+.co-step--active .co-step-num {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Info (title + summary) */
+.co-step-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.co-step-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.co-step--pending .co-step-title {
+  color: var(--ink-60);
+}
+
+.co-step-summary {
+  font-size: 12px;
+  color: var(--ink-60);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none;
+}
+
+.co-step--done .co-step-summary {
+  display: block;
+}
+
+/* Edit button */
+.co-step-edit {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-family: 'Onest', sans-serif;
+  font-weight: 500;
+  color: var(--primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+  display: none;
+  transition: background .15s;
+}
+.co-step-edit:hover {
+  background: var(--primary-light);
+}
+.co-step--done .co-step-edit {
+  display: block;
+}
+
+/* Step body */
+.co-step-body {
+  display: none;
+  padding: 4px 20px 20px;
+}
+
+.co-step--active .co-step-body {
+  display: block;
+}
+
+/* =============================================
+   5. ФОРМА АДРЕСА
+   ============================================= */
+.co-form-grid {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.co-form-grid--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.co-form-grid--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.co-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 0;
+}
+
+.co-form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-60);
+}
+
+.co-form-group input,
+.co-form-group select,
+.co-form-group textarea {
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  font-family: 'Onest', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.co-form-group input:focus,
+.co-form-group select:focus,
+.co-form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.co-form-group input::placeholder {
+  color: var(--ink-30);
+}
+
+.co-form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7567' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.co-form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.co-req {
+  color: var(--accent);
+}
+
+.co-step-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.co-back-link {
+  font-size: 13px;
+  color: var(--ink-60);
+  text-decoration: none;
+  transition: color .15s;
+}
+.co-back-link:hover {
+  color: var(--primary);
+}
+
+.co-btn-full {
+  width: 100%;
+  text-align: center;
+}
+
+/* =============================================
+   6. ШАГ АВТОРИЗАЦИИ
+   ============================================= */
+.co-auth-cols {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 4px;
+}
+
+.co-auth-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+
+.co-auth-desc {
+  font-size: 13px;
+  color: var(--ink-60);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.co-auth-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+}
+.co-auth-divider span {
+  font-size: 12px;
+  color: var(--ink-30);
+  background: var(--surface);
+  padding: 4px 0;
+}
+.co-auth-divider::before,
+.co-auth-divider::after {
+  content: '';
+  flex: 1;
+  width: 1px;
+  background: var(--ink-30);
+}
+
+.co-auth-links {
+  margin: 8px 0 14px;
+  font-size: 12px;
+}
+.co-auth-links a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.co-auth-links a:hover {
+  text-decoration: underline;
+}
+
+.co-guest-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: transparent;
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  font-size: 12px;
+  font-family: 'Onest', sans-serif;
+  font-weight: 500;
+  color: var(--ink-60);
+  cursor: pointer;
+  text-align: center;
+  padding: 10px 16px;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.co-guest-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* =============================================
+   7. СПОСОБ ДОСТАВКИ
+   ============================================= */
+.delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.delivery-option {
+  display: block;
+  cursor: pointer;
+}
+
+.delivery-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.delivery-option-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  transition: border-color .2s, background .2s;
+  cursor: pointer;
+}
+
+.delivery-option:hover .delivery-option-card {
+  border-color: var(--primary-mid);
+  background: var(--primary-light);
+}
+
+.delivery-option input:checked + .delivery-option-card {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* Custom radio dot */
+.delivery-option-radio {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-30);
+  background: var(--surface);
+  transition: border-color .2s;
+  position: relative;
+}
+.delivery-option-radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.delivery-option input:checked + .delivery-option-card .delivery-option-radio {
+  border-color: var(--primary);
+}
+.delivery-option input:checked + .delivery-option-card .delivery-option-radio::after {
+  opacity: 1;
+}
+
+.delivery-option-icon {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border-radius: var(--radius-s);
+  color: var(--primary);
+}
+
+.delivery-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.delivery-option-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.delivery-option-desc {
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.4;
+}
+
+.delivery-option-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.delivery-option-price.free {
+  color: var(--primary);
+}
+
+/* =============================================
+   8. СПОСОБ ОПЛАТЫ
+   ============================================= */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payment-option {
+  display: block;
+  cursor: pointer;
+}
+
+.payment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.payment-option-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  transition: border-color .2s, background .2s;
+  cursor: pointer;
+}
+
+.payment-option:hover .payment-option-card {
+  border-color: var(--primary-mid);
+  background: var(--primary-light);
+}
+
+.payment-option input:checked + .payment-option-card {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.payment-option-radio {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-30);
+  background: var(--surface);
+  transition: border-color .2s;
+  position: relative;
+}
+.payment-option-radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.payment-option input:checked + .payment-option-card .payment-option-radio {
+  border-color: var(--primary);
+}
+.payment-option input:checked + .payment-option-card .payment-option-radio::after {
+  opacity: 1;
+}
+
+.payment-option-icon {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border-radius: var(--radius-s);
+  color: var(--primary);
+}
+
+.payment-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.payment-option-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.payment-option-desc {
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.4;
+}
+
+.payment-option-badge {
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid var(--primary-mid);
+  border-radius: var(--radius-s);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* =============================================
+   9. ШАГ ПОДТВЕРЖДЕНИЯ
+   ============================================= */
+.co-confirm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--ink-30);
+  border: 1px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.co-confirm-block {
+  background: var(--surface);
+  padding: 14px 16px;
+}
+
+.co-confirm-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--ink-60);
+  margin-bottom: 5px;
+}
+
+.co-confirm-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.co-confirm-sub {
+  font-size: 12px;
+  color: var(--ink-60);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* Items in confirm step */
+.co-confirm-items {
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.co-confirm-items-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-60);
+  padding: 10px 14px;
+  background: var(--ink-10);
+  border-bottom: 1px solid var(--ink-30);
+}
+
+.co-confirm-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ink-10);
+}
+.co-confirm-item:last-child {
+  border-bottom: none;
+}
+
+.co-confirm-item-img {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-s);
+  background: var(--ink-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.co-confirm-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.co-confirm-item-name {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.co-confirm-item-sku {
+  font-size: 11px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.co-confirm-item-qty {
+  font-size: 12px;
+  color: var(--ink-60);
+  white-space: nowrap;
+  padding: 0 8px;
+}
+
+.co-confirm-item-total {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Totals in confirm step */
+.co-confirm-totals {
+  background: var(--ink-10);
+  border-radius: var(--radius-m);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.co-confirm-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-60);
+  padding: 4px 0;
+}
+
+.co-confirm-promo span:last-child {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.co-free-delivery {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.co-confirm-total-final {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  border-top: 1.5px solid var(--ink-30);
+  margin-top: 6px;
+  padding-top: 10px !important;
+}
+
+.co-confirm-total-final span:last-child {
+  color: var(--accent);
+}
+
+/* Agree checkbox */
+.co-agree-wrap {
+  margin-bottom: 16px;
+}
+
+.co-agree-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink-60);
+  line-height: 1.4;
+}
+
+.co-agree-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.co-agree-box {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ink-30);
+  border-radius: 4px;
+  background: var(--surface);
+  transition: background .15s, border-color .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.co-agree-label input:checked ~ .co-agree-box,
+.co-agree-label:has(input:checked) .co-agree-box {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.co-agree-label a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.co-agree-label a:hover {
+  text-decoration: underline;
+}
+
+/* Confirm note */
+.co-confirm-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.5;
+  background: var(--accent-light);
+  border: 1px solid rgba(212,98,26,.2);
+  border-radius: var(--radius-s);
+  padding: 10px 12px;
+  margin-bottom: 20px;
+}
+.co-confirm-note svg {
+  flex: 0 0 16px;
+  margin-top: 1px;
+  color: var(--accent);
+}
+
+/* Confirm button — .btn-accent определён глобально в style.css */
+.co-btn-confirm {
+  width: 100%;
+  justify-content: center;
+  font-size: 14px;
+  padding: 15px 28px;
+}
+
+/* =============================================
+   10. ПРАВАЯ ПАНЕЛЬ — СВОДКА
+   ============================================= */
+.co-summary {
+  position: sticky;
+  top: 84px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-30);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.co-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--ink-10);
+}
+
+.co-summary-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.co-summary-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--primary);
+  font-family: 'Onest', sans-serif;
+  padding: 3px 6px;
+  border-radius: var(--radius-s);
+  transition: background .15s;
+}
+.co-summary-toggle:hover {
+  background: var(--primary-light);
+}
+.co-summary-toggle svg {
+  transition: transform .2s;
+}
+.co-summary-toggle[aria-expanded="false"] svg {
+  transform: rotate(180deg);
+}
+
+/* Items list */
+.co-summary-items {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--ink-10);
+  overflow: hidden;
+  transition: max-height .3s ease;
+  max-height: 400px;
+}
+
+.co-summary-items.collapsed {
+  max-height: 0;
+  padding: 0;
+  border: none;
+}
+
+.co-sum-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+}
+.co-sum-item:not(:last-child) {
+  border-bottom: 1px solid var(--ink-10);
+}
+
+.co-sum-item-img {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-s);
+  background: var(--ink-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.co-sum-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.co-sum-item-name {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.co-sum-item-qty {
+  font-size: 11px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.co-sum-item-total {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Summary rows */
+.co-summary-sep {
+  height: 1px;
+  background: var(--ink-10);
+}
+
+.co-summary-rows {
+  padding: 10px 16px 6px;
+}
+
+.co-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-60);
+  padding: 3px 0;
+}
+
+.co-summary-promo span:last-child {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.co-delivery-val {
+  font-size: 12px;
+  color: var(--ink-60);
+  font-style: italic;
+}
+
+/* Total row */
+.co-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1.5px solid var(--ink-30);
+  margin-top: 4px;
+}
+
+.co-summary-total span:first-child {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.co-summary-total span:last-child {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Edit cart link */
+.co-summary-edit-cart {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--ink-60);
+  text-decoration: none;
+  padding: 10px 16px;
+  border-top: 1px solid var(--ink-10);
+  transition: color .15s, background .15s;
+}
+.co-summary-edit-cart:hover {
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* =============================================
+   11. АДАПТИВ
+   ============================================= */
+@media (max-width: 900px) {
+  .co-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .co-summary {
+    position: static;
+    order: -1; /* Show summary above steps on mobile */
+  }
+
+  .co-progress {
+    padding: 14px 12px;
+    gap: 0;
+  }
+
+  .co-prog-step {
+    min-width: 56px;
+  }
+
+  .co-prog-label {
+    font-size: 9px;
+  }
+
+  .co-prog-bubble {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .co-form-grid--2,
+  .co-form-grid--3 {
+    grid-template-columns: 1fr;
+  }
+
+  .co-confirm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .co-auth-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .co-auth-divider {
+    flex-direction: row;
+    padding-top: 0;
+    height: 24px;
+  }
+
+  .co-auth-divider::before,
+  .co-auth-divider::after {
+    flex: 1;
+    width: auto;
+    height: 1px;
+  }
+
+  .co-prog-label {
+    display: none;
+  }
+
+  .co-prog-step {
+    min-width: 40px;
+  }
+
+  .co-step-title {
+    font-size: 12px;
+  }
+
+  .co-confirm-item {
+    flex-wrap: wrap;
+  }
+
+  .co-confirm-item-info {
+    width: calc(100% - 56px);
+  }
+
+  .co-confirm-item-qty,
+  .co-confirm-item-total {
+    margin-left: 56px;
+  }
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Auto Sections Mode</name>
+  <code>evrika-category-auto-sections</code>
+  <version>1.0</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    catalog/controller/product/category.php:
+    Если в текущей категории нет прямых (собственных) товаров,
+    переключается в режим VID A: строит cat_tree из дочерних категорий
+    (аналогично sections-root, но для вложенной категории).
+    Если прямые товары есть — нормальный режим VID B/C.
+  -->
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA[$data['products'] = array();]]></search>
+      <add position="replace" trim="true"><![CDATA[$data['products'] = array();
+			// ── Evrika auto-sections: нет прямых товаров → режим разделов (VID A) ──
+			$_own_filter = array('filter_category_id' => $category_id);
+			$_own_count  = $this->model_catalog_product->getTotalProducts($_own_filter);
+			if ($_own_count == 0) {
+				require_once(DIR_TEMPLATE . '../../../catalog/view/theme/evrika/php/icons.php');
+				$data['cat_tree'] = array();
+				$_sub_cats = $this->model_catalog_category->getCategories($category_id);
+				foreach ($_sub_cats as $_sub) {
+					$_sub_children_all   = $this->model_catalog_category->getCategories($_sub['category_id']);
+					$_sub_children_valid = array();
+					foreach ($_sub_children_all as $_child) {
+						$_cf = array('filter_category_id' => $_child['category_id'], 'filter_sub_category' => true);
+						$_cc = $this->model_catalog_product->getTotalProducts($_cf);
+						$_ch = count($this->model_catalog_category->getCategories($_child['category_id'])) > 0;
+						if ($_cc == 0 && !$_ch) { continue; }
+						$_sub_children_valid[] = array(
+							'name'  => $_child['name'],
+							'href'  => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . (int)$_sub['category_id'] . '_' . (int)$_child['category_id']),
+							'count' => $_cc,
+						);
+					}
+					$_sf = array('filter_category_id' => $_sub['category_id'], 'filter_sub_category' => true);
+					$_sc = $this->model_catalog_product->getTotalProducts($_sf);
+					if ($_sc == 0 && count($_sub_children_valid) == 0) { continue; }
+					$data['cat_tree'][] = array(
+						'name'           => $_sub['name'],
+						'href'           => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . (int)$_sub['category_id']),
+						'icon_svg'       => evrika_icon_svg(isset($_sub['icon']) ? $_sub['icon'] : ''),
+						'count'          => $_sc,
+						'children'       => array_slice($_sub_children_valid, 0, 5),
+						'children_total' => count($_sub_children_valid),
+					);
+				}
+				usort($data['cat_tree'], function($a, $b) { return ($b['children_total'] > 0) - ($a['children_total'] > 0); });
+				$data['column_left']    = $this->load->controller('common/column_left');
+				$data['column_right']   = $this->load->controller('common/column_right');
+				$data['content_top']    = $this->load->controller('common/content_top');
+				$data['content_bottom'] = $this->load->controller('common/content_bottom');
+				$data['footer'] = $this->load->controller('common/footer');
+				$data['header'] = $this->load->controller('common/header');
+				$this->response->setOutput($this->load->view('product/category', $data));
+				return;
+			}]]></add>
+    </operation>
+  </file>
+
+</modification>

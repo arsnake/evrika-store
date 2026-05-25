@@ -1,0 +1,488 @@
+{{ header }}
+
+{#
+  Evrika — product/category
+  Класс на <main> управляет отображением:
+    cat-view--sections  → только дерево подразделов (VID A)
+    cat-view--products  → сайдбар + товары (VID B)
+    cat-view--mixed     → чипсы + сайдбар + товары (VID C)
+
+  HARDCODE — статический макет для вёрстки. Динамика подключается поэтапно.
+#}
+
+<main class="cat-page {% if cat_tree is defined and cat_tree %}cat-view--sections{% elseif categories is defined and categories|length > 0 and products is defined and products|length > 0 %}cat-view--mixed{% else %}cat-view--products{% endif %}" id="catPage">
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  {#
+    Sections mode (cat_tree set): Главная › Каталог (текущая)
+    Normal mode:                  Главная › Каталог › [родители] › Текущая
+  #}
+  {% set bc_total = breadcrumbs|length %}
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    {% if cat_tree is defined and cat_tree and bc_total <= 1 %}
+      {# sections-root: нет пути, страница = корень каталога #}
+      <span class="bc-current">Каталог</span>
+    {% else %}
+      {# normal + auto-sections: всегда показываем полный путь #}
+      <a href="index.php?route=product/category">Каталог</a>
+      {% for breadcrumb in breadcrumbs %}
+        {% if loop.index > 1 %}
+          <span class="bc-sep">›</span>
+          {% if loop.index < bc_total %}
+            <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+          {% else %}
+            <span class="bc-current">{{ breadcrumb.text }}</span>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </nav>
+
+  <!-- ЗАГОЛОВОК КАТЕГОРИИ -->
+  <div class="cat-page-head">
+    <div class="cat-page-head-left">
+      <h1 class="cat-page-title">{{ heading_title }}</h1>
+    </div>
+    {% if categories is defined and categories %}
+    <div class="cat-sub-chips">
+      <span class="sub-chips-label">Подразделы:</span>
+      {% for cat in categories %}
+      <a class="sub-chip" href="{{ cat.href }}">{{ cat.name }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- БАННЕР КАТЕГОРИИ (опциональный) -->
+  <div class="cat-banner" style="display:none">
+    <img src="#" alt="Баннер категории">
+  </div>
+
+  <!-- ====================================================
+       VID A — ДЕРЕВО ПОДРАЗДЕЛОВ (Навигатор)
+       Динамика: когда cat_tree передан контроллером.
+       Иконки не хранятся в OcStore — используем дефолтную.
+  ==================================================== -->
+  <div class="cat-sections-tree">
+    <div class="tree-grid">
+      {% if cat_tree is defined and cat_tree %}
+        {% for cat in cat_tree %}
+        <div class="tree-group">
+          <a class="tree-group-head" href="{{ cat.href }}">
+            <div class="tree-group-icon">
+              {% if cat.icon_svg %}
+                {{ cat.icon_svg|raw }}
+              {% else %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+              {% endif %}
+            </div>
+            <div class="tree-group-meta">
+              <span class="tree-group-name">{{ cat.name }}</span>
+              {% if cat.count %}<span class="tree-group-count">{{ cat.count }}</span>{% endif %}
+            </div>
+          </a>
+          {% if cat.children %}
+          <ul class="tree-children">
+            {% for child in cat.children %}
+            <li><a href="{{ child.href }}">{{ child.name }} {% if child.count %}<span>{{ child.count }}</span>{% endif %}</a></li>
+            {% endfor %}
+            {% if cat.children_total > cat.children|length %}
+            <li class="tree-more">
+              <a href="{{ cat.href }}">Ещё {{ cat.children_total - cat.children|length }} подраздела →</a>
+            </li>
+            {% endif %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      {% else %}
+        {# Hardcode-заглушка — видна только если cat_tree не передан #}
+        <div class="tree-group">
+          <a class="tree-group-head" href="#">
+            <div class="tree-group-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+            </div>
+            <div class="tree-group-meta">
+              <span class="tree-group-name">Категории загружаются…</span>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- /VID A -->
+
+  <!-- /VID C chips moved to cat-page-head -->
+
+  <!-- ====================================================
+       VID B + C — САЙДБАР + КОНТЕНТ
+  ==================================================== -->
+  <div class="page-with-sidebar">
+
+    <!-- САЙДБАР ФИЛЬТРОВ -->
+    <aside class="filter-sidebar" aria-label="Фильтры и навигация">
+
+      <!-- Закрыть (мобиле) -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--ink-10)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--ink)">Фильтры</span>
+        <button id="sidebarCloseBtn" aria-label="Закрыть фильтры" style="display:none;width:28px;height:28px;border:none;background:var(--ink-10);border-radius:50%;cursor:pointer;align-items:center;justify-content:center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Навигация по дереву категорий -->
+      {% if sidebar_siblings is defined and sidebar_siblings %}
+      <nav class="sidebar-nav" aria-label="Навигация по категориям">
+        <a class="sidebar-nav-parent" href="{{ sidebar_parent.href }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          {{ sidebar_parent.name }}
+        </a>
+        <ul class="sidebar-nav-list">
+          {% for sib in sidebar_siblings %}
+          <li{% if sib.is_current %} class="active"{% endif %}>
+            <a href="{{ sib.href }}">{{ sib.name }}<span class="sidebar-nav-count">{{ sib.count }}</span></a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
+      {% endif %}
+
+      {% if show_price_filter is defined and show_price_filter %}
+      <!-- Ценовой фильтр (всегда активен) -->
+      <div class="price-filter">
+        <div class="price-filter-title">Цена</div>
+        <div class="price-inputs">
+          <label class="price-input-wrap">
+            <span>от</span>
+            <input type="number" id="priceMin" class="price-input" value="{{ price_sel_min }}" min="{{ price_range_min }}" max="{{ price_range_max }}">
+          </label>
+          <span class="price-sep">—</span>
+          <label class="price-input-wrap">
+            <span>до</span>
+            <input type="number" id="priceMax" class="price-input" value="{{ price_sel_max }}" min="{{ price_range_min }}" max="{{ price_range_max }}">
+          </label>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if filter_groups is defined and filter_groups %}
+      <!-- Кнопка раскрытия фильтров -->
+      <button class="sidebar-filter-toggle" id="filterToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        Все фильтры
+      </button>
+
+      <div class="filter-panel{% if filter_array is defined and filter_array|length > 0 %} is-open{% endif %}" id="filterPanel">
+
+        {% for group in filter_groups %}
+        <div class="filter-group{% if group.has_active %} open{% endif %}">
+          <button class="filter-group-head" type="button">
+            {{ group.name }}
+            <svg class="fg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="filter-group-body">
+            {% for filter in group.filter %}
+            <label class="filter-check">
+              <input type="checkbox"
+                     class="filter-cb"
+                     data-filter-id="{{ filter.filter_id }}"
+                     {% if filter_array is defined and filter.filter_id in filter_array %}checked{% endif %}>
+              <span class="fc-box"></span>
+              <span class="fc-name">{{ filter.name }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+
+      </div><!-- /filter-panel -->
+      {% endif %}
+
+      {% if (filter_groups is defined and filter_groups) or (show_price_filter is defined and show_price_filter) %}
+      <div class="filter-actions">
+        <button class="btn-primary btn-sm" id="filterApply">Применить</button>
+        <button class="btn-outline btn-sm" id="filterReset">Сбросить</button>
+      </div>
+      {% endif %}
+    </aside>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="cat-main">
+
+      <!-- Кнопка фильтров на мобиле -->
+      <button class="mobile-filter-btn" id="mobileFilterBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        Фильтры
+      </button>
+
+      <!-- Панель управления -->
+      <div class="sort-bar">
+        <span class="sort-label">Сортировка:</span>
+        <select class="sort-select" aria-label="Сортировка" onchange="location=this.value">
+          {% for sort_opt in sorts %}
+          <option value="{{ sort_opt.href }}"{% if sort_opt.value == sort ~ '-' ~ order %} selected{% endif %}>{{ sort_opt.text }}</option>
+          {% endfor %}
+        </select>
+
+        <div class="cat-per-page">
+          <select aria-label="Товаров на странице" onchange="location=this.value">
+            {% for limit_opt in limits %}
+            <option value="{{ limit_opt.href }}"{% if limit_opt.value == limit %} selected{% endif %}>{{ limit_opt.text }} товаров</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="view-toggle" role="group" aria-label="Вид списка">
+          <button class="view-btn active" id="viewGrid" aria-label="Вид сеткой">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn" id="viewList" aria-label="Вид списком">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Активные фильтры -->
+      <div class="active-filters-bar" id="activeFiltersBar"></div>
+
+      <!-- СЕТКА ТОВАРОВ (вид: сетка) -->
+      <div class="products-row-4" id="productGrid">
+
+        {% if products is defined and products %}
+          {% for product in products %}
+          <div class="prod-card" data-pid="{{ product.product_id }}">
+
+            <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
+              {% if product.thumb %}
+                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
+              {% else %}
+                <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
+              {% endif %}
+            </a>
+
+            <div class="prod-info">
+              {% if product.model %}
+                <div class="prod-sku">Код: <span>{{ product.model }}</span></div>
+              {% endif %}
+
+              {% if product.manufacturer %}
+                <div class="prod-brand">{{ product.manufacturer }}</div>
+              {% endif %}
+
+              <a href="{{ product.href }}" class="prod-name">{{ product.name }}</a>
+
+              {% if product.price %}
+                <div class="prod-price-block">
+                  {% if product.special %}
+                    <span class="prod-price-old">{{ product.price }}</span>
+                    <div class="prod-price-row">
+                      <span class="prod-price">{{ product.special }}</span>
+                      <span class="prod-price-unit">/ шт.</span>
+                    </div>
+                  {% else %}
+                    <div class="prod-price-row">
+                      <span class="prod-price">{{ product.price }}</span>
+                      <span class="prod-price-unit">/ шт.</span>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
+                  <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
+                  {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
+                </div>
+
+                <div class="prod-actions">
+                  <div class="prod-qty-ctrl">
+                    <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
+                    <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
+                    <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
+                  </div>
+                  <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
+                    onclick="wishlist.add('{{ product.product_id }}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  </button>
+                  <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
+                    data-pid="{{ product.product_id }}"
+                    data-href="{{ product.href }}"
+                    data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                    onclick="cardCartAdd(this, false)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  </button>
+                  <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
+                    data-pid="{{ product.product_id }}"
+                    data-href="{{ product.href }}"
+                    data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                    onclick="cardCartAdd(this, true)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  </button>
+                </div>
+
+              {% else %}
+                <div class="prod-auth">
+                  Чтобы увидеть цены —
+                  <a href="index.php?route=account/login">авторизуйтесь</a>
+                  или
+                  <a href="index.php?route=account/register">зарегистрируйтесь</a>
+                </div>
+              {% endif %}
+            </div>
+
+          </div>
+          {% endfor %}
+        {% endif %}
+
+      </div><!-- /productGrid -->
+
+      <!-- ВИД СПИСКА (скрыт по умолчанию) -->
+      <div class="products-list" id="productList" style="display:none">
+
+        {% if products is defined and products %}
+          {% for product in products %}
+          <article class="prod-list-item" data-pid="{{ product.product_id }}">
+
+            <a href="{{ product.href }}" class="pli-img" aria-label="{{ product.name }}">
+              {% if product.thumb %}
+                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
+              {% else %}
+                <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
+              {% endif %}
+            </a>
+
+            <div class="pli-body">
+              {% if product.model %}<div class="pli-meta">Код: <span>{{ product.model }}</span></div>{% endif %}
+              <a class="pli-name" href="{{ product.href }}">{{ product.name }}</a>
+              {% if product.manufacturer %}<div class="pli-brand">Бренд: {{ product.manufacturer }}</div>{% endif %}
+            </div>
+
+            <div class="pli-action">
+              {% if product.price %}
+                <div class="prod-price-block">
+                  {% if product.special %}
+                    <span class="prod-price-old">{{ product.price }}</span>
+                    <div class="prod-price-row">
+                      <span class="prod-price">{{ product.special }}</span>
+                      <span class="prod-price-unit">/ шт.</span>
+                    </div>
+                  {% else %}
+                    <div class="prod-price-row">
+                      <span class="prod-price">{{ product.price }}</span>
+                      <span class="prod-price-unit">/ шт.</span>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
+                  <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
+                  {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
+                </div>
+                <div class="prod-actions">
+                  <div class="prod-qty-ctrl">
+                    <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
+                    <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
+                    <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
+                  </div>
+                  <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
+                    onclick="wishlist.add('{{ product.product_id }}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  </button>
+                  <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
+                    data-pid="{{ product.product_id }}"
+                    data-href="{{ product.href }}"
+                    data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                    onclick="cardCartAdd(this, false)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  </button>
+                  <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
+                    data-pid="{{ product.product_id }}"
+                    data-href="{{ product.href }}"
+                    data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                    onclick="cardCartAdd(this, true)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  </button>
+                </div>
+              {% else %}
+                <div class="prod-auth">
+                  Чтобы увидеть цены —
+                  <a href="index.php?route=account/login">авторизуйтесь</a>
+                  или
+                  <a href="index.php?route=account/register">зарегистрируйтесь</a>
+                </div>
+              {% endif %}
+            </div>
+
+          </article>
+          {% endfor %}
+        {% endif %}
+
+      </div><!-- /productList -->
+
+      <!-- ПУСТОЕ СОСТОЯНИЕ (если нет товаров) -->
+      <div class="empty-state" style="display:none" id="emptyState">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="36" fill="var(--ink-10)"/>
+          <path d="M28 52l8-8m0 0l8-8m-8 8L28 36m8 8l8 8" stroke="var(--ink-30)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <h3>Ничего не найдено</h3>
+        <p>По выбранным фильтрам нет товаров.<br>Попробуйте изменить условия поиска.</p>
+        <button class="btn-outline">Сбросить фильтры</button>
+      </div>
+
+      <!-- ПАГИНАЦИЯ -->
+      {% if pagination is defined and pagination %}
+      <div class="pagination-wrap">
+        {% if results is defined %}<div class="pagination-results">{{ results }}</div>{% endif %}
+        {{ pagination|raw }}
+      </div>
+      {% endif %}
+
+      <!-- SEO ТЕКСТ -->
+      {% if description is defined and description %}
+      <div class="seo-text">{{ description|raw }}</div>
+      {% endif %}
+
+    </div><!-- /cat-main -->
+  </div><!-- /page-with-sidebar -->
+
+</div><!-- /wrap -->
+</main>
+
+<!-- Оверлей для мобильного сайдбара -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<script>
+{% if filter_base_url is defined %}
+/* Фильтры: URL-редирект при применении/сбросе.
+   Аккордеон, теги, вид, мобильный сайдбар — в main.js. */
+(function () {
+  var filterBaseUrl = "{{ filter_base_url | raw }}";
+
+  function applyFilters() {
+    var ids = [];
+    document.querySelectorAll('.filter-panel .filter-cb:checked').forEach(function(cb) {
+      ids.push(cb.dataset.filterId);
+    });
+    var url = filterBaseUrl;
+    if (ids.length) url += '&filter=' + ids.join(',');
+    {% if show_price_filter is defined and show_price_filter %}
+    var pMin = document.getElementById('priceMin');
+    var pMax = document.getElementById('priceMax');
+    if (pMin && pMax) { url += '&price_min=' + encodeURIComponent(pMin.value) + '&price_max=' + encodeURIComponent(pMax.value); }
+    {% endif %}
+    location.href = url;
+  }
+
+  var applyBtn = document.getElementById('filterApply');
+  if (applyBtn) applyBtn.addEventListener('click', applyFilters);
+
+  var resetBtn = document.getElementById('filterReset');
+  if (resetBtn) resetBtn.addEventListener('click', function() {
+    location.href = filterBaseUrl;
+  });
+})();
+{% endif %}
+</script>
+
+{{ footer }}

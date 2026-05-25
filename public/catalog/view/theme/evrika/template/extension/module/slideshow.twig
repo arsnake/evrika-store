@@ -1,0 +1,82 @@
+{#
+  Evrika — Slideshow (Слайдер новых поступлений)
+  Переопределяет стандартный extension/module/slideshow.twig.
+
+  Настройка слайдов в admin → Design → Banners:
+    Поле "Title":       название бренда / заголовок слайда (напр. "Berlingo")
+    Поле "Описание":    текст под заголовком (напр. "Рюкзаки City серии — 43 новых артикула")
+    Поле "Дата":        дата поступления в свободном формате (напр. "15 мая 2026")
+    Поле "Link":        URL категории / страницы поступления
+    Поле "Image":       фоновое изображение слайда (рекомендуется 1200×500)
+#}
+
+{% if banners %}
+<div class="arrival-slider" id="arrivalSlider">
+  <div class="arrival-slides" id="arrivalSlides">
+
+    {% for banner in banners %}
+    <div class="arrival-slide">
+
+      {% if banner.image %}
+        <img class="arrival-slide-bg"
+             src="{{ banner.image }}"
+             alt="{{ banner.title }}"
+             loading="{% if loop.first %}eager{% else %}lazy{% endif %}">
+      {% endif %}
+
+      <div class="arrival-slide-overlay"></div>
+
+      <div class="arrival-slide-content">
+        <div class="arrival-meta">
+          <span class="arrival-tag">Новое поступление</span>
+          {% if banner.slide_date %}
+            <span class="arrival-date">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              {{ banner.slide_date }}
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="arrival-brand">{{ banner.title }}</div>
+
+        {% if banner.description %}
+          <div class="arrival-desc">{{ banner.description }}</div>
+        {% endif %}
+
+        {% if banner.link %}
+          <a class="arrival-cta" href="{{ banner.link }}">
+            Смотреть поступление
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>{# /arrival-slides #}
+
+  <button class="arrival-prev" id="arrPrev" aria-label="Предыдущий слайд" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </button>
+  <button class="arrival-next" id="arrNext" aria-label="Следующий слайд" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+    </svg>
+  </button>
+
+  <div class="arrival-count" aria-live="polite">
+    <span class="arrival-count-cur" id="arrCur">1</span>
+    <span>/ {{ banners|length }}</span>
+  </div>
+
+  <div class="arrival-dots" id="arrDots" role="tablist" aria-label="Слайды"></div>
+
+</div>{# /arrival-slider #}
+{% endif %}

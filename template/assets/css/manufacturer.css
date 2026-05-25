@@ -1,0 +1,174 @@
+/* ============================================================
+   MANUFACTURER.CSS — Бренды: список и страница бренда
+   ============================================================ */
+
+/* ── СПИСОК БРЕНДОВ ─────────────────────────────────────────── */
+
+/* Алфавитный указатель */
+.mfr-alpha-bar {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding: 16px 0 20px;
+  border-bottom: 1px solid var(--ink-10);
+  margin-bottom: 28px;
+}
+
+.mfr-alpha-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-s);
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  color: var(--ink-60);
+  text-decoration: none;
+  background: var(--surface);
+  transition: all .15s;
+  cursor: pointer;
+}
+
+.mfr-alpha-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.mfr-alpha-btn.active { border-color: var(--primary); color: #fff; background: var(--primary); }
+.mfr-alpha-btn.disabled { color: var(--ink-30); border-color: var(--ink-10); cursor: default; pointer-events: none; }
+
+/* Счётчик брендов */
+.mfr-list-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.mfr-list-title {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 700;
+  color: var(--ink);
+}
+
+.mfr-list-count {
+  font-size: 13px; color: var(--ink-40);
+}
+
+/* Буквенная группа */
+.mfr-group { margin-bottom: 32px; }
+
+.mfr-group-letter {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  color: var(--ink-40);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink-10);
+  margin-bottom: 12px;
+}
+
+/* Сетка карточек брендов */
+.mfr-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.mfr-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px;
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-m);
+  text-decoration: none;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+  cursor: pointer;
+}
+
+.mfr-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(45,122,79,.1);
+  transform: translateY(-2px);
+}
+
+.mfr-card-logo {
+  width: 72px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.mfr-card-logo svg { max-width: 72px; max-height: 44px; }
+
+/* Логотип-заглушка (текст) */
+.mfr-logo-text {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  color: var(--ink);
+  letter-spacing: .02em;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mfr-card-name {
+  font-size: 12px; font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.mfr-card-count {
+  font-size: 11px; color: var(--ink-40);
+}
+
+/* ── СТРАНИЦА БРЕНДА ─────────────────────────────────────────── */
+
+/* Шапка бренда */
+.mfr-hero {
+  display: flex; align-items: center; gap: 28px;
+  padding: 24px 28px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-10);
+  border-radius: var(--radius-l);
+  margin-bottom: 24px;
+}
+
+.mfr-hero-logo {
+  width: 120px; height: 72px; flex-shrink: 0;
+  background: #f7f9f7;
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-m);
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px;
+}
+
+.mfr-hero-logo .mfr-logo-text { font-size: 18px; }
+
+.mfr-hero-body { flex: 1; min-width: 0; }
+
+.mfr-hero-name {
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.mfr-hero-desc {
+  font-size: 13px; color: var(--ink-60);
+  line-height: 1.6;
+  margin: 0 0 12px;
+  max-width: 600px;
+}
+
+.mfr-hero-stats {
+  display: flex; gap: 20px;
+}
+
+.mfr-hero-stat {
+  display: flex; flex-direction: column; gap: 1px;
+}
+
+.mfr-hero-stat-val {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 700;
+  color: var(--ink);
+}
+
+.mfr-hero-stat-label {
+  font-size: 11px; color: var(--ink-40);
+}
+
+/* Layout с сайдбаром — переиспользует .cat-layout из category.css */

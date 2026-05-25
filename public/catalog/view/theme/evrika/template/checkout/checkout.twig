@@ -1,0 +1,598 @@
+{{ header }}
+<main>
+<div class="wrap">
+
+  {# ── ХЛЕБНЫЕ КРОШКИ ── #}
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    {% for breadcrumb in breadcrumbs %}
+      {% if loop.last %}
+        <span class="bc-current" aria-current="page">{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{% if loop.first %}Главная{% else %}{{ breadcrumb.text }}{% endif %}</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+      {% endif %}
+    {% endfor %}
+  </nav>
+
+  {# ── ЗАГОЛОВОК ── #}
+  <div class="co-page-head">
+    <h1 class="co-page-title">{{ heading_title }}</h1>
+  </div>
+
+  {% if error_warning %}
+  <div class="alert-bar alert-bar--err" style="margin-bottom:16px;">{{ error_warning }}</div>
+  {% endif %}
+
+  {# ── ПРОГРЕСС-БАР ── #}
+  <div class="co-progress" id="co-progress">
+    <div class="co-prog-step {% if logged %}co-prog--done{% else %}co-prog--active{% endif %}" id="co-prog-step-1">
+      <div class="co-prog-bubble">{% if logged %}✓{% else %}1{% endif %}</div>
+      <div class="co-prog-label">Вход</div>
+    </div>
+    <div class="co-prog-line {% if logged and shipping_required %}co-prog-line--done{% endif %}" id="co-prog-line-1"></div>
+    <div class="co-prog-step {% if logged and shipping_required %}co-prog--active{% else %}co-prog--pending{% endif %}" id="co-prog-step-2">
+      <div class="co-prog-bubble">2</div>
+      <div class="co-prog-label">Доставка</div>
+    </div>
+    <div class="co-prog-line" id="co-prog-line-2"></div>
+    <div class="co-prog-step co-prog--pending" id="co-prog-step-3">
+      <div class="co-prog-bubble">3</div>
+      <div class="co-prog-label">Адрес</div>
+    </div>
+    <div class="co-prog-line" id="co-prog-line-3"></div>
+    <div class="co-prog-step co-prog--pending" id="co-prog-step-4">
+      <div class="co-prog-bubble">4</div>
+      <div class="co-prog-label">Оплата</div>
+    </div>
+    <div class="co-prog-line" id="co-prog-line-4"></div>
+    <div class="co-prog-step co-prog--pending" id="co-prog-step-5">
+      <div class="co-prog-bubble">5</div>
+      <div class="co-prog-label">Подтверждение</div>
+    </div>
+  </div>
+
+  {# ── ОСНОВНОЙ ЛЕЙАУТ ── #}
+  <div class="co-layout">
+
+    {# ── ШАГИ ── #}
+    <div class="co-steps-col">
+
+      {# ── ШАГ 1: Вход / Гость ── #}
+      <div class="co-step {% if logged %}co-step--done{% else %}co-step--active{% endif %}" id="co-step-1">
+        <div class="co-step-head" onclick="editStep(1)">
+          <div class="co-step-num">{% if logged %}✓{% else %}1{% endif %}</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Вход в аккаунт</div>
+            <div class="co-step-summary" id="co-step-1-summary">
+              {% if logged %}{{ co_customer_name }}{% if co_customer_email %} · {{ co_customer_email }}{% endif %}{% endif %}
+            </div>
+          </div>
+          <button class="co-step-edit" type="button">Изменить</button>
+        </div>
+        <div class="co-step-body" id="collapse-checkout-option">
+          {% if logged %}
+          <div style="padding:8px 0 4px;">
+            <div style="font-size:13px;color:var(--ink);font-weight:500;">{{ co_customer_name }}</div>
+            {% if co_customer_email %}<div style="font-size:12px;color:var(--ink-60);margin-top:3px;">{{ co_customer_email }}</div>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# ── ШАГ 2: Способ доставки ── #}
+      {% if shipping_required %}
+      <div class="co-step {% if logged %}co-step--active{% else %}co-step--pending{% endif %}" id="co-step-2">
+      {% else %}
+      <div class="co-step co-step--skipped" id="co-step-2">
+      {% endif %}
+        <div class="co-step-head" onclick="editStep(2)">
+          <div class="co-step-num">2</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Способ доставки</div>
+            <div class="co-step-summary" id="co-step-2-summary"></div>
+          </div>
+          <button class="co-step-edit" type="button">Изменить</button>
+        </div>
+        <div class="co-step-body" id="collapse-shipping-method"></div>
+      </div>
+
+      {# ── ШАГ 3: Адрес ── #}
+      <div class="co-step co-step--pending" id="co-step-3">
+        <div class="co-step-head" onclick="editStep(3)">
+          <div class="co-step-num">3</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Адрес доставки / оплаты</div>
+            <div class="co-step-summary" id="co-step-3-summary"></div>
+          </div>
+          <button class="co-step-edit" type="button">Изменить</button>
+        </div>
+        <div class="co-step-body" id="collapse-payment-address"></div>
+        <div class="co-step-body" id="collapse-shipping-address" style="display:none;"></div>
+      </div>
+
+      {# ── ШАГ 4: Способ оплаты ── #}
+      <div class="co-step co-step--pending" id="co-step-4">
+        <div class="co-step-head" onclick="editStep(4)">
+          <div class="co-step-num">4</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Способ оплаты</div>
+            <div class="co-step-summary" id="co-step-4-summary"></div>
+          </div>
+          <button class="co-step-edit" type="button">Изменить</button>
+        </div>
+        <div class="co-step-body" id="collapse-payment-method"></div>
+      </div>
+
+      {# ── ШАГ 5: Подтверждение ── #}
+      <div class="co-step co-step--pending" id="co-step-5">
+        <div class="co-step-head" onclick="editStep(5)">
+          <div class="co-step-num">5</div>
+          <div class="co-step-info">
+            <div class="co-step-title">Подтверждение заказа</div>
+            <div class="co-step-summary" id="co-step-5-summary"></div>
+          </div>
+          <button class="co-step-edit" type="button">Изменить</button>
+        </div>
+        <div class="co-step-body" id="collapse-checkout-confirm"></div>
+      </div>
+
+    </div>{# /.co-steps-col #}
+
+    {# ── ПРАВАЯ ПАНЕЛЬ: СВОДКА ── #}
+    <aside class="co-summary">
+      <div class="co-summary-head">
+        <h2 class="co-summary-title">Ваш заказ</h2>
+        <button class="co-summary-toggle" id="summaryToggle" type="button" aria-expanded="true">
+          <span id="summaryToggleText">Скрыть</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="co-summary-items" id="summaryItems">
+        {% for product in co_products %}
+        <div class="co-sum-item">
+          <div class="co-sum-item-img">
+            {% if product.thumb %}
+              <img src="{{ product.thumb }}" alt="{{ product.name }}" width="36" height="36" style="object-fit:contain;">
+            {% else %}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--ink-30)"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            {% endif %}
+          </div>
+          <div class="co-sum-item-info">
+            <div class="co-sum-item-name">{{ product.name }}</div>
+            <div class="co-sum-item-qty">{{ product.quantity }} × {{ product.price }}</div>
+          </div>
+          <div class="co-sum-item-total">{{ product.total }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="co-summary-sep"></div>
+
+      <div class="co-summary-rows">
+        <div class="co-summary-row">
+          <span>Подытог</span>
+          <span id="co-summary-subtotal-val">{{ co_cart_subtotal ? co_cart_subtotal : '—' }}</span>
+        </div>
+        <div class="co-summary-row" id="co-delivery-row">
+          <span>Доставка</span>
+          <span class="co-delivery-val" id="co-delivery-val">Рассчитывается</span>
+        </div>
+      </div>
+
+      <div class="co-summary-total">
+        <span>Итого</span>
+        <span id="co-summary-total-val">{{ co_cart_subtotal ? co_cart_subtotal : '—' }}</span>
+      </div>
+
+      <a href="{{ co_cart_url }}" class="co-summary-edit-cart">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Изменить корзину
+      </a>
+    </aside>
+
+  </div>{# /.co-layout #}
+
+</div>{# /.wrap #}
+</main>
+
+<script type="text/javascript">
+// ============================================================
+//  GLOBALS
+// ============================================================
+var SHIPPING_REQUIRED = {% if shipping_required %}true{% else %}false{% endif %};
+var LOGGED = {% if logged %}true{% else %}false{% endif %};
+var _accountType = ''; // 'register' | 'guest' | '' (logged in)
+
+// ============================================================
+//  STEP STATE MANAGEMENT
+// ============================================================
+function stepEl(n) { return document.getElementById('co-step-' + n); }
+function progEl(n) { return document.getElementById('co-prog-step-' + n); }
+function lineEl(n) { return document.getElementById('co-prog-line-' + n); }
+
+function stepDone(n, summary) {
+    var el = stepEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-step--(active|pending|skipped)\b/g, '').trim() + ' co-step--done';
+    el.querySelector('.co-step-num').textContent = '✓';
+    if (summary !== undefined) {
+        var s = document.getElementById('co-step-' + n + '-summary');
+        if (s) s.textContent = summary;
+    }
+    progDone(n);
+}
+function stepActive(n) {
+    var el = stepEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-step--(done|pending|skipped)\b/g, '').trim() + ' co-step--active';
+    el.querySelector('.co-step-num').textContent = n;
+    progActive(n);
+    el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+function stepPending(n) {
+    var el = stepEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-step--(done|active|skipped)\b/g, '').trim() + ' co-step--pending';
+    el.querySelector('.co-step-num').textContent = n;
+    progPending(n);
+}
+function stepSkipped(n) {
+    var el = stepEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-step--(done|active|pending)\b/g, '').trim() + ' co-step--skipped';
+    el.querySelector('.co-step-num').textContent = n;
+    progPending(n);
+}
+function progDone(n) {
+    var el = progEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-prog--(active|pending)\b/g, '').trim() + ' co-prog--done';
+    el.querySelector('.co-prog-bubble').textContent = '✓';
+    if (lineEl(n)) lineEl(n).classList.add('co-prog-line--done');
+}
+function progActive(n) {
+    var el = progEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-prog--(done|pending)\b/g, '').trim() + ' co-prog--active';
+    el.querySelector('.co-prog-bubble').textContent = n;
+}
+function progPending(n) {
+    var el = progEl(n); if (!el) return;
+    el.className = el.className.replace(/\bco-prog--(done|active)\b/g, '').trim();
+    el.querySelector('.co-prog-bubble').textContent = n;
+    if (lineEl(n)) lineEl(n).classList.remove('co-prog-line--done');
+}
+function editStep(n) {
+    var el = stepEl(n);
+    if (!el || !el.classList.contains('co-step--done')) return;
+    stepActive(n);
+}
+function showErr(containerId, msg) {
+    $('#' + containerId).find('.co-ajax-error').remove();
+    $('#' + containerId).prepend('<div class="alert-bar alert-bar--err co-ajax-error" style="margin-bottom:12px;">' + msg + '</div>');
+}
+
+// ============================================================
+//  SUMMARY TOGGLE
+// ============================================================
+document.getElementById('summaryToggle').addEventListener('click', function() {
+    var items = document.getElementById('summaryItems');
+    var expanded = this.getAttribute('aria-expanded') === 'true';
+    if (expanded) {
+        items.classList.add('collapsed');
+        this.setAttribute('aria-expanded', 'false');
+        document.getElementById('summaryToggleText').textContent = 'Показать';
+    } else {
+        items.classList.remove('collapsed');
+        this.setAttribute('aria-expanded', 'true');
+        document.getElementById('summaryToggleText').textContent = 'Скрыть';
+    }
+});
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function _isPickup() {
+    var code = ($('#collapse-shipping-method input[name="shipping_method"]:checked').val() || '').toLowerCase();
+    return code.indexOf('pickup') !== -1;
+}
+
+function _loadShippingMethod() {
+    $('#collapse-shipping-method').html('<div style="padding:12px 0;color:var(--ink-60);font-size:13px;">Загрузка...</div>');
+    $.ajax({
+        url: 'index.php?route=checkout/shipping_method',
+        dataType: 'html',
+        success: function(html) { $('#collapse-shipping-method').html(html); },
+        error: function(xhr, a, e) { showErr('collapse-shipping-method', e); }
+    });
+}
+
+function _loadAddressForm() {
+    $('#collapse-payment-address').html('<div style="padding:12px 0;color:var(--ink-60);font-size:13px;">Загрузка...</div>');
+    var route = LOGGED ? 'checkout/payment_address' : ('checkout/' + _accountType);
+    $.ajax({
+        url: 'index.php?route=' + route,
+        dataType: 'html',
+        success: function(html) { $('#collapse-payment-address').html(html); },
+        error: function(xhr, a, e) { showErr('collapse-payment-address', e); }
+    });
+}
+
+function _loadPaymentMethod() {
+    stepActive(4);
+    stepPending(5);
+    $('#collapse-payment-method').html('<div style="padding:12px 0;color:var(--ink-60);font-size:13px;">Загрузка...</div>');
+    $.ajax({
+        url: 'index.php?route=checkout/payment_method',
+        dataType: 'html',
+        success: function(html) { $('#collapse-payment-method').html(html); },
+        error: function(xhr, a, e) { showErr('collapse-payment-method', e); }
+    });
+}
+
+function _getAddressSummary(prefix) {
+    var fname = $('#input-' + prefix + '-firstname').val() || '';
+    var city  = $('#input-' + prefix + '-city').val() || '';
+    var addr1 = $('#input-' + prefix + '-address-1').val() || '';
+    if (fname || city) return fname + (city ? (fname ? ', ' : '') + city : '') + (addr1 ? ', ' + addr1 : '');
+    return '';
+}
+
+function _updateSidebarTotal() {
+    var rows = $('#collapse-checkout-confirm .co-confirm-total-row');
+    rows.each(function() {
+        var title = $(this).find('span:first-child').text().trim().toLowerCase();
+        var val   = $(this).find('span:last-child').text().trim();
+        if (title.indexOf('доставк') !== -1 || title.indexOf('shipping') !== -1) {
+            $('#co-delivery-val').text(val);
+        }
+        if (title.indexOf('подытог') !== -1 || title.indexOf('subtotal') !== -1 || title.indexOf('товар') !== -1) {
+            $('#co-summary-subtotal-val').text(val);
+        }
+    });
+    var finalTotal = $('#collapse-checkout-confirm .co-confirm-total-final span:last-child').text().trim();
+    if (finalTotal) $('#co-summary-total-val').text(finalTotal);
+}
+
+// ============================================================
+//  PAGE LOAD: initial AJAX
+// ============================================================
+$(document).ready(function() {
+    {% if not logged %}
+    $.ajax({
+        url: 'index.php?route=checkout/login',
+        dataType: 'html',
+        success: function(html) { $('#collapse-checkout-option').html(html); },
+        error: function(xhr, a, e) { showErr('collapse-checkout-option', e); }
+    });
+    {% else %}
+    stepDone(1, '{{ co_customer_name|e('js') }}{% if co_customer_email %} · {{ co_customer_email|e('js') }}{% endif %}');
+    if (SHIPPING_REQUIRED) {
+        stepActive(2);
+        _loadShippingMethod();
+    } else {
+        stepSkipped(2);
+        stepActive(3);
+        _loadAddressForm();
+    }
+    {% endif %}
+});
+
+// ============================================================
+//  BUTTON: Choose account type (register / guest)
+// ============================================================
+$(document).delegate('#button-account', 'click', function() {
+    _accountType = $('input[name="account"]:checked').val() || 'register';
+    if (_accountType === 'register') {
+        // Перенаправляем на страницу регистрации
+        location.href = 'index.php?route=account/register';
+        return;
+    }
+    // Гость — продолжаем оформление
+    stepDone(1, 'Гость');
+    if (SHIPPING_REQUIRED) {
+        stepActive(2);
+        _loadShippingMethod();
+    } else {
+        stepSkipped(2);
+        stepActive(3);
+        _loadAddressForm();
+    }
+});
+
+// ============================================================
+//  BUTTON: Login (returning customer)
+// ============================================================
+$(document).delegate('#button-login', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/login/save',
+        type: 'post',
+        data: $('#collapse-checkout-option :input'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            if (json['redirect']) {
+                location = json['redirect'];
+            } else if (json['error']) {
+                showErr('collapse-checkout-option', json['error']['warning'] || 'Ошибка входа');
+                if (json['error']['email']) $('input[name="email"]').closest('.co-form-group').addClass('co-form-error');
+                if (json['error']['password']) $('input[name="password"]').closest('.co-form-group').addClass('co-form-error');
+            }
+        },
+        error: function(xhr, a, e) { showErr('collapse-checkout-option', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Shipping Method
+// ============================================================
+$(document).delegate('#button-shipping-method', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/shipping_method/save',
+        type: 'post',
+        data: $('#collapse-shipping-method input[type="radio"]:checked, #collapse-shipping-method textarea'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) { showErr('collapse-shipping-method', json['error']['warning'] || 'Ошибка'); return; }
+
+            var methodLabel = $('#collapse-shipping-method input[name="shipping_method"]:checked').closest('label').find('.delivery-option-name').text().trim() || 'выбрано';
+            stepDone(2, methodLabel);
+
+            if (_isPickup()) {
+                // Самовывоз → пропускаем шаг адреса
+                stepSkipped(3);
+                _loadPaymentMethod();
+            } else {
+                stepActive(3);
+                _loadAddressForm();
+            }
+        },
+        error: function(xhr, a, e) { showErr('collapse-shipping-method', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Payment Address (logged-in customer)
+// ============================================================
+$(document).delegate('#button-payment-address', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/payment_address/save',
+        type: 'post',
+        data: $('#collapse-payment-address input[type="text"], #collapse-payment-address input[type="hidden"], #collapse-payment-address input[type="checkbox"]:checked, #collapse-payment-address input[type="radio"]:checked, #collapse-payment-address textarea, #collapse-payment-address select'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            $('.co-form-error').removeClass('co-form-error');
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) {
+                if (json['error']['warning']) showErr('collapse-payment-address', json['error']['warning']);
+                $.each(json['error'], function(key, msg) {
+                    var el = $('#input-payment-' + key.replace(/_/g, '-'));
+                    if (el.length) { el.closest('.co-form-group').addClass('co-form-error').append('<div class="text-danger" style="font-size:11px;color:var(--accent);margin-top:3px;">' + msg + '</div>'); }
+                });
+                return;
+            }
+            stepDone(3, _getAddressSummary('payment'));
+            // Reload address panel to show saved state
+            $.ajax({ url: 'index.php?route=checkout/payment_address', dataType: 'html', success: function(html) { $('#collapse-payment-address').html(html); } });
+            _loadPaymentMethod();
+        },
+        error: function(xhr, a, e) { showErr('collapse-payment-address', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Register
+// ============================================================
+$(document).delegate('#button-register', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/register/save',
+        type: 'post',
+        data: $('#collapse-payment-address input[type="text"], #collapse-payment-address input[type="hidden"], #collapse-payment-address input[type="password"], #collapse-payment-address input[type="checkbox"]:checked, #collapse-payment-address input[type="radio"]:checked, #collapse-payment-address textarea, #collapse-payment-address select'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            $('.co-form-error').removeClass('co-form-error');
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) {
+                if (json['error']['warning']) showErr('collapse-payment-address', json['error']['warning']);
+                $.each(json['error'], function(key, msg) {
+                    var el = $('#input-payment-' + key.replace(/_/g, '-'));
+                    if (el.length) { el.closest('.co-form-group').addClass('co-form-error').append('<div class="text-danger" style="font-size:11px;color:var(--accent);margin-top:3px;">' + msg + '</div>'); }
+                });
+                return;
+            }
+            LOGGED = true;
+            stepDone(3, _getAddressSummary('payment'));
+            _loadPaymentMethod();
+        },
+        error: function(xhr, a, e) { showErr('collapse-payment-address', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Guest
+// ============================================================
+$(document).delegate('#button-guest', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/guest/save',
+        type: 'post',
+        data: $('#collapse-payment-address input[type="text"], #collapse-payment-address input[type="hidden"], #collapse-payment-address input[type="checkbox"]:checked, #collapse-payment-address input[type="radio"]:checked, #collapse-payment-address textarea, #collapse-payment-address select'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            $('.co-form-error').removeClass('co-form-error');
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) {
+                if (json['error']['warning']) showErr('collapse-payment-address', json['error']['warning']);
+                $.each(json['error'], function(key, msg) {
+                    var el = $('#input-payment-' + key.replace(/_/g, '-'));
+                    if (el.length) { el.closest('.co-form-group').addClass('co-form-error').append('<div class="text-danger" style="font-size:11px;color:var(--accent);margin-top:3px;">' + msg + '</div>'); }
+                });
+                return;
+            }
+            stepDone(3, _getAddressSummary('payment'));
+            _loadPaymentMethod();
+        },
+        error: function(xhr, a, e) { showErr('collapse-payment-address', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Shipping Address (separate from billing)
+// ============================================================
+$(document).delegate('#button-shipping-address', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/shipping_address/save',
+        type: 'post',
+        data: $('#collapse-shipping-address input[type="text"], #collapse-shipping-address input[type="hidden"], #collapse-shipping-address input[type="checkbox"]:checked, #collapse-shipping-address input[type="radio"]:checked, #collapse-shipping-address textarea, #collapse-shipping-address select'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            $('.co-form-error').removeClass('co-form-error');
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) {
+                if (json['error']['warning']) showErr('collapse-shipping-address', json['error']['warning']);
+                $.each(json['error'], function(key, msg) {
+                    var el = $('#input-shipping-' + key.replace(/_/g, '-'));
+                    if (el.length) { el.closest('.co-form-group').addClass('co-form-error').append('<div class="text-danger" style="font-size:11px;color:var(--accent);margin-top:3px;">' + msg + '</div>'); }
+                });
+                return;
+            }
+            $('#collapse-shipping-address').hide();
+            stepDone(3, _getAddressSummary('payment'));
+            _loadPaymentMethod();
+        },
+        error: function(xhr, a, e) { showErr('collapse-shipping-address', e); }
+    });
+});
+
+// ============================================================
+//  BUTTON: Payment Method
+// ============================================================
+$(document).delegate('#button-payment-method', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=checkout/payment_method/save',
+        type: 'post',
+        data: $('#collapse-payment-method input[type="radio"]:checked, #collapse-payment-method input[type="checkbox"]:checked, #collapse-payment-method textarea'),
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            if (json['redirect']) { location = json['redirect']; return; }
+            if (json['error']) { showErr('collapse-payment-method', json['error']['warning'] || 'Ошибка'); return; }
+
+            var payLabel = $('#collapse-payment-method input[name="payment_method"]:checked').closest('label').find('.payment-option-name').text().trim() || 'выбрано';
+            stepDone(4, payLabel);
+            stepActive(5);
+            $.ajax({
+                url: 'index.php?route=checkout/confirm',
+                dataType: 'html',
+                success: function(html) {
+                    $('#collapse-checkout-confirm').html(html);
+                    _updateSidebarTotal();
+                },
+                error: function(xhr, a, e) { showErr('collapse-checkout-confirm', e); }
+            });
+        },
+        error: function(xhr, a, e) { showErr('collapse-payment-method', e); }
+    });
+});
+</script>
+{{ footer }}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Sections Root</name>
+  <code>evrika-category-sections-root</code>
+  <version>1.3</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    Перехватывает product/category без параметра path (category_id = 0).
+    Вместо 404 загружает дерево всех корневых категорий с первым уровнем
+    дочерних и счётчиками товаров, передаёт в cat_tree[] для VID A.
+    v1.3: фильтрация пустых категорий на обоих уровнях.
+  -->
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA[$category_id = 0;]]></search>
+      <add position="replace" offset="0" trim="true"><![CDATA[$category_id = 0;
+			// ── Sections root: нет path → дерево всех разделов каталога (VID A) ──
+			require_once(DIR_TEMPLATE . '../../../catalog/view/theme/evrika/php/icons.php');
+			$data['cat_tree'] = array();
+			$data['heading_title'] = 'Каталог товаров';
+			$data['description'] = '';
+			$this->document->setTitle('Каталог товаров для офиса, учебы и творчества | Магазин Эврика Мелитополь');
+			$this->document->setDescription('Каталог канцелярских товаров оптом — письменные принадлежности, бумага, папки, рюкзаки и школьный текстиль. Более 10 000 наименований от ведущих брендов. B2B-магазин Эврика, Мелитополь.');
+			$_base_url = (isset($this->request->server['HTTPS']) && ($this->request->server['HTTPS'] == 'on' || $this->request->server['HTTPS'] == '1')) ? $this->config->get('config_ssl') : $this->config->get('config_url');
+			$this->document->addLink(rtrim($_base_url, '/') . '/catalog', 'canonical');
+			$data['breadcrumbs'] = array(
+				array(
+					'text' => $this->language->get('text_home'),
+					'href' => $this->url->link('common/home'),
+				),
+			);
+			$top_categories = $this->model_catalog_category->getCategories(0);
+			foreach ($top_categories as $top_cat) {
+				// Собираем валидных детей: пропускаем тех у кого нет ни товаров, ни своих подкатегорий
+				$children_all  = $this->model_catalog_category->getCategories($top_cat['category_id']);
+				$children_valid = array();
+				foreach ($children_all as $child) {
+					$child_filter = array(
+						'filter_category_id'  => $child['category_id'],
+						'filter_sub_category' => true,
+					);
+					$child_count   = $this->model_catalog_product->getTotalProducts($child_filter);
+					$child_has_sub = count($this->model_catalog_category->getCategories($child['category_id'])) > 0;
+					if ($child_count == 0 && !$child_has_sub) {
+						continue;
+					}
+					$children_valid[] = array(
+						'name'  => $child['name'],
+						'href'  => $this->url->link('product/category', 'path=' . (int)$top_cat['category_id'] . '_' . (int)$child['category_id']),
+						'count' => $child_count,
+					);
+				}
+				$top_filter = array(
+					'filter_category_id'  => $top_cat['category_id'],
+					'filter_sub_category' => true,
+				);
+				$top_count = $this->model_catalog_product->getTotalProducts($top_filter);
+				// Пропускаем топ-категорию если нет ни товаров, ни валидных детей
+				if ($top_count == 0 && count($children_valid) == 0) {
+					continue;
+				}
+				$data['cat_tree'][] = array(
+					'name'           => $top_cat['name'],
+					'href'           => $this->url->link('product/category', 'path=' . (int)$top_cat['category_id']),
+					'icon_svg'       => evrika_icon_svg(isset($top_cat['icon']) ? $top_cat['icon'] : ''),
+					'count'          => $top_count,
+					'children'       => array_slice($children_valid, 0, 5),
+					'children_total' => count($children_valid),
+				);
+			}
+			// Сначала категории с подкатегориями, затем без
+			usort($data['cat_tree'], function($a, $b) {
+				return ($b['children_total'] > 0) - ($a['children_total'] > 0);
+			});
+			$data['column_left']    = $this->load->controller('common/column_left');
+			$data['column_right']   = $this->load->controller('common/column_right');
+			$data['content_top']    = $this->load->controller('common/content_top');
+			$data['content_bottom'] = $this->load->controller('common/content_bottom');
+			$data['footer'] = $this->load->controller('common/footer');
+			$data['header'] = $this->load->controller('common/header');
+			$this->response->setOutput($this->load->view('product/category', $data));
+			return;]]></add>
+    </operation>
+  </file>
+
+</modification>

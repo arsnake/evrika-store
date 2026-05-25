@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Эврика — канцелярские товары оптом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Новым клиентам</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="#">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none">
+            <text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text>
+          </svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <button class="h-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Сравнение
+        </button>
+        <button class="h-action cart" style="position:relative">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+        <button class="h-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Заказы
+        </button>
+      </div>
+
+      <button class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a class="nav-link special active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        Скидки месяца <span class="tag">−63%</span>
+      </a>
+      <a class="nav-link">Реестр Минпромторга</a>
+      <a class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Хит продаж
+      </a>
+      <a class="nav-link">Честный знак</a>
+      <a class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Новинки
+      </a>
+      <a class="nav-link" style="color:var(--red);font-weight:600">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Распродажа
+      </a>
+      <a class="nav-link" style="margin-left:auto;background:var(--blue-light);color:var(--blue);border-radius:var(--radius-s);font-weight:600;padding:6px 12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Для юрлиц
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+<main>
+<div class="wrap">
+
+  <!-- PROMO BANNER -->
+  <div class="promo-section">
+    <div class="promo-grid">
+      <!-- СЛАЙДЕР НОВЫХ ПОСТУПЛЕНИЙ -->
+      <div class="arrival-slider" id="arrivalSlider">
+
+        <div class="arrival-slides" id="arrivalSlides">
+
+          <!-- Слайд 1 -->
+          <div class="arrival-slide">
+            <img class="arrival-slide-bg" src="assets/img/slider-1.png" alt="Berlingo" onerror="this.style.display='none'">
+            <div class="arrival-slide-overlay"></div>
+            <div class="arrival-slide-content">
+              <div class="arrival-meta">
+                <span class="arrival-tag">Новое поступление</span>
+                <span class="arrival-date">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  19 мая 2026
+                </span>
+              </div>
+              <div class="arrival-brand">Berlingo</div>
+              <div class="arrival-desc">Рюкзаки и ранцы City серии — 43 новых артикула. Эргономичная спинка, отделение для ноутбука, 3–5 карманов.</div>
+              <button class="arrival-cta">
+                Смотреть поступление
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Слайд 2 -->
+          <div class="arrival-slide">
+            <img class="arrival-slide-bg" src="assets/img/slider-2.png" alt="GAMMA" onerror="this.style.background='linear-gradient(135deg,#1F5938,#3D9464)'">
+            <div class="arrival-slide-overlay"></div>
+            <div class="arrival-slide-content">
+              <div class="arrival-meta">
+                <span class="arrival-tag">Новое поступление</span>
+                <span class="arrival-date">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  15 мая 2026
+                </span>
+              </div>
+              <div class="arrival-brand">ГАММА</div>
+              <div class="arrival-desc">Художественные принадлежности нового сезона — акварель, масло, пастель. 120+ позиций для профессионального творчества.</div>
+              <button class="arrival-cta">
+                Смотреть поступление
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Слайд 3 -->
+          <div class="arrival-slide">
+            <img class="arrival-slide-bg" src="assets/img/slider-3.png" alt="СТАММ" onerror="this.style.background='linear-gradient(135deg,#2D4A1F,#5A8A3D)'">
+            <div class="arrival-slide-overlay"></div>
+            <div class="arrival-slide-content">
+              <div class="arrival-meta">
+                <span class="arrival-tag">Новое поступление</span>
+                <span class="arrival-date">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  12 мая 2026
+                </span>
+              </div>
+              <div class="arrival-brand">СТАММ</div>
+              <div class="arrival-desc">Канцелярия для офиса и школы — папки, файлы, блокноты. Обновлённая линейка с 2026 маркировкой. 200+ SKU.</div>
+              <button class="arrival-cta">
+                Смотреть поступление
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /arrival-slides -->
+
+        <!-- Стрелки -->
+        <button class="arrival-prev" id="arrPrev">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="arrival-next" id="arrNext">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Счётчик -->
+        <div class="arrival-count">
+          <span class="arrival-count-cur" id="arrCur">1</span>
+          <span>/ 3</span>
+        </div>
+
+        <!-- Точки -->
+        <div class="arrival-dots" id="arrDots"></div>
+
+      </div><!-- /arrival-slider -->
+
+      <div class="promo-side">
+        <div class="promo-card orange">
+          <div>
+            <div class="promo-card-title">Открой своё дело</div>
+            <div class="promo-card-sub">Франшиза КанцПарк — от 1 млн ₽</div>
+          </div>
+          <div class="promo-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+        </div>
+        <div class="promo-card dark">
+          <div>
+            <div class="promo-card-title">Коллекция 2026</div>
+            <div class="promo-card-sub">Школьный текстиль — уже в продаже</div>
+          </div>
+          <div class="promo-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHIPS -->
+  <div class="chips-row">
+    <div class="chip hot">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 6-6 8-6 14a6 6 0 0 0 12 0c0-6-6-8-6-14z"/></svg>
+      Хиты недели
+    </div>
+    <div class="chip active">Новинки 2026</div>
+    <div class="chip">Berlingo</div>
+    <div class="chip">ГАММА</div>
+    <div class="chip">Brauberg</div>
+    <div class="chip">СТАММ</div>
+    <div class="chip">Красин</div>
+    <div class="chip">OfficeSpace</div>
+    <div class="chip">Реестр МПТ</div>
+    <div class="chip">Честный знак</div>
+  </div>
+
+  <!-- POPULAR CATS -->
+  <div class="section">
+    <div class="section-head">
+      <h2 class="section-title">Популярные разделы</h2>
+      <a class="section-more" href="#">
+        Все разделы
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="quick-cats">
+      <div class="q-cat" onclick="openCatalog()">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+        </div>
+        <div class="q-cat-name">Ручки и<br>карандаши</div>
+        <div class="q-cat-count">1 248 товаров</div>
+      </div>
+      <div class="q-cat">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="q-cat-name">Тетради<br>40–48 л.</div>
+        <div class="q-cat-count">384 товара</div>
+      </div>
+      <div class="q-cat">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="21" x2="8" y2="3"/><line x1="16" y1="21" x2="16" y2="3"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        <div class="q-cat-name">Ранцы<br>и рюкзаки</div>
+        <div class="q-cat-count">741 товар</div>
+      </div>
+      <div class="q-cat">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="q-cat-name">Папки<br>и архивация</div>
+        <div class="q-cat-count">567 товаров</div>
+      </div>
+      <div class="q-cat">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="q-cat-name">Клей-<br>карандаш</div>
+        <div class="q-cat-count">89 товаров</div>
+      </div>
+      <div class="q-cat">
+        <div class="q-cat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+        </div>
+        <div class="q-cat-name">Бумага<br>для принтера</div>
+        <div class="q-cat-count">156 товаров</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- НОВИНКИ -->
+  <div class="section">
+    <div class="section-head">
+      <h2 class="section-title">Новинки</h2>
+      <a class="section-more" href="#">
+        Все новинки
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="products-row">
+      <!-- Card 1 -->
+      <div class="prod-card">
+        <span class="prod-badge new">Новинка</span>
+        <div class="prod-img">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#EBF5EF"/><rect x="25" y="20" width="30" height="4" rx="2" fill="#9ABFAA"/><rect x="25" y="30" width="22" height="3" rx="1.5" fill="#B0CEB8"/><rect x="25" y="38" width="26" height="3" rx="1.5" fill="#B0CEB8"/><rect x="25" y="55" width="30" height="8" rx="2" fill="#2D7A4F" opacity=".3"/></svg>
+        </div>
+        <div class="prod-info">
+          <div class="prod-sku">Код: <span>388817</span></div>
+          <div class="prod-brand">Berlingo</div>
+          <div class="prod-name">Рюкзак Berlingo City "Classic black" 43×30×17см, 3 отделения, эргономичная спинка</div>
+          <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a> или <a href="#">зарегистрируйтесь</a></div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="prod-card">
+        <span class="prod-badge new">Новинка</span>
+        <div class="prod-img">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#EBF5EF"/><rect x="25" y="20" width="30" height="4" rx="2" fill="#9ABFAA"/><rect x="25" y="30" width="22" height="3" rx="1.5" fill="#B0CEB8"/><rect x="25" y="38" width="26" height="3" rx="1.5" fill="#B0CEB8"/><rect x="30" y="15" width="20" height="12" rx="2" fill="#2D7A4F" opacity=".2"/></svg>
+        </div>
+        <div class="prod-info">
+          <div class="prod-sku">Код: <span>388819</span></div>
+          <div class="prod-brand">Berlingo</div>
+          <div class="prod-name">Рюкзак Berlingo City "Modern" 43×30×17см, 4 кармана, отделение для ноутбука</div>
+          <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a> или <a href="#">зарегистрируйтесь</a></div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="prod-card">
+        <span class="prod-badge hit">Хит</span>
+        <div class="prod-img">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#FFF3EB"/><circle cx="40" cy="35" r="12" fill="#D4621A" opacity=".2"/><rect x="25" y="55" width="30" height="8" rx="2" fill="#D4621A" opacity=".25"/></svg>
+        </div>
+        <div class="prod-info">
+          <div class="prod-sku">Код: <span>388824</span></div>
+          <div class="prod-brand">Berlingo</div>
+          <div class="prod-name">Рюкзак Berlingo City "Perfect" 43×30×17см, 2 отделения, 4 кармана, эргономичная спинка</div>
+          <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a> или <a href="#">зарегистрируйтесь</a></div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="prod-card">
+        <span class="prod-badge new">Новинка</span>
+        <div class="prod-img">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="20" y="10" width="40" height="60" rx="4" fill="#E8F5F0"/><rect x="28" y="18" width="24" height="16" rx="3" fill="#2D7A4F" opacity=".2"/><circle cx="40" cy="50" r="10" fill="#2D7A4F" opacity=".15"/></svg>
+        </div>
+        <div class="prod-info">
+          <div class="prod-sku">Код: <span>390754</span></div>
+          <div class="prod-brand">Berlingo</div>
+          <div class="prod-name">Рюкзак Berlingo UrbanMode "UM_01" 43×30×19см, 2 отделения, 5 карманов</div>
+          <div class="prod-auth">Чтобы увидеть цены — <a href="#">авторизуйтесь</a> или <a href="#">зарегистрируйтесь</a></div>
+        </div>
+      </div>
+      <!-- Card 5 — авторизованный пользователь -->
+      <div class="prod-card">
+        <span class="prod-badge sale">−25%</span>
+        <a href="product.html" class="prod-img" aria-label="Ранец Berlingo Expert Ad Astra">
+          <svg viewBox="0 0 80 80" fill="none">
+            <rect x="20" y="10" width="40" height="60" rx="4" fill="#FFF5E0"/>
+            <rect x="28" y="20" width="24" height="4" rx="2" fill="#F0A020" opacity=".5"/>
+            <rect x="28" y="30" width="18" height="3" rx="1.5" fill="#F0A020" opacity=".3"/>
+            <rect x="28" y="40" width="22" height="20" rx="3" fill="#F0A020" opacity=".2"/>
+          </svg>
+        </a>
+        <div class="prod-info">
+          <div class="prod-sku">Код: <span>336283</span></div>
+          <div class="prod-brand">Berlingo</div>
+          <a href="product.html" class="prod-name">Ранец Berlingo Expert "Ad Astra" 37×28×16см, 2 отделения, анатомическая спинка</a>
+
+          <!-- Цена (авторизованный) -->
+          <div class="prod-price-block">
+            <span class="prod-price-old">1 240,00 ₽</span>
+            <div class="prod-price-row">
+              <span class="prod-price">930,00 ₽</span>
+              <span class="prod-price-unit">/ шт.</span>
+            </div>
+          </div>
+
+          <!-- Наличие -->
+          <div class="prod-stock in-stock">
+            <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+            В наличии
+          </div>
+
+          <!-- Кнопки -->
+          <div class="prod-actions">
+            <div class="prod-qty-ctrl">
+              <button class="prod-qty-btn" aria-label="Уменьшить">−</button>
+              <input class="prod-qty-input" type="number" value="1" min="1" aria-label="Количество">
+              <button class="prod-qty-btn" aria-label="Увеличить">+</button>
+            </div>
+            <button class="prod-fav-btn" aria-label="В избранное" title="В избранное">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="prod-cart-btn" aria-label="Добавить в корзину" title="В корзину">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USP -->
+  <div class="section">
+    <div class="usp-section">
+      <div class="usp-grid">
+        <div class="usp-item">
+          <div class="usp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div class="usp-text">
+            <h4>Оригинальные товары</h4>
+            <p>Работаем напрямую с производителями. Гарантия подлинности каждого артикула</p>
+          </div>
+        </div>
+        <div class="usp-item">
+          <div class="usp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="usp-text">
+            <h4>99% заказов в срок</h4>
+            <p>Собственный склад 15 000 м² и отлаженная логистика по всей России</p>
+          </div>
+        </div>
+        <div class="usp-item">
+          <div class="usp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="usp-text">
+            <h4>1000+ точек выдачи</h4>
+            <p>Склады и пункты выдачи в 85 регионах России. Доставка от 1 дня</p>
+          </div>
+        </div>
+        <div class="usp-b2b">
+          <h3>Покупайте как юрлицо</h3>
+          <ul class="usp-b2b-list">
+            <li>Оптовая система скидок</li>
+            <li>Возврат НДС</li>
+            <li>Отсрочка платежа</li>
+            <li>Персональный менеджер</li>
+            <li>Личный кабинет</li>
+            <li>ЭДО</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- РАСПРОДАЖА -->
+  <div class="section">
+    <div class="section-head">
+      <h2 class="section-title" style="color:var(--red)">⭐ Популярные товары</h2>
+      <a class="section-more" href="#">
+        Все популярные
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="products-row">
+      <div class="prod-card"><span class="prod-badge hit">Популярное</span><div class="prod-img"><svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/><rect x="20" y="45" width="40" height="20" rx="4" fill="#2D7A4F" opacity=".2"/><text x="40" y="58" font-size="10" text-anchor="middle" fill="#2D7A4F" font-weight="bold">NASA</text></svg></div><div class="prod-info"><div class="prod-sku">Код: <span>336283</span></div><div class="prod-brand">Berlingo</div><div class="prod-name">Ранец Expert "Ad Astra" 37×28×16см, 2 отделения, анатомическая спинка</div><div class="prod-auth"><a href="#">Авторизуйтесь</a> для просмотра цен</div></div></div>
+      <div class="prod-card"><span class="prod-badge hit">Популярное</span><div class="prod-img"><svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#FFF0F5"/><circle cx="40" cy="35" r="18" fill="#FF69B4" opacity=".2"/><circle cx="40" cy="35" r="10" fill="#FF1493" opacity=".15"/></svg></div><div class="prod-info"><div class="prod-sku">Код: <span>336268</span></div><div class="prod-brand">Berlingo</div><div class="prod-name">Ранец Expert "Akita boy" 37×28×16см, 2 отделения, анатомическая спинка</div><div class="prod-auth"><a href="#">Авторизуйтесь</a> для просмотра цен</div></div></div>
+      <div class="prod-card"><span class="prod-badge hit">Популярное</span><div class="prod-img"><svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#F0E8FF"/><circle cx="40" cy="35" r="15" fill="#9B59B6" opacity=".2"/><path d="M30 40 Q40 25 50 40" stroke="#9B59B6" stroke-width="2" fill="none"/></svg></div><div class="prod-info"><div class="prod-sku">Код: <span>349749</span></div><div class="prod-brand">Berlingo</div><div class="prod-name">Ранец Expert "Astro Cat" 37×28×16см, 2 отделения, 2 кармана</div><div class="prod-auth"><a href="#">Авторизуйтесь</a> для просмотра цен</div></div></div>
+      <div class="prod-card"><span class="prod-badge hit">Популярное</span><div class="prod-img"><svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#E8E8E8"/><rect x="25" y="20" width="30" height="40" rx="3" fill="#555" opacity=".15"/></svg></div><div class="prod-info"><div class="prod-sku">Код: <span>336285</span></div><div class="prod-brand">Berlingo</div><div class="prod-name">Ранец Expert "Black ghost" 37×28×16см, 2 отделения, анатомическая спинка</div><div class="prod-auth"><a href="#">Авторизуйтесь</a> для просмотра цен</div></div></div>
+      <div class="prod-card"><span class="prod-badge sale">−30%</span><div class="prod-img"><svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#FFFBE8"/><rect x="25" y="25" width="30" height="5" rx="2.5" fill="#F0A020" opacity=".5"/><rect x="25" y="35" width="24" height="4" rx="2" fill="#F0A020" opacity=".3"/><circle cx="40" cy="55" r="10" fill="#F0A020" opacity=".2"/></svg></div><div class="prod-info"><div class="prod-sku">Код: <span>390100</span></div><div class="prod-brand">СТАММ</div><div class="prod-name">Ранец школьный "Бравый пожарный" 37×28×16см, пластиковый каркас</div><div class="prod-auth"><a href="#">Авторизуйтесь</a> для просмотра цен</div></div></div>
+    </div>
+  </div>
+
+  <!-- BRANDS -->
+  <div class="section" id="section-brands">
+    <div class="section-head">
+      <h2 class="section-title">Бренды</h2>
+    </div>
+    <div class="brands-row">
+      <div class="brand-chip"><span>Berlingo</span></div>
+      <div class="brand-chip"><span>ГАММА</span></div>
+      <div class="brand-chip"><span>Brauberg</span></div>
+      <div class="brand-chip"><span>СТАММ</span></div>
+      <div class="brand-chip"><span>Красин</span></div>
+      <div class="brand-chip"><span>Munhwa</span></div>
+      <div class="brand-chip"><span>Crown</span></div>
+      <div class="brand-chip"><span>OfficeSpace</span></div>
+      <div class="brand-chip"><span>ArtSpace</span></div>
+      <div class="brand-chip"><span>Илим</span></div>
+      <div class="brand-chip"><span>Attache</span></div>
+      <div class="brand-chip"><span>ErichKrause</span></div>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="section" id="section-news">
+    <div class="section-head">
+      <h2 class="section-title">Новости</h2>
+      <a class="section-more" href="#">
+        Все новости
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-thumb" style="background:linear-gradient(135deg,#2D7A4F20,#D4621A10)">
+          <svg viewBox="0 0 60 60" fill="none"><rect x="10" y="15" width="40" height="30" rx="4" fill="#2D7A4F" opacity=".15"/><path d="M20 25h20M20 32h14" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="news-body">
+          <div class="news-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            18 мая 2026 г.
+          </div>
+          <div class="news-title">Grout Marker от MunHwa: быстрое обновление плиточных швов</div>
+          <div class="news-excerpt">Бренд MunHwa продолжает расширять линейку — маркер-краска Grout Marker вызовет интерес у покупателей как в профессиональной среде, так и в быту.</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-thumb" style="background:linear-gradient(135deg,#D4621A10,#E8873A15)">
+          <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="18" fill="#D4621A" opacity=".1"/><path d="M22 30l6 6 10-12" stroke="#D4621A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="news-body">
+          <div class="news-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            15 мая 2026 г.
+          </div>
+          <div class="news-title">«Сезон ярких идей» — чековая акция для КанцПарк</div>
+          <div class="news-excerpt">С 15 мая по 30 июня 2026 года в сети магазинов КанцПарк стартует акция для роста продаж и привлечения новой аудитории.</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-thumb" style="background:linear-gradient(135deg,#2D7A4F10,#1A6B8A10)">
+          <svg viewBox="0 0 60 60" fill="none"><path d="M15 45L30 15l15 30H15z" fill="#2D7A4F" opacity=".1"/><path d="M23 35h14" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="news-body">
+          <div class="news-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            8 мая 2026 г.
+          </div>
+          <div class="news-title">«Транзит плюс»: больше баллов ДЖЭМ за транзитные отгрузки</div>
+          <div class="news-excerpt">С 20 апреля по 31 мая клиенты получают дополнительные баллы программы лояльности ДЖЭМ за транзитные отгрузки бумаги «ИЛИМ».</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-thumb" style="background:linear-gradient(135deg,#2D7A4F15,#1A2E1E10)">
+          <svg viewBox="0 0 60 60" fill="none"><rect x="12" y="20" width="36" height="20" rx="3" fill="#2D7A4F" opacity=".12"/><path d="M20 28h20M20 34h12" stroke="#2D7A4F" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="news-body">
+          <div class="news-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            7 мая 2026 г.
+          </div>
+          <div class="news-title">Скидки месяца — ещё больше выгодных товаров в одном разделе</div>
+          <div class="news-excerpt">Раздел «Скидки месяца» обновился: добавили новые категории, увеличили количество товаров и добавили спецпредложения для партнёров.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 38 38" fill="none"><text x="19" y="28" font-size="24" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="footer-logo-text">Эврика</div>
+        </div>
+        <div class="footer-desc">Товары оптом для офиса, школы и творчества</div>
+        <div class="footer-phones">
+          <a href="tel:88001100000">8-800-110-00-00</a>
+          <a href="tel:74912958000">+7 (4912) 958 000</a>
+        </div>
+        <div class="footer-addr">391111, Рязанская обл.,<br>г. Рыбное, ул. Берёзовая, д. 13</div>
+      </div>
+      <div class="footer-col">
+        <h4>Каталоги</h4>
+        <a href="#">Каталог товаров</a>
+        <a href="#">Хит продаж</a>
+        <a href="#">Новинки</a>
+      </div>
+      <div class="footer-col">
+        <h4>О компании</h4>
+        <a href="#">О компании</a>
+        <a href="#">Реквизиты</a>
+      </div>
+      <div class="footer-col">
+        <h4>Новым клиентам</h4>
+        <a href="#">Почему мы</a>
+        <a href="#">Зарегистрироваться</a>
+        <a href="#">Доставка и оплата</a>
+      </div>
+      <div class="footer-col">
+        <h4>Помощь</h4>
+        <a href="#">Вопросы и ответы</a>
+        <a href="#">Карта сайта</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Договор оферты</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Эврика. Все права защищены.</p>
+      <div class="footer-social">
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.976 0C5.364 0 0 5.364 0 11.976c0 5.292 3.432 9.804 8.208 11.376.6.108.816-.264.816-.576v-2.016c-3.348.72-4.044-1.608-4.044-1.608-.552-1.392-1.344-1.764-1.344-1.764-1.092-.744.084-.72.084-.72 1.212.084 1.848 1.236 1.848 1.236 1.08 1.848 2.82 1.308 3.504 1.008.108-.78.42-1.308.756-1.608-2.664-.3-5.46-1.332-5.46-5.928 0-1.308.468-2.376 1.236-3.216-.12-.3-.54-1.524.12-3.168 0 0 1.008-.324 3.3 1.236.96-.264 1.98-.396 3-.396s2.04.132 3 .396c2.292-1.56 3.3-1.236 3.3-1.236.66 1.644.24 2.868.12 3.168.768.84 1.236 1.908 1.236 3.216 0 4.608-2.808 5.616-5.484 5.916.432.372.816 1.104.816 2.22v3.288c0 .316.216.696.828.576C20.568 21.78 24 17.268 24 11.976 24 5.364 18.588 0 11.976 0z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm-3.07 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm5.2-9a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- МОБИЛЬНЫЙ ПОИСК -->
+<div class="mob-search-overlay" id="mobSearch">
+  <input type="text" placeholder="Поиск по каталогу..." autofocus>
+  <button class="mob-search-close" onclick="closeMobSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<!-- МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ -->
+<nav class="mob-nav">
+  <button class="mob-nav-item active" onclick="openCatalog()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+    Каталог
+  </button>
+  <button class="mob-nav-item" onclick="openMobSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+    Поиск
+  </button>
+  <button class="mob-nav-item" style="position:relative">
+    <div class="mob-nav-badge">3</div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Корзина
+  </button>
+  <button class="mob-nav-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Избранное
+  </button>
+  <button class="mob-nav-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Войти
+  </button>
+</nav>
+
+</div><!-- /site-content -->
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+
+<!-- CATALOG MODAL -->
+<div class="modal-overlay" id="catalogModal" onclick="handleOverlayClick(event)">
+  <div class="catalog-modal">
+    <div class="cat-sidebar">
+      <div class="cat-header">
+        <h3>Каталог товаров</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть на весь экран">
+            <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
+          </button>
+          <button class="cat-close" onclick="closeCatalog()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cat-list" id="catList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+    <div class="cat-content">
+      <div class="cat-chips" id="catChips"></div>
+      <div class="cat-sub-grid" id="catSubGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

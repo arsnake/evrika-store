@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika Shipping Fallback Address</name>
+    <code>evrika-shipping-fallback</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/shipping_method.php">
+
+        <!-- Patch 1: pre-populate session shipping_address in index() so pickup loads without address step -->
+        <operation>
+            <search><![CDATA[if (isset($this->session->data['shipping_address'])) {]]></search>
+            <add position="before"><![CDATA[if (!isset($this->session->data['shipping_address'])) {
+				if ($this->customer->isLogged() && $this->customer->getAddressId()) {
+					$this->load->model('account/address');
+					$addr = $this->model_account_address->getAddress($this->customer->getAddressId());
+					if ($addr) {
+						$this->session->data['shipping_address'] = $addr;
+					}
+				}
+				if (empty($this->session->data['shipping_address'])) {
+					$this->session->data['shipping_address'] = array(
+						'country_id' => (int)$this->config->get('config_country_id'),
+						'zone_id'    => (int)$this->config->get('config_zone_id'),
+					);
+				}
+			}
+]]></add>
+        </operation>
+
+        <!-- Patch 2: remove save() redirect that blocks when shipping_address was set by fallback -->
+        <!-- Search the comment above the block (unique, not present in patch 1 code) -->
+        <operation>
+            <search><![CDATA[// Validate if shipping address has been set.]]></search>
+            <add position="replace" offset="3" trim="true"><![CDATA[// Validate if shipping address has been set. (skipped: always set by evrika-shipping-fallback)]]></add>
+        </operation>
+
+        <!-- Patch 3: pass store address and open hours to shipping_method template -->
+        <operation>
+            <search><![CDATA[$this->response->setOutput($this->load->view('checkout/shipping_method', $data));]]></search>
+            <add position="before"><![CDATA[$data['store_address'] = $this->config->get('config_address');
+		$data['store_open']    = $this->config->get('config_open');
+]]></add>
+        </operation>
+
+    </file>
+
+</modification>

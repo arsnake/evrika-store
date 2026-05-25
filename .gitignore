@@ -1,0 +1,23 @@
+# ── Credentials ──────────────────────────────────────────────
+public/config.php
+public/admin/config.php
+
+# ── Generated / cache ────────────────────────────────────────
+storage/cache/
+storage/session/
+storage/modification/
+storage/logs/
+storage/upload/
+storage/download/
+
+# ── Vendor (OcStore ships its own, no need to track) ─────────
+storage/vendor/
+
+# ── OS / editor ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/

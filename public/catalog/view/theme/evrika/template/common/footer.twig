@@ -1,0 +1,91 @@
+{# ── ПОДВАЛ ── #}
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 38 38" fill="none"><text x="19" y="28" font-size="24" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="footer-logo-text">Эврика</div>
+        </div>
+        <div class="footer-desc">Товары оптом для офиса, школы и творчества</div>
+        <div class="footer-phones">
+          <a href="tel:88001100000">8-800-110-00-00</a>
+          <a href="tel:74912958000">+7 (4912) 958 000</a>
+        </div>
+        <div class="footer-addr">391111, Рязанская обл.,<br>г. Рыбное, ул. Берёзовая, д. 13</div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Каталоги</h4>
+        <a href="#">Каталог товаров</a>
+        <a href="#">Хит продаж</a>
+        <a href="#">Новинки</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>О компании</h4>
+        <a href="#">О компании</a>
+        <a href="#">Реквизиты</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Новым клиентам</h4>
+        <a href="#">Почему мы</a>
+        <a href="#">Зарегистрироваться</a>
+        <a href="#">Доставка и оплата</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Помощь</h4>
+        <a href="#">Вопросы и ответы</a>
+        <a href="#">Карта сайта</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Договор оферты</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Эврика. Все права защищены.</p>
+      <div class="footer-social">
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.976 0C5.364 0 0 5.364 0 11.976c0 5.292 3.432 9.804 8.208 11.376.6.108.816-.264.816-.576v-2.016c-3.348.72-4.044-1.608-4.044-1.608-.552-1.392-1.344-1.764-1.344-1.764-1.092-.744.084-.72.084-.72 1.212.084 1.848 1.236 1.848 1.236 1.08 1.848 2.82 1.308 3.504 1.008.108-.78.42-1.308.756-1.608-2.664-.3-5.46-1.332-5.46-5.928 0-1.308.468-2.376 1.236-3.216-.12-.3-.54-1.524.12-3.168 0 0 1.008-.324 3.3 1.236.96-.264 1.98-.396 3-.396s2.04.132 3 .396c2.292-1.56 3.3-1.236 3.3-1.236.66 1.644.24 2.868.12 3.168.768.84 1.236 1.908 1.236 3.216 0 4.608-2.808 5.616-5.484 5.916.432.372.816 1.104.816 2.22v3.288c0 .316.216.696.828.576C20.568 21.78 24 17.268 24 11.976 24 5.364 18.588 0 11.976 0z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm-3.07 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm5.2-9a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+{# Кнопка «Наверх» #}
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" type="button" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+
+</div>{# /site-content #}
+
+{# Скрипты подвала (из document->getScripts('footer')) #}
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}">
+{% endfor %}
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+
+{# Глобальные методы корзины — должны быть до main.js #}
+<script src="catalog/view/theme/evrika/js/cart.js" type="text/javascript"></script>
+
+{# Основной JS темы #}
+<script src="catalog/view/theme/evrika/js/main.js" type="text/javascript"></script>
+
+</body>
+</html>

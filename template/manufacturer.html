@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бренды и производители — Эврика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/manufacturer.css">
+</head>
+<body>
+<div class="site-content">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,.5)"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="#">Мелитополь</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Адреса складов</a>
+      <div class="topbar-dot"></div>
+      <a href="information.html">Доставка и оплата</a>
+      <div class="topbar-dot"></div>
+      <a href="#">О компании</a>
+      <div class="topbar-dot"></div>
+      <a href="#">Новым клиентам</a>
+    </div>
+    <div class="topbar-right">
+      <a class="phone" href="tel:88001100000">8-800-110-00-00</a>
+      <div class="topbar-dot"></div>
+      <a class="phone" href="tel:74912958000">+7 (4912) 958 000</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wrap">
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">
+          <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+        </div>
+        <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+      </a>
+      <button class="btn-catalog" onclick="openCatalog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+        Каталог
+      </button>
+      <div class="search-wrap">
+        <input type="text" placeholder="Поиск по каталогу — название, артикул, производитель...">
+        <button class="search-btn" aria-label="Найти">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="h-action" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </button>
+        <button class="h-action cart" style="position:relative" aria-label="Корзина">
+          <div class="h-badge">3</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Корзина
+        </button>
+      </div>
+      <button class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Войти
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap"><div class="nav-inner">
+    <a class="nav-link">Скидки месяца</a>
+    <a class="nav-link">Реестр Минпромторга</a>
+    <a class="nav-link">Хит продаж</a>
+    <a class="nav-link">Новинки</a>
+  </div></div>
+</nav>
+
+<!-- MAIN -->
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.html">Главная</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Бренды и производители</span>
+  </nav>
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="mfr-list-head">
+    <h1 class="mfr-list-title">Бренды и производители</h1>
+    <span class="mfr-list-count">48 брендов</span>
+  </div>
+
+  <!-- АЛФАВИТНЫЙ УКАЗАТЕЛЬ -->
+  <div class="mfr-alpha-bar" id="alphaBar">
+    <a class="mfr-alpha-btn active" href="#all">Все</a>
+    <a class="mfr-alpha-btn" href="#A">A</a>
+    <a class="mfr-alpha-btn" href="#B">B</a>
+    <a class="mfr-alpha-btn" href="#C">C</a>
+    <a class="mfr-alpha-btn disabled">D</a>
+    <a class="mfr-alpha-btn" href="#E">E</a>
+    <a class="mfr-alpha-btn disabled">F</a>
+    <a class="mfr-alpha-btn disabled">G</a>
+    <a class="mfr-alpha-btn" href="#H">H</a>
+    <a class="mfr-alpha-btn disabled">I</a>
+    <a class="mfr-alpha-btn disabled">J</a>
+    <a class="mfr-alpha-btn" href="#K">K</a>
+    <a class="mfr-alpha-btn" href="#L">L</a>
+    <a class="mfr-alpha-btn" href="#M">M</a>
+    <a class="mfr-alpha-btn disabled">N</a>
+    <a class="mfr-alpha-btn" href="#O">O</a>
+    <a class="mfr-alpha-btn disabled">P</a>
+    <a class="mfr-alpha-btn disabled">Q</a>
+    <a class="mfr-alpha-btn" href="#R">R</a>
+    <a class="mfr-alpha-btn" href="#S">S</a>
+    <a class="mfr-alpha-btn" href="#T">T</a>
+    <a class="mfr-alpha-btn disabled">U</a>
+    <a class="mfr-alpha-btn disabled">V</a>
+    <a class="mfr-alpha-btn disabled">W</a>
+    <a class="mfr-alpha-btn disabled">X</a>
+    <a class="mfr-alpha-btn disabled">Y</a>
+    <a class="mfr-alpha-btn disabled">Z</a>
+    <a class="mfr-alpha-btn" href="#А">А</a>
+    <a class="mfr-alpha-btn" href="#Б">Б</a>
+    <a class="mfr-alpha-btn" href="#В">В</a>
+    <a class="mfr-alpha-btn" href="#Г">Г</a>
+    <a class="mfr-alpha-btn disabled">Д</a>
+    <a class="mfr-alpha-btn disabled">Е</a>
+    <a class="mfr-alpha-btn disabled">Ж</a>
+    <a class="mfr-alpha-btn disabled">З</a>
+    <a class="mfr-alpha-btn disabled">И</a>
+    <a class="mfr-alpha-btn disabled">К</a>
+    <a class="mfr-alpha-btn disabled">Л</a>
+    <a class="mfr-alpha-btn" href="#М">М</a>
+    <a class="mfr-alpha-btn" href="#Н">Н</a>
+    <a class="mfr-alpha-btn disabled">О</a>
+    <a class="mfr-alpha-btn" href="#П">П</a>
+    <a class="mfr-alpha-btn disabled">Р</a>
+    <a class="mfr-alpha-btn" href="#С">С</a>
+    <a class="mfr-alpha-btn" href="#Т">Т</a>
+    <a class="mfr-alpha-btn disabled">У</a>
+    <a class="mfr-alpha-btn disabled">Ф</a>
+    <a class="mfr-alpha-btn disabled">Х</a>
+    <a class="mfr-alpha-btn disabled">Ц</a>
+    <a class="mfr-alpha-btn disabled">Ч</a>
+    <a class="mfr-alpha-btn" href="#Ш">Ш</a>
+    <a class="mfr-alpha-btn disabled">Щ</a>
+    <a class="mfr-alpha-btn disabled">Э</a>
+    <a class="mfr-alpha-btn disabled">Ю</a>
+    <a class="mfr-alpha-btn disabled">Я</a>
+  </div>
+
+  <div id="all">
+
+    <!-- ГРУППА A -->
+    <div class="mfr-group" id="A">
+      <div class="mfr-group-letter">A</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ATTACHE</div></div>
+          <div class="mfr-card-name">Attache</div>
+          <div class="mfr-card-count">284 товара</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">AVERY</div></div>
+          <div class="mfr-card-name">Avery Dennison</div>
+          <div class="mfr-card-count">56 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА B -->
+    <div class="mfr-group" id="B">
+      <div class="mfr-group-letter">B</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo">
+            <svg viewBox="0 0 120 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="4" y="32" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#1a1a2e">Berlingo</text>
+            </svg>
+          </div>
+          <div class="mfr-card-name">Berlingo</div>
+          <div class="mfr-card-count">1 240 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text" style="color:#e4000f">BIC</div></div>
+          <div class="mfr-card-name">BIC</div>
+          <div class="mfr-card-count">318 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">BRAUBERG</div></div>
+          <div class="mfr-card-name">Brauberg</div>
+          <div class="mfr-card-count">2 156 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА C -->
+    <div class="mfr-group" id="C">
+      <div class="mfr-group-letter">C</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">CENTROPEN</div></div>
+          <div class="mfr-card-name">Centropen</div>
+          <div class="mfr-card-count">192 товара</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">CELLO</div></div>
+          <div class="mfr-card-name">Cello</div>
+          <div class="mfr-card-count">74 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА E -->
+    <div class="mfr-group" id="E">
+      <div class="mfr-group-letter">E</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ERICH KRAUSE</div></div>
+          <div class="mfr-card-name">Erich Krause</div>
+          <div class="mfr-card-count">890 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">EDDING</div></div>
+          <div class="mfr-card-name">Edding</div>
+          <div class="mfr-card-count">143 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА H -->
+    <div class="mfr-group" id="H">
+      <div class="mfr-group-letter">H</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text" style="color:#0096d6">HP</div></div>
+          <div class="mfr-card-name">HP</div>
+          <div class="mfr-card-count">67 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА K -->
+    <div class="mfr-group" id="K">
+      <div class="mfr-group-letter">K</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">KORES</div></div>
+          <div class="mfr-card-name">Kores</div>
+          <div class="mfr-card-count">88 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">KOKUYO</div></div>
+          <div class="mfr-card-name">Kokuyo</div>
+          <div class="mfr-card-count">112 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА L -->
+    <div class="mfr-group" id="L">
+      <div class="mfr-group-letter">L</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">LEITZ</div></div>
+          <div class="mfr-card-name">Leitz</div>
+          <div class="mfr-card-count">204 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА M -->
+    <div class="mfr-group" id="M">
+      <div class="mfr-group-letter">M</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">MAPED</div></div>
+          <div class="mfr-card-name">Maped</div>
+          <div class="mfr-card-count">156 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">MEAD</div></div>
+          <div class="mfr-card-name">Mead</div>
+          <div class="mfr-card-count">43 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА O -->
+    <div class="mfr-group" id="O">
+      <div class="mfr-group-letter">O</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">OFFICESPACE</div></div>
+          <div class="mfr-card-name">OfficeSpace</div>
+          <div class="mfr-card-count">678 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА R -->
+    <div class="mfr-group" id="R">
+      <div class="mfr-group-letter">R</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ROTRING</div></div>
+          <div class="mfr-card-name">Rotring</div>
+          <div class="mfr-card-count">38 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА S -->
+    <div class="mfr-group" id="S">
+      <div class="mfr-group-letter">S</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">STAFF</div></div>
+          <div class="mfr-card-name">Staff</div>
+          <div class="mfr-card-count">1 430 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">STABILO</div></div>
+          <div class="mfr-card-name">Stabilo</div>
+          <div class="mfr-card-count">267 товаров</div>
+        </a>
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">SVETOCOPY</div></div>
+          <div class="mfr-card-name">Svetocopy</div>
+          <div class="mfr-card-count">12 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА T -->
+    <div class="mfr-group" id="T">
+      <div class="mfr-group-letter">T</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">TOMBOW</div></div>
+          <div class="mfr-card-name">Tombow</div>
+          <div class="mfr-card-count">95 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА Б -->
+    <div class="mfr-group" id="Б">
+      <div class="mfr-group-letter">Б</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">БЮРОКРАТ</div></div>
+          <div class="mfr-card-name">Бюрократ</div>
+          <div class="mfr-card-count">542 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА В -->
+    <div class="mfr-group" id="В">
+      <div class="mfr-group-letter">В</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ВЕКТОР</div></div>
+          <div class="mfr-card-name">Вектор</div>
+          <div class="mfr-card-count">88 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА Г -->
+    <div class="mfr-group" id="Г">
+      <div class="mfr-group-letter">Г</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ГАММА</div></div>
+          <div class="mfr-card-name">Гамма</div>
+          <div class="mfr-card-count">176 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА М -->
+    <div class="mfr-group" id="М">
+      <div class="mfr-group-letter">М</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">МАЯК</div></div>
+          <div class="mfr-card-name">Маяк</div>
+          <div class="mfr-card-count">134 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА Н -->
+    <div class="mfr-group" id="Н">
+      <div class="mfr-group-letter">Н</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">НОТИК</div></div>
+          <div class="mfr-card-name">Нотик</div>
+          <div class="mfr-card-count">62 товара</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА П -->
+    <div class="mfr-group" id="П">
+      <div class="mfr-group-letter">П</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ПИФАГОР</div></div>
+          <div class="mfr-card-name">Пифагор</div>
+          <div class="mfr-card-count">318 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА С -->
+    <div class="mfr-group" id="С">
+      <div class="mfr-group-letter">С</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">СВЕТОКОПИ</div></div>
+          <div class="mfr-card-name">Светокопи</div>
+          <div class="mfr-card-count">8 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА Т -->
+    <div class="mfr-group" id="Т">
+      <div class="mfr-group-letter">Т</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ТЕКСТ</div></div>
+          <div class="mfr-card-name">Текст</div>
+          <div class="mfr-card-count">47 товаров</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ГРУППА Ш -->
+    <div class="mfr-group" id="Ш">
+      <div class="mfr-group-letter">Ш</div>
+      <div class="mfr-grid">
+        <a class="mfr-card" href="manufacturer-info.html">
+          <div class="mfr-card-logo"><div class="mfr-logo-text">ШКОЛЬНИК</div></div>
+          <div class="mfr-card-name">Школьник</div>
+          <div class="mfr-card-count">95 товаров</div>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /#all -->
+
+</div><!-- /wrap -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark" style="width:36px;height:36px">
+            <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+          </div>
+          <div class="logo-text">Эврика<span>Канцелярские товары</span></div>
+        </div>
+        <p class="footer-desc">Оптовые и розничные поставки канцелярских товаров с 2009 года.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Покупателям</div>
+        <a href="information.html">Доставка и оплата</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">Возврат товара</a>
+        <a href="#">Гарантии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Компания</div>
+        <a href="#">О нас</a>
+        <a href="#">Контакты</a>
+        <a href="#">Новости</a>
+        <a href="#">Вакансии</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Контакты</div>
+        <a href="tel:88001100000">8-800-110-00-00</a>
+        <a href="tel:74912958000">+7 (4912) 958 000</a>
+        <a href="mailto:info@evrika-shop.ru">info@evrika-shop.ru</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Эврика — Канцелярские товары</span>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /site-content -->
+<script>
+(function () {
+  var btns = document.querySelectorAll('.mfr-alpha-btn:not(.disabled)');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

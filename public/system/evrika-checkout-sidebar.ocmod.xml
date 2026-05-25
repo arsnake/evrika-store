@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika Checkout Sidebar Data</name>
+    <code>evrika-checkout-sidebar</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/checkout.php">
+        <operation>
+            <search><![CDATA[$data['shipping_required'] = $this->cart->hasShipping();]]></search>
+            <add position="after"><![CDATA[$this->load->model('tool/image');
+$co_products = array();
+$co_subtotal  = 0.0;
+foreach ($this->cart->getProducts() as $product) {
+    $unit_price = ($this->customer->isLogged() || !$this->config->get('config_customer_price'))
+        ? (float)$this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'))
+        : 0.0;
+    $co_subtotal += $unit_price * $product['quantity'];
+    $co_products[] = array(
+        'name'     => $product['name'],
+        'quantity' => $product['quantity'],
+        'price'    => $unit_price ? $this->currency->format($unit_price, $this->session->data['currency']) : '',
+        'total'    => $unit_price ? $this->currency->format($unit_price * $product['quantity'], $this->session->data['currency']) : '',
+        'thumb'    => $product['image'] ? $this->model_tool_image->resize($product['image'], 56, 56) : '',
+    );
+}
+$data['co_products']      = $co_products;
+$data['co_product_count'] = count($co_products);
+$data['co_cart_subtotal'] = $co_subtotal > 0 ? $this->currency->format($co_subtotal, $this->session->data['currency']) : '';
+$data['co_cart_url']      = $this->url->link('checkout/cart');
+$data['co_customer_name'] = $this->customer->isLogged()
+    ? trim($this->customer->getFirstName() . ' ' . $this->customer->getLastName()) : '';
+$data['co_customer_email'] = $this->customer->isLogged() ? $this->customer->getEmail() : '';]]></add>
+        </operation>
+    </file>
+
+</modification>
