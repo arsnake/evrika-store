@@ -202,7 +202,7 @@
 // ============================================================
 var SHIPPING_REQUIRED = {% if shipping_required %}true{% else %}false{% endif %};
 var LOGGED = {% if logged %}true{% else %}false{% endif %};
-var _accountType = ''; // 'register' | 'guest' | '' (logged in)
+var _registrant = {}; // {firstname, lastname, email, telephone} — данные из шага 1
 
 // ============================================================
 //  STEP STATE MANAGEMENT
@@ -303,10 +303,15 @@ function _loadShippingMethod() {
 }
 
 function _loadAddressForm() {
+    if (!LOGGED) {
+        // Новый покупатель — адрес не нужен (только самовывоз), пропускаем шаг 3
+        stepSkipped(3);
+        _loadPaymentMethod();
+        return;
+    }
     $('#collapse-payment-address').html('<div style="padding:12px 0;color:var(--ink-60);font-size:13px;">Загрузка...</div>');
-    var route = LOGGED ? 'checkout/payment_address' : ('checkout/' + _accountType);
     $.ajax({
-        url: 'index.php?route=' + route,
+        url: 'index.php?route=checkout/payment_address',
         dataType: 'html',
         success: function(html) { $('#collapse-payment-address').html(html); },
         error: function(xhr, a, e) { showErr('collapse-payment-address', e); }
@@ -374,25 +379,52 @@ $(document).ready(function() {
 });
 
 // ============================================================
-//  BUTTON: Choose account type (register / guest)
+//  BUTTON: Новый покупатель — Continue (шаг 1)
 // ============================================================
-$(document).delegate('#button-account', 'click', function() {
-    _accountType = $('input[name="account"]:checked').val() || 'register';
-    if (_accountType === 'register') {
-        // Перенаправляем на страницу регистрации
-        location.href = 'index.php?route=account/register';
-        return;
+$(document).delegate('#button-new-customer', 'click', function() {
+    var firstname = $.trim($('#input-reg-firstname').val());
+    var lastname  = $.trim($('#input-reg-lastname').val());
+    var email     = $.trim($('#input-reg-email').val());
+    var telephone = $.trim($('#input-reg-telephone').val());
+
+    var valid = true;
+    $('#fg-reg-firstname, #fg-reg-email').removeClass('co-form-error');
+
+    if (!firstname) {
+        $('#fg-reg-firstname').addClass('co-form-error');
+        valid = false;
     }
-    // Гость — продолжаем оформление
-    stepDone(1, 'Гость');
-    if (SHIPPING_REQUIRED) {
-        stepActive(2);
-        _loadShippingMethod();
-    } else {
-        stepSkipped(2);
-        stepActive(3);
-        _loadAddressForm();
+    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        $('#fg-reg-email').addClass('co-form-error');
+        valid = false;
     }
+    if (!valid) return;
+
+    $.ajax({
+        url: 'index.php?route=checkout/auto_register/save',
+        type: 'post',
+        data: { firstname: firstname, lastname: lastname, email: email, telephone: telephone },
+        dataType: 'json',
+        success: function(json) {
+            $('.co-ajax-error').remove();
+            if (json['error']) {
+                if (json['error']['firstname']) $('#fg-reg-firstname').addClass('co-form-error');
+                if (json['error']['email'])     $('#fg-reg-email').addClass('co-form-error');
+                return;
+            }
+            _registrant = { firstname: firstname, lastname: lastname, email: email, telephone: telephone };
+            var name = (firstname + (lastname ? ' ' + lastname : '')).trim();
+            stepDone(1, name + ' · ' + email);
+            if (SHIPPING_REQUIRED) {
+                stepActive(2);
+                _loadShippingMethod();
+            } else {
+                stepSkipped(2);
+                _loadPaymentMethod();
+            }
+        },
+        error: function(xhr, a, e) { showErr('collapse-checkout-option', e); }
+    });
 });
 
 // ============================================================
@@ -581,18 +613,80 @@ $(document).delegate('#button-payment-method', 'click', function() {
             var payLabel = $('#collapse-payment-method input[name="payment_method"]:checked').closest('label').find('.payment-option-name').text().trim() || 'выбрано';
             stepDone(4, payLabel);
             stepActive(5);
-            $.ajax({
-                url: 'index.php?route=checkout/confirm',
-                dataType: 'html',
-                success: function(html) {
-                    $('#collapse-checkout-confirm').html(html);
-                    _updateSidebarTotal();
-                },
-                error: function(xhr, a, e) { showErr('collapse-checkout-confirm', e); }
-            });
+
+            var doLoadConfirm = function() {
+                $.ajax({
+                    url: 'index.php?route=checkout/confirm',
+                    dataType: 'html',
+                    success: function(html) {
+                        $('#collapse-checkout-confirm').html(html);
+                        _updateSidebarTotal();
+                    },
+                    error: function(xhr, a, e) { showErr('collapse-checkout-confirm', e); }
+                });
+            };
+
+            if (!LOGGED) {
+                // Регистрируем нового покупателя перед созданием заказа
+                $.ajax({
+                    url: 'index.php?route=checkout/auto_register/register',
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(json) {
+                        if (json['success']) { LOGGED = true; }
+                        doLoadConfirm();
+                    },
+                    error: function() { doLoadConfirm(); }
+                });
+            } else {
+                doLoadConfirm();
+            }
         },
         error: function(xhr, a, e) { showErr('collapse-payment-method', e); }
     });
+});
+
+// ============================================================
+//  BUTTON: Подтвердить заказ (шаг 5)
+// ============================================================
+$(document).delegate('#button-confirm-order', 'click', function() {
+    var paymentCode = $(this).data('payment-code') || '';
+    if (!paymentCode) {
+        showErr('collapse-checkout-confirm', 'Не выбран способ оплаты');
+        return;
+    }
+    var $btn = $(this).prop('disabled', true);
+    var btnHtml = $btn.html();
+    $btn.html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4"/></svg> Оформляем...');
+
+    $.ajax({
+        url: 'index.php?route=extension/payment/' + paymentCode + '/confirm',
+        type: 'post',
+        dataType: 'json',
+        success: function(json) {
+            if (json['redirect']) {
+                location = json['redirect'];
+            } else if (json['error']) {
+                $btn.prop('disabled', false).html(btnHtml);
+                showErr('collapse-checkout-confirm', json['error']);
+            }
+        },
+        error: function(xhr, a, e) {
+            $btn.prop('disabled', false).html(btnHtml);
+            showErr('collapse-checkout-confirm', e);
+        }
+    });
+});
+
+// ============================================================
+//  AGREE LINK — переопределяем Bootstrap-modal из common.js
+//  на надёжный window.open (Bootstrap modal не работает в теме)
+// ============================================================
+$(document).off('click', '.agree');
+$(document).on('click', '.agree', function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    window.open($(this).attr('href'), 'agree', 'width=720,height=540,scrollbars=yes,resizable=yes,left=200,top=100');
 });
 </script>
 {{ footer }}

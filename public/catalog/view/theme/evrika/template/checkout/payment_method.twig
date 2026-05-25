@@ -5,6 +5,10 @@
 {% if payment_methods %}
 <div class="payment-options" style="margin-bottom:16px;">
   {% for payment_method in payment_methods %}
+
+  {% set is_bank = payment_method.code == 'bank_transfer' %}
+  {% set is_cod  = payment_method.code == 'cod' %}
+
   <label class="payment-option">
     {% if payment_method.code == code or not code %}
     {% set code = payment_method.code %}
@@ -15,16 +19,35 @@
     <div class="payment-option-card">
       <div class="payment-option-radio"></div>
       <div class="payment-option-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        {% if is_cod %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h7a4 4 0 0 1 0 8H6m0-8v16m0-8h9"/></svg>
+        {% else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        {% endif %}
       </div>
       <div class="payment-option-info">
         <div class="payment-option-name">{{ payment_method.title }}</div>
-        {% if payment_method.terms %}
+        {% if is_bank %}
+        <div class="payment-option-desc">Счёт на оплату + платёжное поручение. Для юридических лиц и ИП.</div>
+        {% elseif is_cod %}
+        <div class="payment-option-desc">Оплата наличными при самовывозе или курьерской доставке.</div>
+        {% elseif payment_method.terms %}
         <div class="payment-option-desc">{{ payment_method.terms }}</div>
         {% endif %}
       </div>
+      {% if is_cod %}
+      <div class="payment-option-badge">Рекомендуем</div>
+      {% endif %}
+      {% if is_bank and bank_transfer_details %}
+      <a href="#bank-transfer-details" class="payment-option-link" onclick="event.stopPropagation();event.preventDefault();var d=document.getElementById('bank-transfer-details');d.style.display=d.style.display==='none'?'block':'none';">Инструкция</a>
+      {% endif %}
     </div>
   </label>
+
+  {% if is_bank and bank_transfer_details %}
+  <div id="bank-transfer-details" style="display:none;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-s);padding:12px 14px;margin:-8px 0 8px;line-height:1.6;">{{ bank_transfer_details }}</div>
+  {% endif %}
+
   {% endfor %}
 </div>
 {% else %}
@@ -37,8 +60,8 @@
 </div>
 
 {% if text_agree %}
-<div class="co-agree-wrap" style="margin-bottom:16px;">
-  <label class="co-agree-label">
+<div class="co-agree-wrap" style="margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">
+  <label class="co-agree-label" style="flex-shrink:0;margin-top:2px;">
     {% if agree %}
     <input type="checkbox" name="agree" value="1" checked="checked" />
     {% else %}
@@ -47,8 +70,8 @@
     <span class="co-agree-box">
       <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </span>
-    <span>{{ text_agree }}</span>
   </label>
+  <span style="font-size:13px;color:var(--ink);line-height:1.5;">{{ text_agree }}</span>
 </div>
 {% endif %}
 

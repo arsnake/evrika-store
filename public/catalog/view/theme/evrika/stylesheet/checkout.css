@@ -657,6 +657,23 @@
   white-space: nowrap;
 }
 
+.payment-option-link {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  border: 1px solid var(--primary-mid);
+  border-radius: var(--radius-s);
+  padding: 3px 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.payment-option-link:hover {
+  background: var(--primary-light);
+  text-decoration: none;
+}
+
 /* =============================================
    9. ШАГ ПОДТВЕРЖДЕНИЯ
    ============================================= */

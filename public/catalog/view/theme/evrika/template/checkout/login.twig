@@ -1,6 +1,6 @@
 <div class="co-auth-cols">
 
-  {# ── ПРАВАЯ КОЛОНКА: Вход ── #}
+  {# ── ЛЕВАЯ КОЛОНКА: Вход ── #}
   <div class="co-auth-col">
     <h3 class="co-auth-title">Уже есть аккаунт?</h3>
     <p class="co-auth-desc">Войдите, чтобы использовать сохранённые адреса и историю заказов.</p>
@@ -27,42 +27,35 @@
   {# ── РАЗДЕЛИТЕЛЬ ── #}
   <div class="co-auth-divider"><span>или</span></div>
 
-  {# ── ЛЕВАЯ КОЛОНКА: Новый покупатель ── #}
+  {# ── ПРАВАЯ КОЛОНКА: Новый покупатель ── #}
   <div class="co-auth-col">
     <h3 class="co-auth-title">Новый покупатель</h3>
-    <p class="co-auth-desc">Зарегистрируйтесь для доступа к истории заказов и персональным ценам, или оформите заказ как гость.</p>
+    <p class="co-auth-desc">Заполните данные для оформления заказа. Личный кабинет будет создан автоматически.</p>
 
-    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;">
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink);padding:8px 10px;border-radius:var(--radius-s);transition:background .15s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
-        {% if account == 'register' %}
-        <input type="radio" name="account" value="register" checked="checked" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
-        {% else %}
-        <input type="radio" name="account" value="register" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
-        {% endif %}
-        <span>Зарегистрироваться</span>
-      </label>
-
-      {% if checkout_guest %}
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink);padding:8px 10px;border-radius:var(--radius-s);transition:background .15s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
-        {% if account == 'guest' %}
-        <input type="radio" name="account" value="guest" checked="checked" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
-        {% else %}
-        <input type="radio" name="account" value="guest" style="accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;cursor:pointer;" />
-        {% endif %}
-        <span>Оформить как гость</span>
-      </label>
-      {% endif %}
+    <div class="co-form-grid--2" style="margin-bottom:0;">
+      <div class="co-form-group" id="fg-reg-firstname">
+        <label for="input-reg-firstname">Имя <span class="co-req">*</span></label>
+        <input type="text" id="input-reg-firstname" name="reg_firstname" placeholder="Иван" autocomplete="given-name" />
+      </div>
+      <div class="co-form-group" id="fg-reg-lastname">
+        <label for="input-reg-lastname">Фамилия</label>
+        <input type="text" id="input-reg-lastname" name="reg_lastname" placeholder="Иванов" autocomplete="family-name" />
+      </div>
     </div>
 
-    <button type="button" id="button-account" class="btn btn-primary" style="width:100%;">
+    <div class="co-form-group" id="fg-reg-email">
+      <label for="input-reg-email">E-mail <span class="co-req">*</span></label>
+      <input type="text" id="input-reg-email" name="reg_email" placeholder="your@email.com" autocomplete="email" />
+    </div>
+
+    <div class="co-form-group" id="fg-reg-telephone">
+      <label for="input-reg-telephone">Телефон</label>
+      <input type="text" id="input-reg-telephone" name="reg_telephone" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
+    </div>
+
+    <button type="button" id="button-new-customer" class="btn btn-primary" style="width:100%;margin-top:4px;">
       Продолжить
     </button>
-
-    {% if checkout_guest %}
-    <button type="button" id="button-account-guest-shortcut" class="co-guest-btn" onclick="$('input[name=\'account\'][value=\'guest\']').prop('checked',true);$('#button-account').trigger('click');">
-      Оформить без регистрации
-    </button>
-    {% endif %}
   </div>
 
 </div>

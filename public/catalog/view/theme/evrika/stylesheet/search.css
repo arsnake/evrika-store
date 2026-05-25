@@ -1,0 +1,106 @@
+/* ================================================================
+   search.css — Evrika search results page
+   Requires: category.css (products-row-3, sort-bar, filter-sidebar, etc.)
+================================================================ */
+
+/* ── Заголовок поиска ── */
+.srch-head { align-items: center; }
+
+.cat-page-title em {
+  font-style: normal;
+  color: var(--primary);
+}
+
+/* ── Категории в сайдбаре ── */
+.srch-cats-sidebar {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--ink-10);
+}
+
+.srch-cats-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 8px;
+}
+
+.srch-cat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.srch-cat-list li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--ink-80);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+
+.srch-cat-list li a:hover {
+  background: var(--ink-05, #f5f5f5);
+  color: var(--ink);
+}
+
+.srch-cat-list li.active a {
+  background: var(--primary-10, #e8f5ee);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.srch-cat-list li a span {
+  font-size: 11px;
+  color: var(--ink-40);
+  background: var(--ink-10);
+  border-radius: 10px;
+  padding: 1px 7px;
+  line-height: 18px;
+  flex-shrink: 0;
+}
+
+.srch-cat-list li.active a span {
+  background: var(--primary-20, #c6e9d4);
+  color: var(--primary);
+}
+
+/* ── Пустое состояние поиска ── */
+.srch-empty {
+  padding: 48px 24px 40px;
+  text-align: center;
+}
+
+.srch-empty-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 16px auto 20px;
+  max-width: 320px;
+  text-align: left;
+}
+
+.srch-empty-tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-60);
+}
+
+.srch-empty-tip svg { color: var(--primary); flex-shrink: 0; }
+
+/* ── Адаптив ── */
+@media (max-width: 600px) {
+  .srch-cats-sidebar { padding: 12px 12px 8px; }
+  .srch-empty { padding: 32px 16px 28px; }
+}

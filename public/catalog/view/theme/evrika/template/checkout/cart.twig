@@ -35,6 +35,92 @@
   </div>
 
   {# ================================================================
+     ПУСТАЯ КОРЗИНА
+     ================================================================ #}
+  {% if not products %}
+  <div class="cart-empty-page">
+
+    <div class="cart-empty-hero">
+      <div class="cart-empty-icon-wrap">
+        <svg width="64" height="64" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+          <circle cx="48" cy="48" r="44" fill="var(--primary-light)"/>
+          <path d="M28 36h4l6 24h20l4-16H36" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="42" cy="64" r="2.5" fill="var(--primary)"/>
+          <circle cx="56" cy="64" r="2.5" fill="var(--primary)"/>
+          <path d="M44 46h12" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1 class="cart-empty-title">Корзина пуста</h1>
+      <p class="cart-empty-sub">Добавьте товары из каталога, чтобы оформить заказ</p>
+      <a href="{{ continue }}" class="btn-primary cart-empty-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        Перейти в каталог
+      </a>
+    </div>
+
+    <div class="cart-empty-hints">
+      <div class="cart-empty-hint">
+        <div class="cart-empty-hint-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <strong>Самовывоз</strong>
+          <span>Заберите заказ со склада бесплатно</span>
+        </div>
+      </div>
+      <div class="cart-empty-hint">
+        <div class="cart-empty-hint-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div>
+          <strong>Доставка по РФ</strong>
+          <span>Отправляем в любой регион</span>
+        </div>
+      </div>
+      <div class="cart-empty-hint">
+        <div class="cart-empty-hint-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <strong>Безопасная оплата</strong>
+          <span>Банковский перевод или наличные</span>
+        </div>
+      </div>
+      <div class="cart-empty-hint">
+        <div class="cart-empty-hint-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16l.42.92z"/></svg>
+        </div>
+        <div>
+          <strong>Поддержка 24/7</strong>
+          <span>Ответим на любой вопрос</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# Рекомендуемые товары даже при пустой корзине #}
+  {% if content_bottom %}
+  <section class="cart-recommend" aria-label="Рекомендуем добавить">
+    <div class="section-head">
+      <h2 class="section-title">Рекомендуем добавить</h2>
+      <a class="section-more" href="{{ continue }}">Смотреть все →</a>
+    </div>
+    <div class="recommend-slider-wrap">
+      <button class="rec-slider-prev" aria-label="Назад" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="recommend-slider">{{ content_bottom }}</div>
+      <button class="rec-slider-next" aria-label="Вперёд" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </section>
+  {% endif %}
+
+  {% else %}
+
+  {# ================================================================
      ОСНОВНОЙ ЛЕЙАУТ — список товаров + сводка
      ================================================================ #}
   <div class="cart-layout" id="cartLayout">
@@ -221,6 +307,8 @@
     </div>
   </section>
   {% endif %}
+
+  {% endif %}{# /{% if not products %} ... {% else %} ... #}
 
 </div><!-- /wrap -->
 </main>

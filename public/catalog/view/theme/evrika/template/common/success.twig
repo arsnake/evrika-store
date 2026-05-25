@@ -1,0 +1,266 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/success.css">
+<main>
+<div class="wrap">
+
+  {# ── ХЛЕБНЫЕ КРОШКИ ── #}
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    {% for breadcrumb in breadcrumbs %}
+      {% if loop.last %}
+        <span class="bc-current" aria-current="page">Заказ принят</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{% if loop.first %}Главная{% else %}{{ breadcrumb.text }}{% endif %}</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+      {% endif %}
+    {% endfor %}
+  </nav>
+
+  {% if success_order_id %}
+
+  <div class="cs-layout">
+
+    {# ── ЛЕВАЯ КОЛОНКА ── #}
+    <div class="cs-main">
+
+      {# HERO #}
+      <div class="cs-hero">
+        <div class="cs-hero-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="36" height="36">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <div class="cs-hero-text">
+          <h1 class="cs-hero-title">Заказ #{{ success_order_id }} принят!</h1>
+          <p class="cs-hero-sub">Мы получили ваш заказ и уже обрабатываем его.{% if success_email %} Подтверждение отправлено на <strong>{{ success_email }}</strong>{% endif %}</p>
+        </div>
+      </div>
+
+      {# ДЕТАЛИ ЗАКАЗА #}
+      <div class="cs-card">
+        <h2 class="cs-card-title">Детали заказа</h2>
+        <div class="cs-details-grid">
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Номер заказа</span>
+            <span class="cs-detail-val">#{{ success_order_id }}</span>
+          </div>
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Дата оформления</span>
+            <span class="cs-detail-val">{{ success_date }}</span>
+          </div>
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Способ доставки</span>
+            <span class="cs-detail-val">{{ success_shipping ?: '—' }}</span>
+          </div>
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Адрес доставки</span>
+            <span class="cs-detail-val">
+              {% if success_is_pickup %}Самовывоз{% elseif success_shipping_addr %}{{ success_shipping_addr }}{% else %}—{% endif %}
+            </span>
+          </div>
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Способ оплаты</span>
+            <span class="cs-detail-val">{{ success_payment ?: '—' }}</span>
+          </div>
+
+          <div class="cs-detail">
+            <span class="cs-detail-label">Статус</span>
+            <span class="cs-detail-val cs-detail-val--status">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              {{ success_order_status ?: 'В обработке' }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      {# СОСТАВ ЗАКАЗА #}
+      {% if success_products %}
+      <div class="cs-card">
+        <h2 class="cs-card-title">Состав заказа</h2>
+
+        <div class="cs-items">
+          {% for product in success_products %}
+          <div class="cs-item">
+            <div class="cs-item-img">
+              {% if product.thumb %}
+                <img src="{{ product.thumb }}" alt="{{ product.name }}">
+              {% else %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              {% endif %}
+            </div>
+            <div class="cs-item-info">
+              <div class="cs-item-name">{{ product.name }}</div>
+              {% if product.model %}
+              <div class="cs-item-meta">Арт. {{ product.model }}</div>
+              {% endif %}
+            </div>
+            <div class="cs-item-qty">{{ product.quantity }} шт.</div>
+            <div class="cs-item-price">{{ product.total }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if success_totals %}
+        <div class="cs-totals">
+          {% for total in success_totals %}
+          <div class="cs-total-row{% if total.last %} cs-total-row--final{% endif %}">
+            <span>{{ total.title }}</span>
+            <span>{{ total.text }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+
+      {# ЧТО ДАЛЬШЕ #}
+      <div class="cs-card cs-next-steps">
+        <h2 class="cs-card-title">Что дальше?</h2>
+        <div class="cs-steps">
+          <div class="cs-step">
+            <div class="cs-step-num">1</div>
+            <div class="cs-step-body">
+              <strong>Подтверждение по email</strong>
+              <span>Письмо с деталями заказа уже отправлено на вашу почту</span>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">2</div>
+            <div class="cs-step-body">
+              <strong>Обработка заказа</strong>
+              <span>Менеджер свяжется с вами в течение 2 часов в рабочее время</span>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">3</div>
+            <div class="cs-step-body">
+              <strong>Отправка</strong>
+              <span>После отправки вы получите трек-номер для отслеживания</span>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">4</div>
+            <div class="cs-step-body">
+              <strong>Доставка</strong>
+              <span>Курьер доставит заказ по указанному адресу или вы заберёте самовывозом</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# КНОПКИ #}
+      <div class="cs-actions">
+        <a href="{{ success_orders_link }}" class="btn-primary cs-btn-orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Мои заказы
+        </a>
+        <a href="{{ continue }}" class="btn-outline cs-btn-catalog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          Продолжить покупки
+        </a>
+      </div>
+
+    </div>{# /cs-main #}
+
+    {# ── ПРАВАЯ КОЛОНКА (ASIDE) ── #}
+    <aside class="cs-aside">
+
+      {# СТАТУС ЗАКАЗА #}
+      <div class="cs-aside-card">
+        <h3 class="cs-aside-title">Статус заказа</h3>
+        <div class="cs-status-track">
+          <div class="cs-status-item cs-status--done">
+            <div class="cs-status-dot"></div>
+            <div class="cs-status-body">
+              <strong>Заказ принят</strong>
+              <span>{{ success_date }}</span>
+            </div>
+          </div>
+          <div class="cs-status-line cs-status-line--done"></div>
+          <div class="cs-status-item cs-status--active">
+            <div class="cs-status-dot"></div>
+            <div class="cs-status-body">
+              <strong>Обрабатывается</strong>
+              <span>Ожидайте звонка менеджера</span>
+            </div>
+          </div>
+          <div class="cs-status-line"></div>
+          <div class="cs-status-item">
+            <div class="cs-status-dot"></div>
+            <div class="cs-status-body">
+              <strong>Отправлен</strong>
+              <span>Ожидается</span>
+            </div>
+          </div>
+          <div class="cs-status-line"></div>
+          <div class="cs-status-item">
+            <div class="cs-status-dot"></div>
+            <div class="cs-status-body">
+              <strong>Доставлен</strong>
+              <span>Ожидается</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# КОНТАКТЫ #}
+      <div class="cs-aside-card">
+        <h3 class="cs-aside-title">Есть вопросы?</h3>
+        <div class="cs-contacts">
+          {% if success_phone %}
+          <a href="tel:{{ success_phone|replace({' ': '', '-': '', '(': '', ')': '', '+': ''}) }}" class="cs-contact-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16l.42.92z"/></svg>
+            <div>
+              <div class="cs-contact-label">Телефон</div>
+              <div class="cs-contact-val">{{ success_phone }}</div>
+            </div>
+          </a>
+          {% endif %}
+          {% if success_store_open %}
+          <div class="cs-contact-hours">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            {{ success_store_open }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# ДОКУМЕНТЫ #}
+      <div class="cs-aside-card">
+        <h3 class="cs-aside-title">Документы</h3>
+        <div class="cs-docs">
+          <button class="cs-doc-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Счёт на оплату (PDF)
+          </button>
+          <button class="cs-doc-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Подтверждение заказа (PDF)
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>{# /cs-layout #}
+
+  {% else %}
+
+  {# FALLBACK — если заходят напрямую без заказа #}
+  <div style="text-align:center;padding:60px 0;">
+    <h1 style="font-family:var(--font-display);font-size:24px;margin-bottom:16px;">{{ heading_title }}</h1>
+    <p style="color:var(--ink-60);max-width:480px;margin:0 auto 24px;">{{ text_message }}</p>
+    <a href="{{ continue }}" class="btn-primary">Продолжить покупки</a>
+  </div>
+
+  {% endif %}
+
+</div>{# /wrap #}
+</main>
+{{ footer }}

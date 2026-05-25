@@ -1,16 +1,50 @@
 {% if not redirect %}
 
+{# ── CO-CONFIRM-GRID — всегда 4 блока ── #}
+<div class="co-confirm-grid">
+
+  <div class="co-confirm-block">
+    <div class="co-confirm-label">Получатель</div>
+    <div class="co-confirm-val">{{ confirm_recipient ?: '—' }}</div>
+    {% if confirm_contact %}<div class="co-confirm-sub">{{ confirm_contact }}</div>{% endif %}
+  </div>
+
+  <div class="co-confirm-block">
+    <div class="co-confirm-label">Адрес доставки</div>
+    {% if confirm_is_pickup %}
+    <div class="co-confirm-val">Самовывоз — адрес не требуется</div>
+    {% else %}
+    <div class="co-confirm-val">{{ confirm_shipping_address ?: '—' }}</div>
+    {% endif %}
+  </div>
+
+  <div class="co-confirm-block">
+    <div class="co-confirm-label">Способ доставки</div>
+    <div class="co-confirm-val">{{ confirm_shipping ?: '—' }}</div>
+    {% if confirm_is_pickup and confirm_store_address %}
+    <div class="co-confirm-sub">{{ confirm_store_address }}</div>
+    {% endif %}
+  </div>
+
+  <div class="co-confirm-block">
+    <div class="co-confirm-label">Способ оплаты</div>
+    <div class="co-confirm-val">{{ confirm_payment ?: '—' }}</div>
+    {% if confirm_payment_sub %}<div class="co-confirm-sub">{{ confirm_payment_sub }}</div>{% endif %}
+  </div>
+
+</div>
+
 {# ── ТОВАРЫ ── #}
 <div class="co-confirm-items" style="margin-bottom:16px;">
-  <div class="co-confirm-items-title">Товары в заказе</div>
+  <div class="co-confirm-items-title">Товары в заказе ({{ products|length }} {% if products|length == 1 %}позиция{% elseif products|length >= 2 and products|length <= 4 %}позиции{% else %}позиций{% endif %})</div>
 
   {% for product in products %}
   <div class="co-confirm-item">
     <div class="co-confirm-item-img">
       {% if product.thumb %}
-        <img src="{{ product.thumb }}" alt="{{ product.name }}" width="44" height="44" style="object-fit:contain;border-radius:var(--radius-s);">
+        <img src="{{ product.thumb }}" alt="{{ product.name }}" width="56" height="56" style="object-fit:contain;border-radius:var(--radius-s);">
       {% else %}
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--ink-30)"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--ink-30)"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
       {% endif %}
     </div>
     <div class="co-confirm-item-info">
@@ -22,7 +56,7 @@
       <div class="co-confirm-item-sku">{{ option.name }}: {{ option.value }}</div>
       {% endfor %}
     </div>
-    <div class="co-confirm-item-qty">× {{ product.quantity }}</div>
+    <div class="co-confirm-item-qty">{{ product.quantity }} шт.</div>
     <div class="co-confirm-item-total">{{ product.total }}</div>
   </div>
   {% endfor %}
@@ -30,12 +64,12 @@
   {% for voucher in vouchers %}
   <div class="co-confirm-item">
     <div class="co-confirm-item-img">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--ink-30)"><path d="M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7"/><path d="M21 5H3v7h18V5z"/><path d="M12 5v7"/></svg>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--ink-30)"><path d="M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7"/><path d="M21 5H3v7h18V5z"/><path d="M12 5v7"/></svg>
     </div>
     <div class="co-confirm-item-info">
       <div class="co-confirm-item-name">{{ voucher.description }}</div>
     </div>
-    <div class="co-confirm-item-qty">× 1</div>
+    <div class="co-confirm-item-qty">1 шт.</div>
     <div class="co-confirm-item-total">{{ voucher.amount }}</div>
   </div>
   {% endfor %}
@@ -53,8 +87,13 @@
 </div>
 {% endif %}
 
-{# ── ФОРМА ОПЛАТЫ (кнопка "Оформить заказ" приходит отсюда) ── #}
-{{ payment }}
+{# ── КНОПКА ПОДТВЕРДИТЬ ── #}
+<div class="co-step-actions" style="margin-top:20px;">
+  <button type="button" id="button-confirm-order" class="btn-accent co-btn-confirm" data-payment-code="{{ payment_code }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    Подтвердить заказ
+  </button>
+</div>
 
 {% else %}
 <script type="text/javascript">

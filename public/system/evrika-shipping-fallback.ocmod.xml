@@ -21,8 +21,19 @@
 				}
 				if (empty($this->session->data['shipping_address'])) {
 					$this->session->data['shipping_address'] = array(
-						'country_id' => (int)$this->config->get('config_country_id'),
-						'zone_id'    => (int)$this->config->get('config_zone_id'),
+						'firstname'      => '',
+						'lastname'       => '',
+						'company'        => '',
+						'address_1'      => '',
+						'address_2'      => '',
+						'city'           => '',
+						'postcode'       => '',
+						'zone'           => '',
+						'zone_id'        => (int)$this->config->get('config_zone_id'),
+						'country'        => '',
+						'country_id'     => (int)$this->config->get('config_country_id'),
+						'address_format' => '',
+						'custom_field'   => array(),
 					);
 				}
 			}

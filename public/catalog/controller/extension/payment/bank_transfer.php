@@ -9,8 +9,9 @@ class ControllerExtensionPaymentBankTransfer extends Controller {
 	}
 
 	public function confirm() {
+		ob_start();
 		$json = array();
-		
+
 		if (isset($this->session->data['payment_method']['code']) && $this->session->data['payment_method']['code'] == 'bank_transfer') {
 			$this->load->language('extension/payment/bank_transfer');
 
@@ -21,11 +22,12 @@ class ControllerExtensionPaymentBankTransfer extends Controller {
 			$comment .= $this->language->get('text_payment');
 
 			$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_bank_transfer_order_status_id'), $comment, true);
-		
+
 			$json['redirect'] = $this->url->link('checkout/success');
 		}
-		
+
+		ob_end_clean();
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));		
+		$this->response->setOutput(json_encode($json));
 	}
 }

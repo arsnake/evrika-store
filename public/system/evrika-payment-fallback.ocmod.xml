@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika Payment Fallback Address</name>
+    <code>evrika-payment-fallback</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/payment_method.php">
+
+        <!-- Patch 1: pre-populate session payment_address in index() when step 3 is skipped (pickup) -->
+        <operation>
+            <search><![CDATA[if (isset($this->session->data['payment_address'])) {]]></search>
+            <add position="before"><![CDATA[if (!isset($this->session->data['payment_address'])) {
+				if ($this->customer->isLogged() && $this->customer->getAddressId()) {
+					$this->load->model('account/address');
+					$addr = $this->model_account_address->getAddress($this->customer->getAddressId());
+					if ($addr) {
+						$this->session->data['payment_address'] = $addr;
+					}
+				}
+				if (empty($this->session->data['payment_address'])) {
+					$this->session->data['payment_address'] = array(
+						'firstname'      => '',
+						'lastname'       => '',
+						'company'        => '',
+						'address_1'      => '',
+						'address_2'      => '',
+						'city'           => '',
+						'postcode'       => '',
+						'zone'           => '',
+						'zone_id'        => (int)$this->config->get('config_zone_id'),
+						'country'        => '',
+						'country_id'     => (int)$this->config->get('config_country_id'),
+						'address_format' => '',
+						'custom_field'   => array(),
+					);
+				}
+			}
+]]></add>
+        </operation>
+
+        <!-- Patch 2: remove save() redirect when payment_address was set by fallback -->
+        <operation>
+            <search><![CDATA[// Validate if payment address has been set.]]></search>
+            <add position="replace" offset="3" trim="true"><![CDATA[// Validate if payment address has been set. (skipped: always set by evrika-payment-fallback)]]></add>
+        </operation>
+
+        <!-- Patch 3: pass bank_transfer details to template -->
+        <operation>
+            <search><![CDATA[$this->response->setOutput($this->load->view('checkout/payment_method', $data));]]></search>
+            <add position="before"><![CDATA[$data['bank_transfer_details'] = $this->config->get('payment_bank_transfer_bank1');
+]]></add>
+        </operation>
+
+    </file>
+
+</modification>
