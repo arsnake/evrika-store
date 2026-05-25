@@ -1,0 +1,193 @@
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/auth.css">
+
+<nav class="breadcrumb" aria-label="Хлебные крошки">
+  {% for breadcrumb in breadcrumbs %}
+    {% if loop.first %}
+      <a href="{{ breadcrumb.href }}">Главная</a>
+    {% else %}
+      <span class="bc-sep">›</span>
+      {% if loop.last %}
+        <span class="bc-current">{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</nav>
+
+<div class="auth-layout">
+
+  <!-- ── ФОРМА ── -->
+  <div class="auth-card">
+
+    <!-- Вкладки: Войти / Регистрация -->
+    <div class="auth-page-tabs">
+      <a href="{{ login }}" class="auth-ptab">Войти</a>
+      <button type="button" class="auth-ptab auth-ptab--active">Регистрация</button>
+    </div>
+
+    <!-- ══ ФОРМА РЕГИСТРАЦИИ ══ -->
+    <div class="auth-card-head">
+      <div class="auth-logo-mark">
+        <svg viewBox="0 0 44 44" fill="none"><text x="22" y="32" font-size="28" font-weight="700" text-anchor="middle" fill="#fff" font-family="Georgia,serif">Э</text></svg>
+      </div>
+      <h1 class="auth-title">Создать аккаунт</h1>
+      <p class="auth-sub">Зарегистрируйтесь, чтобы получить доступ к личному кабинету и специальным ценам</p>
+    </div>
+
+    {% if error_warning %}
+    <div class="auth-form-err">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>{{ error_warning }}</span>
+    </div>
+    {% endif %}
+
+    <form action="{{ action }}" method="post">
+
+      <fieldset class="reg-section">
+        <legend class="reg-section-title">Личные данные</legend>
+        <div class="reg-grid">
+          <div class="auth-field">
+            <label class="auth-label" for="regLastName">Фамилия <span class="req">*</span></label>
+            <input class="auth-input{% if error_lastname %} is-err{% endif %}" type="text" id="regLastName" name="lastname"
+                   value="{{ lastname }}" placeholder="Иванов" autocomplete="family-name">
+            {% if error_lastname %}<span class="auth-field-err">{{ error_lastname }}</span>{% endif %}
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="regFirstName">Имя <span class="req">*</span></label>
+            <input class="auth-input{% if error_firstname %} is-err{% endif %}" type="text" id="regFirstName" name="firstname"
+                   value="{{ firstname }}" placeholder="Иван" autocomplete="given-name">
+            {% if error_firstname %}<span class="auth-field-err">{{ error_firstname }}</span>{% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="reg-section">
+        <legend class="reg-section-title">Контактные данные</legend>
+        <div class="reg-grid">
+          <div class="auth-field">
+            <label class="auth-label" for="regEmail">Email <span class="req">*</span></label>
+            <input class="auth-input{% if error_email %} is-err{% endif %}" type="email" id="regEmail" name="email"
+                   value="{{ email }}" placeholder="example@mail.ru" autocomplete="email">
+            {% if error_email %}<span class="auth-field-err">{{ error_email }}</span>{% endif %}
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="regPhone">Телефон <span class="req">*</span></label>
+            <input class="auth-input{% if error_telephone %} is-err{% endif %}" type="tel" id="regPhone" name="telephone"
+                   value="{{ telephone }}" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+            {% if error_telephone %}<span class="auth-field-err">{{ error_telephone }}</span>{% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="reg-section">
+        <legend class="reg-section-title">Пароль</legend>
+        <div class="reg-grid">
+          <div class="auth-field">
+            <label class="auth-label" for="regPassword">Пароль <span class="req">*</span></label>
+            <div class="auth-input-wrap">
+              <input class="auth-input{% if error_password %} is-err{% endif %}" type="password" id="regPassword" name="password"
+                     placeholder="Минимум 8 символов" autocomplete="new-password">
+              <button type="button" class="auth-eye" data-eye="regPassword" aria-label="Показать пароль">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            {% if error_password %}<span class="auth-field-err">{{ error_password }}</span>{% endif %}
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="regConfirm">Подтвердите пароль <span class="req">*</span></label>
+            <div class="auth-input-wrap">
+              <input class="auth-input{% if error_confirm %} is-err{% endif %}" type="password" id="regConfirm" name="confirm"
+                     placeholder="Повторите пароль" autocomplete="new-password">
+              <button type="button" class="auth-eye" data-eye="regConfirm" aria-label="Показать пароль">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            {% if error_confirm %}<span class="auth-field-err">{{ error_confirm }}</span>{% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="reg-agree">
+        <label class="auth-checkbox-row">
+          <input type="checkbox" name="newsletter" value="1" class="auth-checkbox-input" {% if newsletter %}checked{% endif %}>
+          <span class="auth-checkbox-box"></span>
+          <span class="auth-checkbox-lbl">Получать информацию об акциях и новых поступлениях</span>
+        </label>
+        <label class="auth-checkbox-row">
+          <input type="checkbox" id="agreeTerms" class="auth-checkbox-input" required>
+          <span class="auth-checkbox-box"></span>
+          <span class="auth-checkbox-lbl">
+            Я принимаю условия пользовательского соглашения <span class="req">*</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="reg-actions">
+        <button type="submit" class="auth-submit btn-primary">Создать аккаунт</button>
+        <p class="reg-login-hint">Уже есть аккаунт? <a class="auth-link" href="{{ login }}">Войти</a></p>
+      </div>
+    </form>
+
+  </div><!-- /auth-card -->
+
+  <!-- ── ПРАВАЯ КОЛОНКА ── -->
+  <div class="auth-aside">
+    <h2 class="auth-aside-title">Зачем регистрироваться?</h2>
+    <p class="auth-aside-desc">Получите доступ к личному кабинету, специальным ценам и удобному управлению заказами</p>
+
+    <ul class="auth-benefits">
+      <li class="auth-benefit">
+        <div class="auth-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div>
+          <strong>История заказов</strong>
+          <span>Все ваши заказы и документы в одном месте</span>
+        </div>
+      </li>
+      <li class="auth-benefit">
+        <div class="auth-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div>
+          <strong>Список избранного</strong>
+          <span>Сохраняйте товары и возвращайтесь к ним</span>
+        </div>
+      </li>
+      <li class="auth-benefit">
+        <div class="auth-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <strong>Быстрое оформление</strong>
+          <span>Сохранённые адреса и данные для оплаты</span>
+        </div>
+      </li>
+      <li class="auth-benefit">
+        <div class="auth-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div>
+          <strong>Персональные скидки</strong>
+          <span>Специальные цены и акции для постоянных клиентов</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="auth-aside-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Данные защищены и не передаются третьим лицам
+    </div>
+  </div>
+
+</div><!-- /auth-layout -->
+
+<script>
+document.querySelectorAll('.auth-eye[data-eye]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var inp = document.getElementById(btn.dataset.eye);
+    if (inp) inp.type = (inp.type === 'password') ? 'text' : 'password';
+  });
+});
+</script>
