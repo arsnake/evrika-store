@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Search Filters — price, manufacturer, categories</name>
+    <code>evrika-search-filters</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет в catalog/controller/product/search.php:
+          - Чтение GET-параметров: price_min, price_max, manufacturer_id
+          - Передачу фильтров в filter_data (модель уже поддерживает filter_price_min/max
+            через OCMod evrika-category-price-filter, и filter_manufacturer_id нативно)
+          - Запрос диапазона цен для текущего поискового запроса
+          - Запрос списка производителей из результатов поиска
+          - Список категорий с товарами из результатов поиска (с href и флагом active)
+          - Base URL для JS-фильтра
+
+        Точка вставки: перед $product_total = ... (уникальная строка внутри if-блока).
+    -->
+
+    <file path="catalog/controller/product/search.php">
+        <operation>
+            <search><![CDATA[$product_total = $this->model_catalog_product->getTotalProducts($filter_data);]]></search>
+            <add position="before"><![CDATA[
+			// ── Evrika: search filters ──
+			$_sf_price_min = isset($this->request->get['price_min']) ? (float)$this->request->get['price_min'] : null;
+			$_sf_price_max = isset($this->request->get['price_max']) ? (float)$this->request->get['price_max'] : null;
+			$_sf_manuf_id  = isset($this->request->get['manufacturer_id']) ? (int)$this->request->get['manufacturer_id'] : 0;
+
+			if ($_sf_price_min !== null) $filter_data['filter_price_min'] = $_sf_price_min;
+			if ($_sf_price_max !== null) $filter_data['filter_price_max'] = $_sf_price_max;
+			if ($_sf_manuf_id  >  0)     $filter_data['filter_manufacturer_id'] = $_sf_manuf_id;
+
+			$_sf_lang  = (int)$this->config->get('config_language_id');
+			$_sf_store = (int)$this->config->get('config_store_id');
+			$_sf_esc   = $this->db->escape($search);
+
+			$_sf_from  = "`" . DB_PREFIX . "product` p"
+				. " LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id AND pd.language_id = '" . $_sf_lang . "')"
+				. " LEFT JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p.product_id = p2s.product_id AND p2s.store_id = '" . $_sf_store . "')";
+
+			$_sf_where = "p.status = '1'";
+			if ($search) {
+				$_sf_where .= " AND (pd.name LIKE '%" . $_sf_esc . "%' OR p.model LIKE '%" . $_sf_esc . "%' OR pd.description LIKE '%" . $_sf_esc . "%')";
+			}
+			if ($category_id) {
+				if ($sub_category) {
+					$_sf_where .= " AND p.product_id IN (SELECT _p2c.product_id FROM `" . DB_PREFIX . "product_to_category` _p2c LEFT JOIN `" . DB_PREFIX . "category_path` _cp ON (_p2c.category_id = _cp.category_id) WHERE _cp.path_id = '" . (int)$category_id . "')";
+				} else {
+					$_sf_where .= " AND p.product_id IN (SELECT _p2c.product_id FROM `" . DB_PREFIX . "product_to_category` _p2c WHERE _p2c.category_id = '" . (int)$category_id . "')";
+				}
+			}
+
+			// Price range
+			$_sf_pr = $this->db->query("SELECT MIN(p.price) AS mn, MAX(p.price) AS mx FROM " . $_sf_from . " WHERE " . $_sf_where);
+			$_sf_pmin = (isset($_sf_pr->row['mn']) && $_sf_pr->row['mn'] !== null) ? (float)$_sf_pr->row['mn'] : 0;
+			$_sf_pmax = (isset($_sf_pr->row['mx']) && $_sf_pr->row['mx'] !== null) ? (float)$_sf_pr->row['mx'] : 0;
+			$data['price_range_min']   = (int)floor($_sf_pmin);
+			$data['price_range_max']   = (int)ceil($_sf_pmax);
+			$data['price_sel_min']     = ($_sf_price_min !== null) ? (int)$_sf_price_min : (int)floor($_sf_pmin);
+			$data['price_sel_max']     = ($_sf_price_max !== null) ? (int)$_sf_price_max : (int)ceil($_sf_pmax);
+			$data['show_price_filter'] = ($_sf_pmax > $_sf_pmin);
+
+			// Manufacturers in results
+			$_sf_mr = $this->db->query(
+				"SELECT DISTINCT m.manufacturer_id, m.name"
+				. " FROM `" . DB_PREFIX . "manufacturer` m"
+				. " INNER JOIN " . $_sf_from . " ON p.manufacturer_id = m.manufacturer_id"
+				. " WHERE " . $_sf_where . " AND m.manufacturer_id > 0"
+				. " ORDER BY m.name ASC"
+			);
+			$data['search_manufacturers']  = $_sf_mr->rows;
+			$data['search_manufacturer_id'] = $_sf_manuf_id;
+
+			// Categories that have matching products
+			$_sf_cr = $this->db->query(
+				"SELECT DISTINCT c.category_id, cd.name"
+				. " FROM `" . DB_PREFIX . "category` c"
+				. " LEFT JOIN `" . DB_PREFIX . "category_description` cd ON (c.category_id = cd.category_id AND cd.language_id = '" . $_sf_lang . "')"
+				. " INNER JOIN `" . DB_PREFIX . "product_to_category` _p2c ON (c.category_id = _p2c.category_id)"
+				. " INNER JOIN " . $_sf_from . " ON (_p2c.product_id = p.product_id)"
+				. " WHERE " . $_sf_where
+				. " ORDER BY cd.name ASC"
+			);
+			$_sf_base = 'index.php?route=product/search' . ($search ? '&search=' . urlencode($search) : '');
+			$data['search_categories'] = array();
+			foreach ($_sf_cr->rows as $_sfc) {
+				$data['search_categories'][] = array(
+					'category_id' => (int)$_sfc['category_id'],
+					'name'        => $_sfc['name'],
+					'href'        => $_sf_base . '&category_id=' . (int)$_sfc['category_id'],
+					'active'      => ((int)$_sfc['category_id'] === (int)$category_id),
+				);
+			}
+
+			// Base URL for filter Apply button (without price/manufacturer/page)
+			$_sf_fbase = 'index.php?route=product/search';
+			if ($search)      $_sf_fbase .= '&search=' . urlencode($search);
+			if ($category_id) $_sf_fbase .= '&category_id=' . (int)$category_id;
+			if ($sort !== 'p.sort_order') $_sf_fbase .= '&sort=' . $sort;
+			if ($order !== 'ASC')         $_sf_fbase .= '&order=' . $order;
+			if ($limit)       $_sf_fbase .= '&limit=' . (int)$limit;
+			$data['search_filter_base_url'] = $_sf_fbase;
+]]></add>
+        </operation>
+    </file>
+
+</modification>

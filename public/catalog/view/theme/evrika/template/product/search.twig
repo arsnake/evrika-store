@@ -41,53 +41,65 @@
       </div>
 
       <!-- Категории результатов -->
-      {% if categories is defined and categories %}
+      {% if search_categories is defined and search_categories %}
       <div class="srch-cats-sidebar">
         <div class="srch-cats-label">Категории</div>
         <ul class="srch-cat-list">
           <li{% if not category_id %} class="active"{% endif %}>
             <a href="index.php?route=product/search{% if search %}&search={{ search|url_encode }}{% endif %}">Все результаты</a>
           </li>
-          {% for category in categories %}
-          <li{% if category.category_id is defined and category.category_id == category_id %} class="active"{% endif %}>
-            <a href="{{ category.href }}">{{ category.name }}</a>
+          {% for cat in search_categories %}
+          <li{% if cat.active %} class="active"{% endif %}>
+            <a href="{{ cat.href }}">{{ cat.name }}</a>
           </li>
           {% endfor %}
         </ul>
       </div>
       {% endif %}
 
-      <!-- Кнопка фильтров (если есть filter_groups) -->
-      {% if filter_groups is defined and filter_groups %}
-      <button class="sidebar-filter-toggle" id="filterToggle">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
-        Все фильтры
-      </button>
-
-      <div class="filter-panel{% if filter_array is defined and filter_array|length > 0 %} is-open{% endif %}" id="filterPanel">
-        {% for group in filter_groups %}
-        <div class="filter-group{% if group.has_active %} open{% endif %}">
-          <button class="filter-group-head" type="button">
-            {{ group.name }}
-            <svg class="fg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="filter-group-body">
-            {% for filter in group.filter %}
-            <label class="filter-check">
-              <input type="checkbox" class="filter-cb" data-filter-id="{{ filter.filter_id }}"
-                {% if filter_array is defined and filter.filter_id in filter_array %}checked{% endif %}>
-              <span class="fc-box"></span>
-              <span class="fc-name">{{ filter.name }}</span>
-            </label>
-            {% endfor %}
-          </div>
+      <!-- Ценовой фильтр -->
+      {% if show_price_filter is defined and show_price_filter %}
+      <div class="price-filter">
+        <div class="price-filter-title">Цена, ₽</div>
+        <div class="price-inputs">
+          <label class="price-input-wrap">
+            <span>от</span>
+            <input type="number" id="srchPriceMin" class="price-input" value="{{ price_sel_min }}" min="{{ price_range_min }}" max="{{ price_range_max }}">
+          </label>
+          <span class="price-sep">—</span>
+          <label class="price-input-wrap">
+            <span>до</span>
+            <input type="number" id="srchPriceMax" class="price-input" value="{{ price_sel_max }}" min="{{ price_range_min }}" max="{{ price_range_max }}">
+          </label>
         </div>
-        {% endfor %}
+      </div>
+      {% endif %}
 
-        <div class="filter-actions">
-          <button class="btn-primary btn-sm" id="filterApply">Применить</button>
-          <button class="btn-outline btn-sm" id="filterReset">Сбросить</button>
+      <!-- Производители -->
+      {% if search_manufacturers is defined and search_manufacturers %}
+      <div class="filter-group open" id="srchManufGroup">
+        <button class="filter-group-head" type="button">
+          Производитель
+          <svg class="fg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="filter-group-body">
+          {% for m in search_manufacturers %}
+          <label class="filter-check">
+            <input type="checkbox" class="srch-manuf-cb" value="{{ m.manufacturer_id }}"
+              {% if search_manufacturer_id is defined and search_manufacturer_id == m.manufacturer_id %}checked{% endif %}>
+            <span class="fc-box"></span>
+            <span class="fc-name">{{ m.name }}</span>
+          </label>
+          {% endfor %}
         </div>
+      </div>
+      {% endif %}
+
+      <!-- Кнопки применить/сбросить -->
+      {% if (show_price_filter is defined and show_price_filter) or (search_manufacturers is defined and search_manufacturers) %}
+      <div class="filter-actions">
+        <button class="btn-primary btn-sm" id="srchFilterApply">Применить</button>
+        <button class="btn-outline btn-sm" id="srchFilterReset">Сбросить</button>
       </div>
       {% endif %}
 
@@ -334,5 +346,38 @@
 
 <!-- Оверлей для мобильного сайдбара -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+{% if search_filter_base_url is defined %}
+<script>
+(function () {
+  var baseUrl = {{ search_filter_base_url | json_encode | raw }};
+
+  var applyBtn = document.getElementById('srchFilterApply');
+  var resetBtn = document.getElementById('srchFilterReset');
+
+  if (applyBtn) {
+    applyBtn.addEventListener('click', function () {
+      var url = baseUrl;
+      var pMin = document.getElementById('srchPriceMin');
+      var pMax = document.getElementById('srchPriceMax');
+      if (pMin && pMax) {
+        url += '&price_min=' + encodeURIComponent(pMin.value) + '&price_max=' + encodeURIComponent(pMax.value);
+      }
+      var checked = document.querySelectorAll('.srch-manuf-cb:checked');
+      if (checked.length > 0) {
+        url += '&manufacturer_id=' + checked[0].value;
+      }
+      location.href = url;
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      location.href = baseUrl;
+    });
+  }
+})();
+</script>
+{% endif %}
 
 {{ footer }}
