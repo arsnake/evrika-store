@@ -12,8 +12,8 @@
           - catalog/controller/product/search.php
           - catalog/controller/product/product.php (блок related products)
 
-        Нужны для корректного отображения карточек товара
-        (наличие, код, производитель, кнопка «Купить сейчас»).
+        ВАЖНО: href была последним полем (без запятой), поэтому используем
+        position="replace" — заменяем href-строку на себя+запятая+новые поля.
     -->
 
     <!-- ══════════════════════════════════════════════════
@@ -22,10 +22,11 @@
     <file path="catalog/controller/product/search.php">
         <operation>
             <search><![CDATA['href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)]]></search>
-            <add position="after"><![CDATA[					'model'                => $result['model'],
-					'manufacturer'         => $result['manufacturer'],
-					'stock'                => ($result['quantity'] > 0 || !$result['subtract']),
-					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
+            <add position="replace"><![CDATA['href'                 => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url),
+				'model'                => $result['model'],
+				'manufacturer'         => $result['manufacturer'],
+				'stock'                => ($result['quantity'] > 0 || !$result['subtract']),
+				'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
         </operation>
     </file>
 
@@ -35,10 +36,11 @@
     <file path="catalog/controller/product/product.php">
         <operation>
             <search><![CDATA['href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])]]></search>
-            <add position="after"><![CDATA[					'model'                => $result['model'],
-					'manufacturer'         => $result['manufacturer'],
-					'stock'                => ($result['quantity'] > 0 || !$result['subtract']),
-					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
+            <add position="replace"><![CDATA['href'                 => $this->url->link('product/product', 'product_id=' . $result['product_id']),
+				'model'                => $result['model'],
+				'manufacturer'         => $result['manufacturer'],
+				'stock'                => ($result['quantity'] > 0 || !$result['subtract']),
+				'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
         </operation>
     </file>
 
