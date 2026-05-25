@@ -6,19 +6,6 @@
     <author>Evrika</author>
     <link></link>
 
-    <!--
-        Добавляет в catalog/controller/product/search.php:
-          - Чтение GET-параметров: price_min, price_max, manufacturer_id
-          - Передачу фильтров в filter_data (модель уже поддерживает filter_price_min/max
-            через OCMod evrika-category-price-filter, и filter_manufacturer_id нативно)
-          - Запрос диапазона цен для текущего поискового запроса
-          - Запрос списка производителей из результатов поиска
-          - Список категорий с товарами из результатов поиска (с href и флагом active)
-          - Base URL для JS-фильтра
-
-        Точка вставки: перед $product_total = ... (уникальная строка внутри if-блока).
-    -->
-
     <file path="catalog/controller/product/search.php">
         <operation>
             <search><![CDATA[$product_total = $this->model_catalog_product->getTotalProducts($filter_data);]]></search>
@@ -36,11 +23,10 @@
 			$_sf_store = (int)$this->config->get('config_store_id');
 			$_sf_esc   = $this->db->escape($search);
 
-			$_sf_from  = "`" . DB_PREFIX . "product` p"
-				. " LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id AND pd.language_id = '" . $_sf_lang . "')"
-				. " LEFT JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p.product_id = p2s.product_id AND p2s.store_id = '" . $_sf_store . "')";
-
-			$_sf_where = "p.status = '1'";
+			// WHERE clause shared across all three queries
+			$_sf_where = "p.status = '1'"
+				. " AND pd.language_id = '" . $_sf_lang . "'"
+				. " AND p2s.store_id = '" . $_sf_store . "'";
 			if ($search) {
 				$_sf_where .= " AND (pd.name LIKE '%" . $_sf_esc . "%' OR p.model LIKE '%" . $_sf_esc . "%' OR pd.description LIKE '%" . $_sf_esc . "%')";
 			}
@@ -52,6 +38,11 @@
 				}
 			}
 
+			// Shared FROM with LEFT JOINs (used as-is after FROM keyword)
+			$_sf_from = "`" . DB_PREFIX . "product` p"
+				. " LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id)"
+				. " LEFT JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p.product_id = p2s.product_id)";
+
 			// Price range
 			$_sf_pr = $this->db->query("SELECT MIN(p.price) AS mn, MAX(p.price) AS mx FROM " . $_sf_from . " WHERE " . $_sf_where);
 			$_sf_pmin = (isset($_sf_pr->row['mn']) && $_sf_pr->row['mn'] !== null) ? (float)$_sf_pr->row['mn'] : 0;
@@ -62,24 +53,24 @@
 			$data['price_sel_max']     = ($_sf_price_max !== null) ? (int)$_sf_price_max : (int)ceil($_sf_pmax);
 			$data['show_price_filter'] = ($_sf_pmax > $_sf_pmin);
 
-			// Manufacturers in results
+			// Manufacturers: product is the driving table, manufacturer joined via FK
 			$_sf_mr = $this->db->query(
 				"SELECT DISTINCT m.manufacturer_id, m.name"
-				. " FROM `" . DB_PREFIX . "manufacturer` m"
-				. " INNER JOIN " . $_sf_from . " ON p.manufacturer_id = m.manufacturer_id"
+				. " FROM " . $_sf_from
+				. " INNER JOIN `" . DB_PREFIX . "manufacturer` m ON (m.manufacturer_id = p.manufacturer_id)"
 				. " WHERE " . $_sf_where . " AND m.manufacturer_id > 0"
 				. " ORDER BY m.name ASC"
 			);
-			$data['search_manufacturers']  = $_sf_mr->rows;
+			$data['search_manufacturers']   = $_sf_mr->rows;
 			$data['search_manufacturer_id'] = $_sf_manuf_id;
 
 			// Categories that have matching products
 			$_sf_cr = $this->db->query(
 				"SELECT DISTINCT c.category_id, cd.name"
-				. " FROM `" . DB_PREFIX . "category` c"
-				. " LEFT JOIN `" . DB_PREFIX . "category_description` cd ON (c.category_id = cd.category_id AND cd.language_id = '" . $_sf_lang . "')"
-				. " INNER JOIN `" . DB_PREFIX . "product_to_category` _p2c ON (c.category_id = _p2c.category_id)"
-				. " INNER JOIN " . $_sf_from . " ON (_p2c.product_id = p.product_id)"
+				. " FROM " . $_sf_from
+				. " INNER JOIN `" . DB_PREFIX . "product_to_category` _p2c ON (_p2c.product_id = p.product_id)"
+				. " INNER JOIN `" . DB_PREFIX . "category` c ON (c.category_id = _p2c.category_id)"
+				. " LEFT JOIN `" . DB_PREFIX . "category_description` cd ON (cd.category_id = c.category_id AND cd.language_id = '" . $_sf_lang . "')"
 				. " WHERE " . $_sf_where
 				. " ORDER BY cd.name ASC"
 			);
@@ -94,7 +85,7 @@
 				);
 			}
 
-			// Base URL for filter Apply button (without price/manufacturer/page)
+			// Base URL for filter Apply button (no price/manufacturer/page)
 			$_sf_fbase = 'index.php?route=product/search';
 			if ($search)      $_sf_fbase .= '&search=' . urlencode($search);
 			if ($category_id) $_sf_fbase .= '&category_id=' . (int)$category_id;
