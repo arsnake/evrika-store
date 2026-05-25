@@ -248,3 +248,13 @@
 <script>
 window.EVRIKA_CATALOG = [];
 </script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get('search');
+  if (q) {
+    document.querySelectorAll('input[name="search"]').forEach(function (el) {
+      el.value = q;
+    });
+  }
+})();
+</script>
