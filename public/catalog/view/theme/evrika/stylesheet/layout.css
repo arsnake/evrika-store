@@ -104,8 +104,8 @@ a.cat-chip        { text-decoration: none; }
 .cat-sub-group li a .cnt  { font-size: 10px; color: var(--ink-30); flex-shrink: 0; }
 
 /* ── Пагинация ── */
-.pagination-wrap { display: flex; justify-content: center; padding: 24px 0; }
-.pagination-wrap ul { display: flex; gap: 4px; list-style: none; }
+.pagination-wrap { display: flex; flex-direction: column; align-items: center; padding: 24px 0; gap: 12px; }
+.pagination-wrap ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
 .pagination-wrap li a,
 .pagination-wrap li span {
   display: flex; align-items: center; justify-content: center;
