@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Forgotten — stay on page after send, show success message</name>
+    <code>evrika-forgotten-stay</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        После успешной отправки ссылки:
+        1. Редиректим обратно на account/forgotten (а не на login)
+        2. Добавляем чтение $data['success'] из сессии
+    -->
+    <file path="catalog/controller/account/forgotten.php">
+
+        <!-- 1. Изменить redirect: login → forgotten -->
+        <operation>
+            <search><![CDATA[$this->response->redirect($this->url->link('account/login', '', true));]]></search>
+            <add position="replace"><![CDATA[$this->response->redirect($this->url->link('account/forgotten', '', true));]]></add>
+        </operation>
+
+        <!-- 2. Передать success из сессии в шаблон -->
+        <operation>
+            <search><![CDATA[$data['action'] = $this->url->link('account/forgotten', '', true);]]></search>
+            <add position="before"><![CDATA[
+			if (!empty($this->session->data['success'])) {
+				$data['success'] = $this->session->data['success'];
+				unset($this->session->data['success']);
+			} else {
+				$data['success'] = '';
+			}
+]]></add>
+        </operation>
+
+    </file>
+</modification>
