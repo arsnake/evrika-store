@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Promo Banners — admin settings for homepage cards</name>
+    <code>evrika-promo-banners</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Инжектирует данные промо-баннеров (из oc_setting, код evrika_promo)
+        в контроллер главной страницы, чтобы home.twig мог использовать
+        переменные promo1_title, promo1_desc, promo1_icon_svg (и promo2_*).
+
+        Настройки редактируются через: Admin → Extensions → Modules → Промо-баннеры главной
+    -->
+
+    <file path="catalog/controller/common/home.php">
+        <operation>
+            <search trim="true"><![CDATA[$this->response->setOutput($this->load->view('common/home', $data));]]></search>
+            <add position="before" trim="true"><![CDATA[		require_once(DIR_TEMPLATE . 'evrika/php/icons.php');
+		$_evrika_icons = evrika_get_icons();
+		$_icon1 = $this->config->get('evrika_promo_banner1_icon') ?: 'briefcase';
+		$_icon2 = $this->config->get('evrika_promo_banner2_icon') ?: 'tag';
+		$data['promo1_title']    = $this->config->get('evrika_promo_banner1_title') ?: 'Открой своё дело';
+		$data['promo1_desc']     = $this->config->get('evrika_promo_banner1_desc')  ?: 'Франшиза КанцПарк — от 1 млн ₽';
+		$data['promo1_icon_svg'] = isset($_evrika_icons[$_icon1]) ? $_evrika_icons[$_icon1]['svg'] : '';
+		$data['promo2_title']    = $this->config->get('evrika_promo_banner2_title') ?: 'Коллекция 2026';
+		$data['promo2_desc']     = $this->config->get('evrika_promo_banner2_desc')  ?: 'Школьный текстиль — уже в продаже';
+		$data['promo2_icon_svg'] = isset($_evrika_icons[$_icon2]) ? $_evrika_icons[$_icon2]['svg'] : '';
+]]></add>
+        </operation>
+    </file>
+
+</modification>

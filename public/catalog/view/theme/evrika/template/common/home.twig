@@ -13,21 +13,25 @@
       <div class="promo-side">
         <div class="promo-card orange">
           <div>
-            <div class="promo-card-title">Открой своё дело</div>
-            <div class="promo-card-sub">Франшиза КанцПарк — от 1 млн ₽</div>
+            <div class="promo-card-title">{{ promo1_title is defined ? promo1_title : 'Открой своё дело' }}</div>
+            <div class="promo-card-sub">{{ promo1_desc is defined ? promo1_desc : 'Франшиза КанцПарк — от 1 млн ₽' }}</div>
           </div>
+          {% if promo1_icon_svg is defined and promo1_icon_svg %}
           <div class="promo-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{{ promo1_icon_svg|raw }}</svg>
           </div>
+          {% endif %}
         </div>
         <div class="promo-card dark">
           <div>
-            <div class="promo-card-title">Коллекция 2026</div>
-            <div class="promo-card-sub">Школьный текстиль — уже в продаже</div>
+            <div class="promo-card-title">{{ promo2_title is defined ? promo2_title : 'Коллекция 2026' }}</div>
+            <div class="promo-card-sub">{{ promo2_desc is defined ? promo2_desc : 'Школьный текстиль — уже в продаже' }}</div>
           </div>
+          {% if promo2_icon_svg is defined and promo2_icon_svg %}
           <div class="promo-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{{ promo2_icon_svg|raw }}</svg>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>

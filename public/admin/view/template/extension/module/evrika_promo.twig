@@ -1,0 +1,162 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-evrika-promo" data-toggle="tooltip" title="Сохранить" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="Отмена" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-evrika-promo" class="form-horizontal">
+
+      {# ── БАННЕР 1: ОРАНЖЕВЫЙ ── #}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="fa fa-square" style="color:#E56F1A;"></i>
+            Баннер 1 — Оранжевый
+          </h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-b1-title">Заголовок</label>
+            <div class="col-sm-10">
+              <input type="text" name="evrika_promo_banner1_title" value="{{ evrika_promo_banner1_title }}"
+                     id="input-b1-title" class="form-control" placeholder="Например: Открой своё дело" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-b1-desc">Описание</label>
+            <div class="col-sm-10">
+              <input type="text" name="evrika_promo_banner1_desc" value="{{ evrika_promo_banner1_desc }}"
+                     id="input-b1-desc" class="form-control" placeholder="Краткое описание или призыв к действию" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Иконка</label>
+            <div class="col-sm-10">
+              <input type="hidden" name="evrika_promo_banner1_icon" id="input-b1-icon" value="{{ evrika_promo_banner1_icon }}" />
+              <div id="evrika-icon-picker-1" class="evrika-icon-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+                {% for slug, item in evrika_icons %}
+                <div class="evrika-icon-item" data-slug="{{ slug }}" title="{{ item.label }}"
+                     style="width:52px;height:52px;border:2px solid {{ evrika_promo_banner1_icon == slug ? '#E56F1A' : '#ddd' }};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ evrika_promo_banner1_icon == slug ? '#FFF4EC' : '#fff' }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="{{ evrika_promo_banner1_icon == slug ? '#E56F1A' : '#666' }}" stroke-width="1.8" width="26" height="26">{{ item.svg|raw }}</svg>
+                </div>
+                {% endfor %}
+                <div class="evrika-icon-item" data-slug="" title="Без иконки"
+                     style="width:52px;height:52px;border:2px solid {{ evrika_promo_banner1_icon == '' ? '#E56F1A' : '#ddd' }};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ evrika_promo_banner1_icon == '' ? '#FFF4EC' : '#fff' }};color:#999;font-size:11px;text-align:center;line-height:1.2">нет</div>
+              </div>
+              <p class="help-block" id="b1-icon-label">
+                {% if evrika_promo_banner1_icon and evrika_icons[evrika_promo_banner1_icon] is defined %}
+                  Выбрана: <strong>{{ evrika_icons[evrika_promo_banner1_icon].label }}</strong>
+                {% else %}
+                  Иконка не выбрана
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {# ── БАННЕР 2: ТЁМНО-ЗЕЛЁНЫЙ ── #}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="fa fa-square" style="color:#2D7A4F;"></i>
+            Баннер 2 — Тёмно-зелёный
+          </h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-b2-title">Заголовок</label>
+            <div class="col-sm-10">
+              <input type="text" name="evrika_promo_banner2_title" value="{{ evrika_promo_banner2_title }}"
+                     id="input-b2-title" class="form-control" placeholder="Например: Коллекция 2026" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-b2-desc">Описание</label>
+            <div class="col-sm-10">
+              <input type="text" name="evrika_promo_banner2_desc" value="{{ evrika_promo_banner2_desc }}"
+                     id="input-b2-desc" class="form-control" placeholder="Краткое описание или призыв к действию" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Иконка</label>
+            <div class="col-sm-10">
+              <input type="hidden" name="evrika_promo_banner2_icon" id="input-b2-icon" value="{{ evrika_promo_banner2_icon }}" />
+              <div id="evrika-icon-picker-2" class="evrika-icon-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+                {% for slug, item in evrika_icons %}
+                <div class="evrika-icon-item" data-slug="{{ slug }}" title="{{ item.label }}"
+                     style="width:52px;height:52px;border:2px solid {{ evrika_promo_banner2_icon == slug ? '#2D7A4F' : '#ddd' }};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ evrika_promo_banner2_icon == slug ? '#EBF5EF' : '#fff' }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="{{ evrika_promo_banner2_icon == slug ? '#2D7A4F' : '#666' }}" stroke-width="1.8" width="26" height="26">{{ item.svg|raw }}</svg>
+                </div>
+                {% endfor %}
+                <div class="evrika-icon-item" data-slug="" title="Без иконки"
+                     style="width:52px;height:52px;border:2px solid {{ evrika_promo_banner2_icon == '' ? '#2D7A4F' : '#ddd' }};border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ evrika_promo_banner2_icon == '' ? '#EBF5EF' : '#fff' }};color:#999;font-size:11px;text-align:center;line-height:1.2">нет</div>
+              </div>
+              <p class="help-block" id="b2-icon-label">
+                {% if evrika_promo_banner2_icon and evrika_icons[evrika_promo_banner2_icon] is defined %}
+                  Выбрана: <strong>{{ evrika_icons[evrika_promo_banner2_icon].label }}</strong>
+                {% else %}
+                  Иконка не выбрана
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript"><!--
+(function() {
+  var icons = {
+    {% for slug, item in evrika_icons %}'{{ slug }}': '{{ item.label }}',{% endfor %}
+    '': 'Без иконки'
+  };
+
+  function initPicker(pickerId, inputId, labelId, accentColor, bgColor) {
+    $('#' + pickerId).on('click', '.evrika-icon-item', function() {
+      var slug = $(this).data('slug');
+      $('#' + inputId).val(slug);
+      $('#' + pickerId + ' .evrika-icon-item').css({'border-color': '#ddd', 'background': '#fff'})
+        .find('svg').attr('stroke', '#666');
+      $(this).css({'border-color': accentColor, 'background': bgColor})
+        .find('svg').attr('stroke', accentColor);
+      var label = icons[slug] || slug;
+      $('#' + labelId).html(slug ? 'Выбрана: <strong>' + label + '</strong>' : 'Иконка не выбрана');
+    });
+  }
+
+  initPicker('evrika-icon-picker-1', 'input-b1-icon', 'b1-icon-label', '#E56F1A', '#FFF4EC');
+  initPicker('evrika-icon-picker-2', 'input-b2-icon', 'b2-icon-label', '#2D7A4F', '#EBF5EF');
+})();
+//--></script>
+
+{{ footer }}
