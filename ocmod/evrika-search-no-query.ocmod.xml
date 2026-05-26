@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Search — allow sort/browse without search term</name>
+    <code>evrika-search-no-query</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        По умолчанию product/search выполняет запрос к БД только если
+        передан параметр 'search' или 'tag'. Из-за этого ссылка вида
+        ?route=product/search&sort=date_added&order=DESC возвращает пустой список.
+
+        Фикс: добавляем || isset($this->request->get['sort']) к условию,
+        чтобы сортировочные URL (Новинки, Хиты и т.п.) тоже выполняли запрос.
+    -->
+
+    <file path="catalog/controller/product/search.php">
+        <operation>
+            <search trim="true"><![CDATA[if (isset($this->request->get['search']) || isset($this->request->get['tag'])) {]]></search>
+            <add position="replace" trim="true"><![CDATA[if (isset($this->request->get['search']) || isset($this->request->get['tag']) || isset($this->request->get['sort'])) {]]></add>
+        </operation>
+    </file>
+
+</modification>
