@@ -1,4 +1,8 @@
+{{ header }}
 <link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/auth.css">
+
+<main>
+<div class="wrap">
 
 <nav class="breadcrumb" aria-label="Хлебные крошки">
   {% for breadcrumb in breadcrumbs %}
@@ -234,6 +238,9 @@
 
 </div><!-- /auth-layout -->
 
+</div><!-- /wrap -->
+</main>
+
 <script>
 (function () {
   var tabLogin    = document.getElementById('tabLogin');
@@ -278,3 +285,5 @@
   if (window.location.hash === '#register') switchTo('register');
 })();
 </script>
+
+{{ footer }}
