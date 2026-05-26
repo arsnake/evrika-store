@@ -1,0 +1,204 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/information.css">
+
+<main>
+<div class="wrap">
+
+<nav class="breadcrumb" aria-label="Хлебные крошки">
+  {% for breadcrumb in breadcrumbs %}
+    {% if loop.first %}
+      <a href="{{ breadcrumb.href }}">Главная</a>
+    {% else %}
+      <span class="bc-sep">›</span>
+      {% if loop.last %}
+        <span class="bc-current">{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</nav>
+
+<div class="contact-layout">
+
+  <!-- ══ ЛЕВАЯ КОЛОНКА — КОНТАКТЫ ══ -->
+  <div class="contact-info">
+    <h1 class="contact-info-title">Контакты</h1>
+    <p class="contact-info-sub">Мы всегда готовы помочь с выбором товара, оформлением заказа и любыми другими вопросами</p>
+
+    <div class="contact-details">
+
+      {% if store %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Организация</div>
+          <div class="contact-detail-value">{{ store }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if address %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Адрес</div>
+          <div class="contact-detail-value">{{ address | raw }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if telephone %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16l.42.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Телефон</div>
+          <div class="contact-detail-value">
+            <a href="tel:{{ telephone | replace({' ':''}) }}">{{ telephone }}</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if fax %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 17 13 17"/><rect x="2" y="9" width="8" height="13" rx="1"/><path d="M22 3H10a1 1 0 0 0-1 1v13"/><path d="M22 3v14a1 1 0 0 1-1 1h-9"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Факс</div>
+          <div class="contact-detail-value">{{ fax }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if open %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Режим работы</div>
+          <div class="contact-detail-value">{{ open | raw }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if comment %}
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Дополнительно</div>
+          <div class="contact-detail-value">{{ comment | raw }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div><!-- /contact-details -->
+
+    {% for location in locations %}
+    <div class="contact-location" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--ink-30);">
+      <div style="font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px;">{{ location.name }}</div>
+      <div class="contact-details">
+        {% if location.address %}
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Адрес</div>
+            <div class="contact-detail-value">{{ location.address | raw }}</div>
+          </div>
+        </div>
+        {% endif %}
+        {% if location.telephone %}
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16l.42.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Телефон</div>
+            <div class="contact-detail-value">
+              <a href="tel:{{ location.telephone | replace({' ':''}) }}">{{ location.telephone }}</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if location.open %}
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Режим работы</div>
+            <div class="contact-detail-value">{{ location.open | raw }}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+  </div><!-- /contact-info -->
+
+  <!-- ══ ПРАВАЯ КОЛОНКА — ФОРМА ══ -->
+  <div class="contact-form-card">
+    <h2 class="contact-form-title">Написать нам</h2>
+    <p class="contact-form-sub">Ответим в течение одного рабочего дня</p>
+
+    {% if error_name or error_email or error_enquiry %}
+    <div class="auth-form-err" style="margin-bottom: 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Пожалуйста, исправьте ошибки в форме</span>
+    </div>
+    {% endif %}
+
+    <form action="{{ action }}" method="post">
+
+      <div class="contact-field">
+        <label class="contact-label" for="ctName">Ваше имя <span style="color:var(--accent)">*</span></label>
+        <input class="contact-input{% if error_name %} is-err{% endif %}"
+               type="text" id="ctName" name="name"
+               value="{{ name }}" placeholder="Иван Иванов">
+        {% if error_name %}<span class="contact-field-err">{{ error_name }}</span>{% endif %}
+      </div>
+
+      <div class="contact-field">
+        <label class="contact-label" for="ctEmail">Email <span style="color:var(--accent)">*</span></label>
+        <input class="contact-input{% if error_email %} is-err{% endif %}"
+               type="email" id="ctEmail" name="email"
+               value="{{ email }}" placeholder="example@mail.ru">
+        {% if error_email %}<span class="contact-field-err">{{ error_email }}</span>{% endif %}
+      </div>
+
+      <div class="contact-field">
+        <label class="contact-label" for="ctEnquiry">Сообщение <span style="color:var(--accent)">*</span></label>
+        <textarea class="contact-textarea{% if error_enquiry %} is-err{% endif %}"
+                  id="ctEnquiry" name="enquiry"
+                  placeholder="Опишите ваш вопрос...">{{ enquiry }}</textarea>
+        {% if error_enquiry %}<span class="contact-field-err">{{ error_enquiry }}</span>{% endif %}
+      </div>
+
+      {% if captcha %}
+      <div class="contact-field">{{ captcha }}</div>
+      {% endif %}
+
+      <button type="submit" class="btn-primary contact-submit">Отправить сообщение</button>
+
+    </form>
+  </div><!-- /contact-form-card -->
+
+</div><!-- /contact-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+{{ footer }}

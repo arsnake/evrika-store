@@ -42,6 +42,7 @@
 
   <!-- ── КОНТЕНТ ── -->
   <article class="info-content">
+    {% if heading_title %}<h1 class="info-h1">{{ heading_title }}</h1>{% endif %}
     {{ description | raw }}
   </article>
 
