@@ -112,8 +112,6 @@
   line-height: 1.65; margin-bottom: 6px;
 }
 
-.info-content a { color: var(--primary); }
-.info-content a:hover { text-decoration: underline; }
 
 /* FEATURES ROW */
 .info-features {
