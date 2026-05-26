@@ -31,11 +31,13 @@
       {% endfor %}
     </nav>
 
+    {% if telephone %}
     <div class="info-sidebar-contacts">
       <div class="info-sidebar-contacts-title">Есть вопросы?</div>
-      <a href="tel:88001100000" class="info-sidebar-phone">8-800-110-00-00</a>
-      <div class="info-sidebar-note">Бесплатно по РФ<br>Пн–Пт: 9:00–18:00</div>
+      <a href="tel:{{ telephone | replace({' ':''}) }}" class="info-sidebar-phone">{{ telephone }}</a>
+      <div class="info-sidebar-note">Пн–Пт: 9:00–18:00</div>
     </div>
+    {% endif %}
   </aside>
 
   <!-- ── КОНТЕНТ ── -->

@@ -2,16 +2,19 @@
 <modification>
     <name>Evrika: Information — pass pages list to header and information template</name>
     <code>evrika-information-nav</code>
-    <version>1.0</version>
+    <version>1.1</version>
     <author>Evrika</author>
     <link></link>
 
     <!--
-        1. header.php — добавляет $data['topbar_informations'] (все статьи)
-        2. information/information.php — добавляет $data['informations'] (для сайдбара)
-           и $data['information_id'] (текущая статья)
+        1. header.php — добавляет $data['topbar_informations']
+           Только статьи с bottom=1 (поле "Показывать в топбаре")
+        2. information/information.php — добавляет $data['informations'] (для сайдбара),
+           $data['information_id'] (текущая статья), $data['telephone']
+        3. admin/information_form.twig — переименовывает поле "Bottom" → "Показывать в топбаре"
     -->
 
+    <!-- ── HEADER: только статьи с bottom=1 ── -->
     <file path="catalog/controller/common/header.php">
         <operation>
             <search><![CDATA[return $this->load->view('common/header', $data);]]></search>
@@ -19,6 +22,7 @@
 			$this->load->model('catalog/information');
 			$data['topbar_informations'] = array();
 			foreach ($this->model_catalog_information->getInformations() as $_ti) {
+				if (empty($_ti['bottom'])) continue;
 				$data['topbar_informations'][] = array(
 					'title' => $_ti['title'],
 					'href'  => $this->url->link('information/information', 'information_id=' . $_ti['information_id']),
@@ -28,11 +32,13 @@
         </operation>
     </file>
 
+    <!-- ── INFORMATION CONTROLLER: сайдбар + телефон ── -->
     <file path="catalog/controller/information/information.php">
         <operation>
             <search><![CDATA[$data['description'] = html_entity_decode($information_info['description'], ENT_QUOTES, 'UTF-8');]]></search>
             <add position="before"><![CDATA[
 			$data['information_id'] = $information_id;
+			$data['telephone'] = $this->config->get('config_telephone');
 			$data['informations'] = array();
 			foreach ($this->model_catalog_information->getInformations() as $_si) {
 				$data['informations'][] = array(
@@ -42,6 +48,14 @@
 				);
 			}
 ]]></add>
+        </operation>
+    </file>
+
+    <!-- ── ADMIN: переименовать поле "Bottom" → "Показывать в топбаре" ── -->
+    <file path="admin/view/template/catalog/information_form.twig">
+        <operation>
+            <search><![CDATA[<span data-toggle="tooltip" title="{{ help_bottom }}">{{ entry_bottom }}</span>]]></search>
+            <add position="replace"><![CDATA[<span data-toggle="tooltip" title="Отметьте, чтобы ссылка на эту статью появилась в верхней строке сайта (топбар)">Показывать в топбаре</span>]]></add>
         </operation>
     </file>
 
