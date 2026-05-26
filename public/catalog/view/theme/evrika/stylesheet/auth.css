@@ -301,6 +301,33 @@
 }
 
 /* ============================================================
+   FORGOT — SUCCESS STATE
+   ============================================================ */
+.forgot-sent-info {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 24px;
+  background: var(--primary-light);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+}
+.forgot-sent-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; color: var(--ink-80); line-height: 1.45;
+}
+.forgot-sent-num {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  margin-top: 1px;
+}
+.forgot-resend-hint {
+  font-size: 12px; color: var(--ink-60); text-align: center;
+  margin-bottom: 20px; line-height: 1.5;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
