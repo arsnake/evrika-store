@@ -1,0 +1,51 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/information.css">
+
+<main>
+<div class="wrap">
+
+<nav class="breadcrumb" aria-label="Хлебные крошки">
+  {% for breadcrumb in breadcrumbs %}
+    {% if loop.first %}
+      <a href="{{ breadcrumb.href }}">Главная</a>
+    {% else %}
+      <span class="bc-sep">›</span>
+      {% if loop.last %}
+        <span class="bc-current">{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</nav>
+
+<div class="info-layout">
+
+  <!-- ── САЙДБАР ── -->
+  <aside class="info-sidebar">
+    <div class="info-sidebar-title">Информация</div>
+    <nav class="info-nav">
+      {% for info in informations %}
+        <a class="info-nav-link{% if info.information_id == information_id %} info-nav-link--active{% endif %}"
+           href="{{ info.href }}">{{ info.title }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="info-sidebar-contacts">
+      <div class="info-sidebar-contacts-title">Есть вопросы?</div>
+      <a href="tel:88001100000" class="info-sidebar-phone">8-800-110-00-00</a>
+      <div class="info-sidebar-note">Бесплатно по РФ<br>Пн–Пт: 9:00–18:00</div>
+    </div>
+  </aside>
+
+  <!-- ── КОНТЕНТ ── -->
+  <article class="info-content">
+    {{ description | raw }}
+  </article>
+
+</div><!-- /info-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+{{ footer }}
