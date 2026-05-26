@@ -2,7 +2,7 @@
 <modification>
   <name>Evrika — Category Extra Fields (model, manufacturer, stock)</name>
   <code>evrika-category-extra-fields</code>
-  <version>1.0</version>
+  <version>1.1</version>
   <author>Evrika</author>
   <link></link>
 
@@ -13,6 +13,9 @@
 
     2. catalog/controller/product/category.php:
        Добавляет model, manufacturer, stock в $data['products'][].
+
+    ВАЖНО: Строка 'stock' заканчивается запятой, т.к. следующий OCMod
+    (evrika-has-required-options) добавляет has_required_options ПОСЛЕ неё.
   -->
 
   <!-- ═══ 1. Модель: дополнительные поля в SELECT getProducts() ═══ -->
@@ -30,7 +33,7 @@
       <add position="replace" trim="true"><![CDATA['href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
 					'model'        => $result['model'],
 					'manufacturer' => $result['manufacturer'],
-					'stock'        => ($result['quantity'] > 0 || !$result['subtract'])]]></add>
+					'stock'        => ($result['quantity'] > 0 || !$result['subtract']),]]></add>
     </operation>
   </file>
 

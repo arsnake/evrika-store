@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Catalog Modal — header data (root categories, icons, counts, sub-groups)</name>
+    <code>evrika-catalog-header</code>
+    <version>1.2</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Патчит catalog/controller/common/header.php:
+        Строит $data['catalog_json'] — JSON-массив корневых категорий с иконками,
+        количеством товаров (включая дочерние), топ-5 подкатегорий (chips)
+        и группами подкатегорий для правой панели каталога.
+        v1.1: фильтрация пустых категорий + иконка по умолчанию.
+        v1.2: chips и items как индексированные массивы-кортежи (исправлен [object Object]).
+    -->
+
+    <file path="catalog/controller/common/header.php">
+        <operation>
+            <search><![CDATA[return $this->load->view('common/header', $data);]]></search>
+            <add position="before"><![CDATA[require_once(DIR_TEMPLATE . '../../../catalog/view/theme/evrika/php/icons.php');
+			$this->load->model('catalog/category');
+			$this->load->model('catalog/product');
+			$_default_icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>';
+			$_cat_list = array();
+			$_root_cats = $this->model_catalog_category->getCategories(0);
+			foreach ($_root_cats as $_rc) {
+				$_rc_id = (int)$_rc['category_id'];
+				$_rc_total = $this->model_catalog_product->getTotalProducts(array('filter_category_id' => $_rc_id, 'filter_sub_category' => true));
+				$_sub_cats = $this->model_catalog_category->getCategories($_rc_id);
+				if ($_rc_total == 0 && count($_sub_cats) == 0) continue;
+				$_rc_icon = evrika_icon_svg(isset($_rc['icon']) ? $_rc['icon'] : '');
+				if (empty($_rc_icon)) $_rc_icon = $_default_icon;
+				$_rc_href = $this->url->link('product/category', 'path=' . $_rc_id);
+				$_chips_raw = array();
+				$_sub_groups = array();
+				foreach ($_sub_cats as $_sc) {
+					$_sc_id = (int)$_sc['category_id'];
+					$_sc_total = $this->model_catalog_product->getTotalProducts(array('filter_category_id' => $_sc_id, 'filter_sub_category' => true));
+					$_grand_cats = $this->model_catalog_category->getCategories($_sc_id);
+					if ($_sc_total == 0 && count($_grand_cats) == 0) continue;
+					$_sc_href = $this->url->link('product/category', 'path=' . $_rc_id . '_' . $_sc_id);
+					$_chips_raw[] = array((string)$_sc['name'], (int)$_sc_total, (string)$_sc_href);
+					$_grand_items = array();
+					foreach ($_grand_cats as $_gc) {
+						$_gc_id = (int)$_gc['category_id'];
+						$_gc_total = $this->model_catalog_product->getTotalProducts(array('filter_category_id' => $_gc_id, 'filter_sub_category' => true));
+						if ($_gc_total == 0) continue;
+						$_grand_items[] = array((string)$_gc['name'], (int)$_gc_total, (string)$this->url->link('product/category', 'path=' . $_rc_id . '_' . $_sc_id . '_' . $_gc_id));
+					}
+					$_sub_groups[] = array('title' => (string)$_sc['name'], 'href' => (string)$_sc_href, 'items' => $_grand_items);
+				}
+				usort($_chips_raw, function($a, $b) { return $b[1] - $a[1]; });
+				$_chips = array();
+				foreach (array_slice($_chips_raw, 0, 5) as $_c) { $_chips[] = array($_c[0], $_c[2]); }
+				$_cat_list[] = array('id' => $_rc_id, 'name' => (string)$_rc['name'], 'icon' => $_rc_icon, 'count' => (int)$_rc_total, 'href' => $_rc_href, 'chips' => array_values($_chips), 'sub' => $_sub_groups);
+			}
+			$data['catalog_json'] = json_encode($_cat_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+]]></add>
+        </operation>
+    </file>
+
+</modification>

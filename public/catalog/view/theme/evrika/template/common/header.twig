@@ -41,6 +41,7 @@
 <link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/product.css">
 <link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/cart.css">
 <link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/checkout.css">
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/manufacturer.css">
 
 {# Скрипты для <head> (из document->getScripts('header')) #}
 {% for script in scripts %}
@@ -101,10 +102,11 @@
       {# Поиск #}
       <form class="search-wrap" action="index.php" method="get">
         <input type="hidden" name="route" value="product/search">
-        <input type="text" name="search" placeholder="Поиск по каталогу — название, артикул, производитель..." aria-label="Поиск">
+        <input type="text" name="search" id="desktopSearchInput" placeholder="Поиск по каталогу — название, артикул, производитель..." aria-label="Поиск" autocomplete="off">
         <button class="search-btn" type="submit" aria-label="Найти">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
         </button>
+        <div class="search-results-drop" id="desktopSearchResults"></div>
       </form>
 
       {# Действия в шапке #}
@@ -123,6 +125,18 @@
           Корзина
         </a>
 
+      </div>
+
+      {# Мобильные кнопки шапки (только ≤640px) #}
+      <div class="mob-header-right">
+        <button class="mob-hdr-btn mob-hdr-btn--catalog" onclick="openCatalog()" type="button" aria-label="Каталог">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        </button>
+        {% if telephone %}
+        <a class="mob-hdr-btn" href="tel:{{ telephone|replace({' ':''}) }}" aria-label="Позвонить">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.13h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+        {% endif %}
       </div>
 
       {# Вход / кабинет #}
@@ -183,15 +197,36 @@
   </div>
 </nav>
 
-{# ── МОБИЛЬНЫЙ ПОИСК ── #}
-<div class="mob-search-overlay" id="mobSearch">
-  <form action="index.php" method="get" style="flex:1;display:flex;">
-    <input type="hidden" name="route" value="product/search">
-    <input type="text" name="search" placeholder="Поиск по каталогу..." aria-label="Поиск" style="flex:1;padding:10px 14px;border:1.5px solid var(--primary);border-radius:var(--radius-m);font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--ink-10);outline:none;">
-  </form>
-  <button class="mob-search-close" onclick="closeMobSearch()" aria-label="Закрыть" type="button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-  </button>
+{# ── МОБИЛЬНЫЙ ПОИСК — fullscreen overlay ── #}
+<div class="mob-search-overlay" id="mobSearch" aria-hidden="true">
+  <div class="mob-search-panel">
+
+    <div class="mob-search-top">
+      <div class="mob-search-hdr">
+        <span class="mob-search-title">Поиск по каталогу</span>
+        <button class="mob-search-close-btn" onclick="toggleMobSearch()" type="button" aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form action="index.php" method="get" onsubmit="return mobSearchSubmit(this)">
+        <input type="hidden" name="route" value="product/search">
+        <div class="mob-search-field">
+          <span class="mob-search-field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+          </span>
+          <input type="text" name="search" id="mobSearchInput" placeholder="Название, артикул, производитель..." autocomplete="off" aria-label="Поиск">
+          <button type="submit" class="mob-search-submit" aria-label="Найти">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="mob-search-results" id="mobSearchResults">
+      <div class="lsr-hint">Введите от 3 символов для поиска</div>
+    </div>
+
+  </div>
 </div>
 
 {# ── МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ ── #}
@@ -200,8 +235,9 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/><rect x="2" y="4" width="2" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
     Каталог
   </button>
-  <button class="mob-nav-item" onclick="openMobSearch()" type="button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+  <button class="mob-nav-item" id="mobSearchBtn" onclick="toggleMobSearch()" type="button">
+    <svg class="mob-srch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+    <svg class="mob-srch-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
     Поиск
   </button>
   <a class="mob-nav-item" href="{{ shopping_cart }}" style="position:relative">
@@ -252,7 +288,95 @@
 
 {# Данные каталога для JS #}
 <script>
-window.EVRIKA_CATALOG = [];
+window.EVRIKA_CATALOG = {{ catalog_json | raw }};
+</script>
+<script>
+(function(){
+  var activeIdx = 0;
+
+  var DEFAULT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>';
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escA(s){ return String(s).replace(/"/g,'&quot;'); }
+
+  function renderSidebar(){
+    var list = document.getElementById('catList');
+    if(!list) return;
+    list.innerHTML = window.EVRIKA_CATALOG.map(function(c,i){
+      return '<div class="cat-item' + (i===activeIdx?' active':'') + '" onclick="evrikaCatSelect(' + i + ')">' +
+        '<div class="cat-item-icon">' + (c.icon || DEFAULT_ICON) + '</div>' +
+        '<span class="cat-item-name">' + esc(c.name) + '</span>' +
+        (c.count ? '<span class="cat-item-count">' + c.count + '</span>' : '') +
+        '</div>';
+    }).join('');
+  }
+
+  function renderContent(idx){
+    var c = window.EVRIKA_CATALOG[idx];
+    if(!c) return;
+    var chips = document.getElementById('catChips');
+    var chipArr = Array.isArray(c.chips) ? c.chips : [];
+    chips.innerHTML = chipArr.map(function(ch){
+      return '<a class="cat-chip" href="' + escA(ch[1]) + '" data-href="' + escA(ch[1]) + '" onclick="location.href=this.dataset.href;return false;">' + esc(ch[0]) + '</a>';
+    }).join('');
+    var grid = document.getElementById('catSubGrid');
+    if(!c.sub || !c.sub.length){
+      grid.innerHTML = '<div style="padding:8px 0"><a href="' + escA(c.href) + '" style="color:var(--primary);text-decoration:none;font-size:13px;font-weight:600;">Смотреть все товары →</a></div>';
+      return;
+    }
+    grid.innerHTML = c.sub.map(function(g){
+      var items = g.items.map(function(item){
+        return '<li><a href="' + escA(item[2]) + '"><span>' + esc(item[0]) + '</span><span class="cnt">' + item[1] + '</span></a></li>';
+      }).join('');
+      return '<div class="cat-sub-group">' +
+        '<h4><a href="' + escA(g.href) + '">' + esc(g.title) + '</a></h4>' +
+        '<ul>' + items + '</ul>' +
+        '</div>';
+    }).join('');
+  }
+
+  window.evrikaCatSelect = function(idx){ activeIdx = idx; renderSidebar(); renderContent(idx); };
+
+  var isFullscreen = false;
+
+  window.openCatalog = function(){
+    if(!window.EVRIKA_CATALOG || !window.EVRIKA_CATALOG.length) return;
+    document.getElementById('catalogModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderSidebar();
+    renderContent(activeIdx);
+  };
+
+  window.closeCatalog = function(){
+    var modal = document.getElementById('catalogModal');
+    modal.classList.remove('open');
+    var cm = document.querySelector('.catalog-modal');
+    if(cm) cm.classList.remove('fullscreen');
+    modal.classList.remove('fullscreen-mode');
+    isFullscreen = false;
+    updateFsIcon();
+    document.body.style.overflow = '';
+  };
+
+  window.toggleFullscreen = function(){
+    isFullscreen = !isFullscreen;
+    document.querySelector('.catalog-modal').classList.toggle('fullscreen', isFullscreen);
+    document.getElementById('catalogModal').classList.toggle('fullscreen-mode', isFullscreen);
+    updateFsIcon();
+  };
+
+  function updateFsIcon(){
+    var btn = document.getElementById('iconExpand');
+    if(!btn) return;
+    btn.innerHTML = isFullscreen
+      ? '<path stroke-linecap="round" stroke-linejoin="round" d="M9 9L4 4m0 0h4m-4 0v4M15 9l5-5m0 0h-4m4 0v4M9 15l-5 5m0 0h4m-4 0v-4M15 15l5 5m0 0h-4m4 0v-4"/>'
+      : '<path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/>';
+  }
+
+  window.handleOverlayClick = function(e){ if(e.target === e.currentTarget) window.closeCatalog(); };
+
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') window.closeCatalog(); });
+})();
 </script>
 <script>
 (function () {
@@ -262,5 +386,178 @@ window.EVRIKA_CATALOG = [];
       el.value = q;
     });
   }
+})();
+</script>
+<script>
+(function () {
+  var isOpen = false;
+
+  window.toggleMobSearch = function () {
+    isOpen = !isOpen;
+    var overlay = document.getElementById('mobSearch');
+    var btn     = document.getElementById('mobSearchBtn');
+    overlay.classList.toggle('open', isOpen);
+    overlay.setAttribute('aria-hidden', String(!isOpen));
+    if (btn) btn.classList.toggle('active', isOpen);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () {
+        var inp = document.getElementById('mobSearchInput');
+        if (inp) inp.focus();
+      }, 220);
+    } else {
+      document.body.style.overflow = '';
+    }
+  };
+
+  // Закрытие по клику на тёмный фон
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.getElementById('mobSearch');
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) window.toggleMobSearch();
+      });
+    }
+  });
+
+  // Закрытие по Escape
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen) window.toggleMobSearch();
+  });
+})();
+</script>
+<script>
+// ── Live Search (mobile + desktop) ───────────────────────────
+(function () {
+
+  // ── Утилиты ─────────────────────────────────────────────────
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function buildHtml(data, q) {
+    var html = '';
+
+    if (data.categories && data.categories.length) {
+      html += '<div class="lsr-section"><div class="lsr-label">Категории</div><div class="lsr-cats">';
+      data.categories.forEach(function (c) {
+        html += '<a class="lsr-cat" href="' + esc(c.href) + '">'
+          + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>'
+          + esc(c.name) + '</a>';
+      });
+      html += '</div></div>';
+    }
+
+    if (data.products && data.products.length) {
+      html += '<div class="lsr-section"><div class="lsr-label">Товары</div><div class="lsr-items">';
+      data.products.forEach(function (p) {
+        var img = p.image
+          ? '<img class="lsr-item-img" src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy">'
+          : '<div class="lsr-item-img lsr-item-img--empty"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 5-5 4 4 3-3 6 6"/></svg></div>';
+        html += '<a class="lsr-item" href="' + esc(p.href) + '">'
+          + img
+          + '<div class="lsr-item-info">'
+          + '<div class="lsr-item-name">' + esc(p.name) + '</div>'
+          + (p.sku ? '<div class="lsr-item-sku">Код: ' + esc(p.sku) + '</div>' : '')
+          + '<div class="lsr-item-price">' + esc(p.price) + '</div>'
+          + '</div></a>';
+      });
+      html += '</div><a class="lsr-all" href="index.php?route=product/search&search='
+        + encodeURIComponent(q) + '">Смотреть все результаты →</a></div>';
+    }
+
+    if (!html) {
+      html = '<div class="lsr-empty">По запросу «' + esc(q) + '» ничего не найдено</div>';
+    }
+
+    return html;
+  }
+
+  // ── Фабрика: создаёт экземпляр поиска для одного инпута ─────
+  function LiveSearch(inputId, resultsId, isDropdown) {
+    var inp = document.getElementById(inputId);
+    var box = document.getElementById(resultsId);
+    if (!inp || !box) return;
+
+    var timer = null;
+    var lastQ = null;
+    var xhr   = null;
+
+    function set(html) { box.innerHTML = html; }
+
+    function openDrop()  { if (isDropdown) box.classList.add('open'); }
+    function closeDrop() { if (isDropdown) box.classList.remove('open'); }
+
+    function fetch(q) {
+      if (q === lastQ) return;
+      lastQ = q;
+
+      if (q.length < 3) {
+        set(isDropdown ? '' : '<div class="lsr-hint">Введите от 3 символов для поиска</div>');
+        closeDrop();
+        return;
+      }
+
+      set('<div class="lsr-loading">Поиск...</div>');
+      openDrop();
+
+      if (xhr) { try { xhr.abort(); } catch(e){} }
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', 'index.php?route=product/livesearch&q=' + encodeURIComponent(q), true);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          try {
+            set(buildHtml(JSON.parse(xhr.responseText), q));
+            openDrop();
+          } catch(e) { set('<div class="lsr-empty">Ошибка разбора ответа</div>'); }
+        } else {
+          set('<div class="lsr-empty">Ошибка запроса</div>');
+        }
+      };
+      xhr.onerror = function () { set('<div class="lsr-empty">Ошибка сети</div>'); };
+      xhr.send();
+    }
+
+    // Ввод с дебаунсом
+    inp.addEventListener('input', function () {
+      var q = this.value.trim();
+      clearTimeout(timer);
+      timer = setTimeout(function () { fetch(q); }, 320);
+    });
+
+    // Десктоп: повторно открыть при фокусе, если уже есть результаты
+    if (isDropdown) {
+      inp.addEventListener('focus', function () {
+        if (lastQ && lastQ.length >= 3) openDrop();
+      });
+
+      // Закрыть при клике вне формы
+      document.addEventListener('click', function (e) {
+        if (!inp.closest('form').contains(e.target)) closeDrop();
+      });
+
+      // Закрыть по Escape
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeDrop(); inp.blur(); }
+      });
+    }
+  }
+
+  // ── Инициализация ────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function () {
+    LiveSearch('mobSearchInput',     'mobSearchResults',     false);  // мобиль — fullscreen
+    LiveSearch('desktopSearchInput', 'desktopSearchResults', true);   // десктоп — dropdown
+  });
+
+  // Сабмит мобильной формы поиска
+  window.mobSearchSubmit = function (form) {
+    var q = form.querySelector('input[name="search"]').value.trim();
+    if (q.length > 0) {
+      window.location.href = 'index.php?route=product/search&search=' + encodeURIComponent(q);
+    }
+    return false;
+  };
 })();
 </script>

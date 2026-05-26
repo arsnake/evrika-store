@@ -1,0 +1,191 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/account.css">
+
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="index.php?route=account/account">Личный кабинет</a>
+    <span class="bc-sep">›</span>
+    <a href="index.php?route=account/address">Адреса доставки</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">{{ text_address }}</span>
+  </nav>
+
+  <div class="cab-layout">
+
+    <!-- САЙДБАР -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">{{ customer_firstname is defined ? customer_firstname|first|upper : '' }}{{ customer_lastname is defined ? customer_lastname|first|upper : '' }}</div>
+        <div class="cab-user-info">
+          <div class="cab-user-name">{{ customer_firstname is defined ? customer_firstname : '' }} {{ customer_lastname is defined ? customer_lastname : '' }}</div>
+          {% if customer_email is defined and customer_email %}<div class="cab-user-email">{{ customer_email }}</div>{% endif %}
+          <div class="cab-user-type">{{ customer_group is defined ? customer_group : '' }}</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link" href="index.php?route=account/account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/wishlist">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="index.php?route=account/edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link active" href="index.php?route=account/address">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="index.php?route=account/logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+    <div class="cab-main">
+      <h1 class="cab-page-title">{{ text_address }}</h1>
+
+      <form action="{{ action }}" method="post" enctype="multipart/form-data">
+
+        <div class="cab-form-section">
+          <div class="cab-form-section-head">Получатель</div>
+          <div class="cab-form-body cols-2">
+
+            <div class="cab-field{% if error_firstname %} has-error{% endif %}">
+              <label for="inp-addr-firstname">Имя <span style="color:#dc2626">*</span></label>
+              <input type="text" id="inp-addr-firstname" name="firstname" value="{{ firstname }}" placeholder="Имя получателя">
+              {% if error_firstname %}<div class="cab-field-error">{{ error_firstname }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field{% if error_lastname %} has-error{% endif %}">
+              <label for="inp-addr-lastname">Фамилия <span style="color:#dc2626">*</span></label>
+              <input type="text" id="inp-addr-lastname" name="lastname" value="{{ lastname }}" placeholder="Фамилия получателя">
+              {% if error_lastname %}<div class="cab-field-error">{{ error_lastname }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field" style="grid-column:1/-1">
+              <label for="inp-addr-company">Организация</label>
+              <input type="text" id="inp-addr-company" name="company" value="{{ company }}" placeholder="Название организации (необязательно)">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="cab-form-section">
+          <div class="cab-form-section-head">Адрес</div>
+          <div class="cab-form-body cols-2">
+
+            <div class="cab-field{% if error_address_1 %} has-error{% endif %}" style="grid-column:1/-1">
+              <label for="inp-addr-1">Адрес (улица, дом, кв.) <span style="color:#dc2626">*</span></label>
+              <input type="text" id="inp-addr-1" name="address_1" value="{{ address_1 }}" placeholder="ул. Ленина, д. 5, кв. 12">
+              {% if error_address_1 %}<div class="cab-field-error">{{ error_address_1 }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field" style="grid-column:1/-1">
+              <label for="inp-addr-2">Адрес (доп. строка)</label>
+              <input type="text" id="inp-addr-2" name="address_2" value="{{ address_2 }}" placeholder="Офис, корпус, строение (необязательно)">
+            </div>
+
+            <div class="cab-field{% if error_city %} has-error{% endif %}">
+              <label for="inp-addr-city">Город <span style="color:#dc2626">*</span></label>
+              <input type="text" id="inp-addr-city" name="city" value="{{ city }}" placeholder="Москва">
+              {% if error_city %}<div class="cab-field-error">{{ error_city }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field{% if error_postcode %} has-error{% endif %}">
+              <label for="inp-addr-postcode">Почтовый индекс</label>
+              <input type="text" id="inp-addr-postcode" name="postcode" value="{{ postcode }}" placeholder="123456">
+              {% if error_postcode %}<div class="cab-field-error">{{ error_postcode }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field{% if error_country %} has-error{% endif %}">
+              <label for="inp-addr-country">Страна <span style="color:#dc2626">*</span></label>
+              <select id="inp-addr-country" name="country_id">
+                <option value="">— выберите страну —</option>
+                {% for country in countries %}
+                <option value="{{ country.country_id }}"{% if country.country_id == country_id %} selected{% endif %}>{{ country.name }}</option>
+                {% endfor %}
+              </select>
+              {% if error_country %}<div class="cab-field-error">{{ error_country }}</div>{% endif %}
+            </div>
+
+            <div class="cab-field{% if error_zone %} has-error{% endif %}">
+              <label for="inp-addr-zone">Регион / область <span style="color:#dc2626">*</span></label>
+              <select id="inp-addr-zone" name="zone_id"></select>
+              {% if error_zone %}<div class="cab-field-error">{{ error_zone }}</div>{% endif %}
+            </div>
+
+          </div>
+        </div>
+
+        <div class="cab-form-section">
+          <div class="cab-form-section-head">Настройки</div>
+          <div style="padding:16px 20px">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink-70)">
+              <input type="radio" name="default" value="1"{% if default %} checked{% endif %} style="accent-color:var(--primary);width:16px;height:16px">
+              Использовать как адрес доставки по умолчанию
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--ink-50);margin-top:10px">
+              <input type="radio" name="default" value="0"{% if not default %} checked{% endif %} style="accent-color:var(--primary);width:16px;height:16px">
+              Дополнительный адрес
+            </label>
+          </div>
+          <div class="cab-form-footer">
+            <a href="{{ back }}" class="btn-outline" style="font-size:13px">← Назад</a>
+            <button type="submit" class="btn-primary" style="height:36px;font-size:13px">Сохранить адрес</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+<script>
+(function () {
+  var selCountry = document.querySelector('select[name="country_id"]');
+  var selZone    = document.querySelector('select[name="zone_id"]');
+  var savedZone  = '{{ zone_id }}';
+
+  function loadZones(countryId, preselect) {
+    if (!countryId) { selZone.innerHTML = '<option value="">— выберите регион —</option>'; return; }
+    fetch('index.php?route=account/account/country&country_id=' + countryId)
+      .then(function(r) { return r.json(); })
+      .then(function(json) {
+        var html = '<option value="">— выберите регион —</option>';
+        if (json.zone && json.zone.length) {
+          json.zone.forEach(function(z) {
+            html += '<option value="' + z.zone_id + '"' + (z.zone_id == preselect ? ' selected' : '') + '>' + z.name + '</option>';
+          });
+        } else {
+          html += '<option value="0" selected>Не требуется</option>';
+        }
+        selZone.innerHTML = html;
+      });
+  }
+
+  selCountry.addEventListener('change', function () { loadZones(this.value, ''); });
+  loadZones(selCountry.value, savedZone);
+})();
+</script>
+
+{{ footer }}

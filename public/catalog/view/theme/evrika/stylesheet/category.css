@@ -136,7 +136,6 @@
   align-items: center; gap: 8px;
   flex-wrap: wrap; padding: 12px 0 20px;
   border-bottom: 1px solid var(--ink-10);
-  margin-bottom: 20px;
 }
 .sub-chips-label { font-size: 12px; color: var(--ink-60); margin-right: 4px; flex-shrink: 0; }
 .sub-chip {

@@ -78,33 +78,54 @@ const catalogData = (window.EVRIKA_CATALOG && window.EVRIKA_CATALOG.length) ? wi
   },
 ];
 
-let activeIdx = 1;
+let activeIdx = 0;
+
+var DEFAULT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>';
 
 function renderSidebar(){
   const list = document.getElementById('catList');
-  list.innerHTML = catalogData.map((c,i)=>`
-    <div class="cat-item ${i===activeIdx?'active':''}" onclick="selectCat(${i})">
-      <div class="cat-item-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${c.icon}</svg>
-      </div>
+  if(!list) return;
+  list.innerHTML = catalogData.map((c,i)=>{
+    // c.icon — либо полный SVG-тег (из PHP), либо только path-данные (из мок-данных)
+    const icon = c.icon && c.icon.trim().startsWith('<svg')
+      ? c.icon
+      : (c.icon ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${c.icon}</svg>` : DEFAULT_ICON);
+    return `<div class="cat-item ${i===activeIdx?'active':''}" onclick="selectCat(${i})">
+      <div class="cat-item-icon">${icon}</div>
       <span class="cat-item-name">${c.name}</span>
       ${c.count?`<span class="cat-item-count">${c.count}</span>`:''}
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderContent(idx){
   const c = catalogData[idx];
+  if(!c) return;
+
+  // Чипы: реальные данные — кортеж [name, href], мок-данные — строка
   const chips = document.getElementById('catChips');
-  chips.innerHTML = c.chips.map(ch=>`<div class="cat-chip">${ch}</div>`).join('');
+  chips.innerHTML = (c.chips||[]).map(ch=>{
+    const name = Array.isArray(ch) ? ch[0] : ch;
+    const href = Array.isArray(ch) && ch[1] ? ch[1] : (c.href||'#');
+    return `<a class="cat-chip" href="${href}">${name}</a>`;
+  }).join('');
 
   const grid = document.getElementById('catSubGrid');
-  grid.innerHTML = c.sub.map(g=>`
-    <div class="cat-sub-group">
-      <h4>${g.title}</h4>
-      <ul>${g.items.map(([name,cnt])=>`<li><a href="#"><span>${name}</span><span class="cnt">${cnt}</span></a></li>`).join('')}</ul>
-    </div>
-  `).join('');
+  if(!c.sub || !c.sub.length){
+    grid.innerHTML = c.href ? `<div style="padding:8px 0"><a href="${c.href}" style="color:var(--primary);text-decoration:none;font-size:13px;font-weight:600;">Смотреть все товары →</a></div>` : '';
+    return;
+  }
+  // Подкатегории: реальные данные — {title, href, items:[name,cnt,href]}, мок — {title, items:[name,cnt]}
+  grid.innerHTML = c.sub.map(g=>{
+    const titleLink = g.href ? `<a href="${g.href}">${g.title}</a>` : g.title;
+    const items = (g.items||[]).map(item=>{
+      const name = Array.isArray(item) ? item[0] : item;
+      const cnt  = Array.isArray(item) ? item[1] : '';
+      const href = Array.isArray(item) && item[2] ? item[2] : '#';
+      return `<li><a href="${href}"><span>${name}</span><span class="cnt">${cnt}</span></a></li>`;
+    }).join('');
+    return `<div class="cat-sub-group"><h4>${titleLink}</h4><ul>${items}</ul></div>`;
+  }).join('');
 }
 
 function selectCat(idx){
@@ -112,8 +133,10 @@ function selectCat(idx){
   renderSidebar();
   renderContent(idx);
 }
+window.evrikaCatSelect = selectCat;
 
 function openCatalog(){
+  if(!catalogData || !catalogData.length) return;
   document.getElementById('catalogModal').classList.add('open');
   document.body.style.overflow='hidden';
   renderSidebar();

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Account Pages — extra data for order/edit/wishlist/address</name>
+    <code>evrika-account-pages</code>
+    <version>1.2</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет в контроллеры личного кабинета:
+          firstname, lastname, customer_email, customer_group — для сайдбара
+          order_status_id — для CSS-бейджей статусов заказов
+          order_status — текстовое название статуса заказа (в order/info)
+
+        Патчит:
+          catalog/model/account/order.php          — добавляет o.order_status_id в SELECT getOrders()
+          catalog/controller/account/order.php     — order_status_id в список + статус/юзер в детали
+          catalog/controller/account/edit.php      — customer_email, customer_group
+          catalog/controller/account/wishlist.php  — firstname, lastname, customer_email, customer_group
+                                                   — manufacturer, has_required_options, minimum в products[]
+          catalog/controller/account/address.php   — сайдбар для address_list и address_form
+    -->
+
+    <!-- ═══ 1. Модель: добавить order_status_id в getOrders() SELECT ═══ -->
+    <file path="catalog/model/account/order.php">
+        <operation>
+            <search><![CDATA[os.name as status, o.date_added, o.total, o.currency_code, o.currency_value FROM]]></search>
+            <add position="replace" trim="true"><![CDATA[os.name as status, o.order_status_id, o.date_added, o.total, o.currency_code, o.currency_value FROM]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══ 2. Контроллер order — список (index) ═══ -->
+    <file path="catalog/controller/account/order.php">
+
+        <!-- Op 1: добавить order_status_id в массив orders[] -->
+        <operation>
+            <search><![CDATA['view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),]]></search>
+            <add position="after"><![CDATA[				'order_status_id' => (int)$result['order_status_id'],]]></add>
+        </operation>
+
+        <!-- Op 2: добавить firstname/customer_email/customer_group в index() -->
+        <operation>
+            <search><![CDATA[$data['continue'] = $this->url->link('account/account', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['firstname']      = $this->customer->getFirstName();
+		$data['lastname']       = $this->customer->getLastName();
+		$data['customer_email'] = $this->customer->getEmail();
+		$_cg2_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cg2_q->num_rows ? $_cg2_q->row['name'] : '';]]></add>
+        </operation>
+
+        <!-- Op 3: добавить order_status + firstname/customer_email/customer_group в info() -->
+        <operation>
+            <search><![CDATA[$data['comment'] = nl2br($order_info['comment']);]]></search>
+            <add position="after"><![CDATA[			$data['order_status_id'] = (int)$order_info['order_status_id'];
+			$_os_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "order_status` WHERE order_status_id = '" . (int)$order_info['order_status_id'] . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+			$data['order_status'] = $_os_q->num_rows ? $_os_q->row['name'] : '';
+			$data['firstname']      = $this->customer->getFirstName();
+			$data['lastname']       = $this->customer->getLastName();
+			$data['customer_email'] = $this->customer->getEmail();
+			$_cg3_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+			$data['customer_group'] = $_cg3_q->num_rows ? $_cg3_q->row['name'] : '';]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ═══ 3. Контроллер edit — добавить customer_email, customer_group ═══ -->
+    <file path="catalog/controller/account/edit.php">
+        <operation>
+            <search><![CDATA[$data['action'] = $this->url->link('account/edit', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['customer_email'] = $this->customer->getEmail();
+		$_cg4_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cg4_q->num_rows ? $_cg4_q->row['name'] : '';]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══ 4. Контроллер wishlist — добавить юзер-данные ═══ -->
+    <file path="catalog/controller/account/wishlist.php">
+
+        <!-- Op 1: добавить firstname/customer_email/customer_group -->
+        <operation>
+            <search><![CDATA[$data['continue'] = $this->url->link('account/account', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['firstname']      = $this->customer->getFirstName();
+		$data['lastname']       = $this->customer->getLastName();
+		$data['customer_email'] = $this->customer->getEmail();
+		$_cg5_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cg5_q->num_rows ? $_cg5_q->row['name'] : '';]]></add>
+        </operation>
+
+        <!-- Op 2: добавить manufacturer, has_required_options, minimum в products[] -->
+        <operation>
+            <search><![CDATA['remove'     => $this->url->link('account/wishlist', 'remove=' . $product_info['product_id'])]]></search>
+            <add position="replace" trim="true"><![CDATA['remove'               => $this->url->link('account/wishlist', 'remove=' . $product_info['product_id']),
+					'manufacturer'         => $product_info['manufacturer'],
+					'minimum'              => max(1, (int)$product_info['minimum']),
+					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$product_info['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ═══ 5. Контроллер password — добавить сайдбар ═══ -->
+    <file path="catalog/controller/account/password.php">
+        <operation>
+            <search><![CDATA[$data['action'] = $this->url->link('account/password', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['firstname']      = $this->customer->getFirstName();
+		$data['lastname']       = $this->customer->getLastName();
+		$data['customer_email'] = $this->customer->getEmail();
+		$_cgP_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cgP_q->num_rows ? $_cgP_q->row['name'] : '';]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══ 6. Контроллер address — getList(): добавить сайдбар ═══ -->
+    <file path="catalog/controller/account/address.php">
+
+        <!-- Op 1: getList() — уникальная строка для поиска -->
+        <operation>
+            <search><![CDATA[$data['add'] = $this->url->link('account/address/add', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['firstname']      = $this->customer->getFirstName();
+		$data['lastname']       = $this->customer->getLastName();
+		$data['customer_email'] = $this->customer->getEmail();
+		$_cgA_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cgA_q->num_rows ? $_cgA_q->row['name'] : '';]]></add>
+        </operation>
+
+        <!-- Op 2: getForm() — уникальная строка text_address -->
+        <operation>
+            <search><![CDATA[$data['text_address'] = !isset($this->request->get['address_id']) ? $this->language->get('text_address_add') : $this->language->get('text_address_edit');]]></search>
+            <add position="after"><![CDATA[		$data['customer_firstname'] = $this->customer->getFirstName();
+		$data['customer_lastname']  = $this->customer->getLastName();
+		$data['customer_email']     = $this->customer->getEmail();
+		$_cgB_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group']     = $_cgB_q->num_rows ? $_cgB_q->row['name'] : '';]]></add>
+        </operation>
+
+    </file>
+
+</modification>

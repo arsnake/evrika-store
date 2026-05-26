@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Footer — store contacts (phone, address, hours)</name>
+    <code>evrika-footer-contacts</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет в common/footer данные из настроек магазина:
+          store_name — название магазина
+          year       — текущий год для копирайта
+          telephone  — номер телефона
+          address    — адрес (nl2br)
+          open       — график работы (nl2br)
+    -->
+
+    <file path="catalog/controller/common/footer.php">
+        <operation>
+            <search><![CDATA[$data['powered'] = sprintf($this->language->get('text_powered'), $this->config->get('config_name'), date('Y', time()));]]></search>
+            <add position="after"><![CDATA[		$data['store_name'] = $this->config->get('config_name');
+		$data['year']       = date('Y');
+		$data['telephone']  = $this->config->get('config_telephone');
+		$data['address']    = nl2br($this->config->get('config_address'));
+		$data['open']       = nl2br($this->config->get('config_open'));]]></add>
+        </operation>
+    </file>
+
+</modification>

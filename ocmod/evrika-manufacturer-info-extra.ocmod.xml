@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Manufacturer Info — hero stats, category sidebar, product extra fields</name>
+    <code>evrika-manufacturer-info-extra</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Патчит catalog/controller/product/manufacturer.php — метод info():
+
+        Op 1: после $data['sort'] добавляет:
+          manufacturer_id, product_total, manufacturers_list,
+          manufacturer_categories (сайдбар категорий бренда)
+
+        Op 2: в цикл товаров добавляет:
+          model, manufacturer, stock, has_required_options
+    -->
+
+    <file path="catalog/controller/product/manufacturer.php">
+
+        <!-- Op 1: hero stats + category sidebar -->
+        <operation>
+            <search><![CDATA[$data['sort'] = $sort;]]></search>
+            <add position="after"><![CDATA[			$data['manufacturer_id'] = $manufacturer_id;
+			$data['product_total'] = $product_total;
+			$data['manufacturers_list'] = $this->url->link('product/manufacturer');
+			$_mfr_cats_sql = "SELECT c.category_id, cd.name, COUNT(DISTINCT p.product_id) as total";
+			$_mfr_cats_sql .= " FROM " . DB_PREFIX . "product p";
+			$_mfr_cats_sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
+			$_mfr_cats_sql .= " LEFT JOIN " . DB_PREFIX . "category c ON (p2c.category_id = c.category_id)";
+			$_mfr_cats_sql .= " LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id AND cd.language_id = '" . (int)$this->config->get('config_language_id') . "')";
+			$_mfr_cats_sql .= " WHERE p.manufacturer_id = '" . (int)$manufacturer_id . "' AND p.status = '1' AND c.status = '1'";
+			$_mfr_cats_sql .= " GROUP BY c.category_id HAVING total > 0 ORDER BY total DESC LIMIT 10";
+			$_mfr_cats = $this->db->query($_mfr_cats_sql);
+			$data['manufacturer_categories'] = array();
+			$data['manufacturer_categories'][] = array('name' => 'Все товары', 'href' => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $manufacturer_id), 'count' => $product_total);
+			foreach ($_mfr_cats->rows as $_mc) {
+				$data['manufacturer_categories'][] = array('name' => $_mc['name'], 'href' => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $manufacturer_id . '&category_id=' . $_mc['category_id']), 'count' => (int)$_mc['total']);
+			}]]></add>
+        </operation>
+
+        <!-- Op 2: product extra fields (model, manufacturer, stock, has_required_options) -->
+        <operation>
+            <search><![CDATA['href'        => $this->url->link('product/product', 'manufacturer_id=' . $result['manufacturer_id'] . '&product_id=' . $result['product_id'] . $url)]]></search>
+            <add position="replace" trim="true"><![CDATA[					'href'        => $this->url->link('product/product', 'manufacturer_id=' . $result['manufacturer_id'] . '&product_id=' . $result['product_id'] . $url),
+					'model'        => $result['model'],
+					'manufacturer' => $result['manufacturer'],
+					'stock'        => ($result['quantity'] > 0 || !$result['subtract']),
+					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],
+]]></add>
+        </operation>
+
+    </file>
+
+</modification>

@@ -4,19 +4,14 @@
    ============================================= */
 
 /* =============================================
-   PRODUCT SECTION — 2-column grid
+   PRODUCT SECTION — 3-column grid (always)
    ============================================= */
-/* 2-column по умолчанию; 3-column когда есть опции */
 .product-section {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 32px;
-  padding: 20px 0 32px;
-  align-items: start;
-}
-.product-section.has-options {
   grid-template-columns: 360px 1fr 260px;
   gap: 24px;
+  padding: 20px 0 32px;
+  align-items: start;
 }
 
 /* =============================================
@@ -1204,17 +1199,17 @@
 /* =============================================
    RESPONSIVE
    ============================================= */
-/* ── Адаптив 3-col (has-options) ── */
+/* ── Адаптив: сужаем колонки на планшете ── */
 @media (max-width: 1100px) {
-  .product-section.has-options {
+  .product-section {
     grid-template-columns: 300px 1fr 230px;
     gap: 18px;
   }
 }
 
-/* 3-col → панель покупки едет под галерею+инфо */
+/* ── Адаптив: панель покупки едет под галерею+инфо ── */
 @media (max-width: 860px) {
-  .product-section.has-options {
+  .product-section {
     grid-template-columns: 260px 1fr;
   }
   .product-buy-panel {
@@ -1227,24 +1222,13 @@
     border-color: var(--primary-mid);
     background: var(--primary-light);
   }
-  .buy-price          { flex: 1 1 160px; }
-  .buy-discounts      { flex: 1 1 200px; }
-  .buy-qty-row        { flex: 1 1 100%; }
+  .buy-price             { flex: 1 1 160px; }
+  .buy-discounts         { flex: 1 1 200px; }
+  .buy-qty-row           { flex: 1 1 100%; }
   .btn-quick-order--full { flex: 1 1 100%; }
   .buy-secondary-actions { flex: 1 1 100%; border-top-color: var(--primary-mid); }
-  /* В режиме строки — кнопка корзины снова с текстом */
   .btn-cart--icon {
-    flex: 1;
-    width: auto;
-    min-width: 0;
-    padding: 12px 20px;
-  }
-}
-
-/* ── Адаптив 2-col (без опций) ── */
-@media (max-width: 860px) {
-  .product-section:not(.has-options) {
-    grid-template-columns: 260px 1fr;
+    flex: 1; width: auto; min-width: 0; padding: 12px 20px;
   }
 }
 

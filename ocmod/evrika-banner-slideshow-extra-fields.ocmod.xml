@@ -30,14 +30,18 @@
          Каталог: slideshow контроллер
          Заменяем блок из 5 строк (offset="4") на блок из 7 строк.
          ═══════════════════════════════════════════════════════════ -->
+    <!--
+        Причина смены search: если search-строка присутствует в replacement,
+        движок OCMod находит её повторно в уже замещённых строках → двойная замена → синтаксическая ошибка.
+        Новый search — последняя строка оригинального блока без trailing comma.
+        В replacement эта строка имеет trailing comma и выровненные пробелы ('image'       =>),
+        поэтому stripos её больше не находит.
+    -->
     <file path="catalog/controller/extension/module/slideshow.php">
         <operation>
-            <search><![CDATA[$data['banners'][] = array(]]></search>
-            <add position="replace" offset="4" trim="true"><![CDATA[
-				$data['banners'][] = array(
-					'title'       => $result['title'],
-					'link'        => $result['link'],
-					'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
+            <search><![CDATA['image' => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+				'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
 					'description' => isset($result['description']) ? $result['description'] : '',
 					'slide_date'  => isset($result['slide_date'])  ? $result['slide_date']  : '',
 				);
@@ -50,12 +54,9 @@
          ═══════════════════════════════════════════════════════════ -->
     <file path="catalog/controller/extension/module/banner.php">
         <operation>
-            <search><![CDATA[$data['banners'][] = array(]]></search>
-            <add position="replace" offset="4" trim="true"><![CDATA[
-				$data['banners'][] = array(
-					'title'       => $result['title'],
-					'link'        => $result['link'],
-					'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
+            <search><![CDATA['image' => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+				'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
 					'description' => isset($result['description']) ? $result['description'] : '',
 					'slide_date'  => isset($result['slide_date'])  ? $result['slide_date']  : '',
 				);

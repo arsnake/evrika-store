@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Manufacturer List — product counts per brand</name>
+    <code>evrika-manufacturer-list-extra</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Патчит catalog/controller/product/manufacturer.php — метод index():
+        1. Подгружает model catalog/product
+        2. Добавляет count (количество товаров) и image в каждый manufacturer
+        3. Добавляет $data['total_manufacturers'] — общее количество брендов
+    -->
+
+    <file path="catalog/controller/product/manufacturer.php">
+
+        <!-- 1. Загрузить catalog/product в index() -->
+        <operation>
+            <search><![CDATA[$this->document->setTitle($this->language->get('heading_title'));]]></search>
+            <add position="after"><![CDATA[		$this->load->model('catalog/product');]]></add>
+        </operation>
+
+        <!-- 2. Добавить count и image к каждому бренду -->
+        <operation>
+            <search><![CDATA['href' => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $result['manufacturer_id'])]]></search>
+            <add position="replace" trim="true"><![CDATA['href'  => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $result['manufacturer_id']),
+				'count' => (int)$this->model_catalog_product->getTotalProducts(array('filter_manufacturer_id' => (int)$result['manufacturer_id'])),
+				'image' => $result['image'],]]></add>
+        </operation>
+
+        <!-- 3. Добавить total_manufacturers -->
+        <operation>
+            <search index="0"><![CDATA[$data['continue'] = $this->url->link('common/home');]]></search>
+            <add position="before"><![CDATA[		$data['total_manufacturers'] = count($results);]]></add>
+        </operation>
+
+    </file>
+
+</modification>

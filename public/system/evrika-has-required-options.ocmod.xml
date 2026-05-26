@@ -79,7 +79,7 @@
          ══════════════════════════════════════════════════════ -->
     <file path="catalog/controller/product/category.php">
         <operation>
-            <search><![CDATA['stock'        => ($result['quantity'] > 0 || !$result['subtract'])]]></search>
+            <search><![CDATA['stock'        => ($result['quantity'] > 0 || !$result['subtract']),]]></search>
             <add position="after"><![CDATA[					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],]]></add>
         </operation>
     </file>

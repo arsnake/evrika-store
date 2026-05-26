@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Account Dashboard — extra data</name>
+    <code>evrika-account-dashboard</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Патчит catalog/controller/account/account.php:
+        Добавляет в $data:
+          firstname, lastname, customer_email, customer_group
+          order_total, order_processing, order_spent
+          wishlist_total
+          recent_orders (последние 3 заказа)
+          logout
+    -->
+
+    <file path="catalog/controller/account/account.php">
+        <operation>
+            <search><![CDATA[$data['edit'] = $this->url->link('account/edit', '', true);]]></search>
+            <add position="after"><![CDATA[		$data['firstname']      = $this->customer->getFirstName();
+		$data['lastname']       = $this->customer->getLastName();
+		$data['customer_email'] = $this->customer->getEmail();
+		$_cg_q = $this->db->query("SELECT name FROM `" . DB_PREFIX . "customer_group_description` WHERE customer_group_id = '" . (int)$this->customer->getGroupId() . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+		$data['customer_group'] = $_cg_q->num_rows ? $_cg_q->row['name'] : '';
+		$this->load->model('account/order');
+		$data['order_total'] = $this->model_account_order->getTotalOrders();
+		$_active_q = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` WHERE customer_id = '" . (int)$this->customer->getId() . "' AND order_status_id IN (1,2,3,15) AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
+		$data['order_processing'] = (int)$_active_q->row['total'];
+		$_spent_q = $this->db->query("SELECT SUM(total) AS spent FROM `" . DB_PREFIX . "order` WHERE customer_id = '" . (int)$this->customer->getId() . "' AND order_status_id > '0' AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
+		$data['order_spent'] = number_format((float)$_spent_q->row['spent'], 0, '.', ' ');
+		$data['wishlist_total'] = isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0;
+		$_months = array(1=>'янв.',2=>'фев.',3=>'мар.',4=>'апр.',5=>'мая',6=>'июн.',7=>'июл.',8=>'авг.',9=>'сен.',10=>'окт.',11=>'ноя.',12=>'дек.');
+		$_rec_q = $this->db->query("SELECT o.order_id, o.total, o.date_added, o.order_status_id, os.name AS status, (SELECT COUNT(*) FROM `" . DB_PREFIX . "order_product` WHERE order_id = o.order_id) AS product_count FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "order_status` os ON (o.order_status_id = os.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') WHERE o.customer_id = '" . (int)$this->customer->getId() . "' AND o.order_status_id > '0' AND o.store_id = '" . (int)$this->config->get('config_store_id') . "' ORDER BY o.order_id DESC LIMIT 3");
+		$data['recent_orders'] = array();
+		foreach ($_rec_q->rows as $_ro) {
+			$_ts   = strtotime($_ro['date_added']);
+			$_date = (int)date('d', $_ts) . ' ' . $_months[(int)date('n', $_ts)] . ' ' . date('Y', $_ts);
+			$data['recent_orders'][] = array(
+				'order_id'        => $_ro['order_id'],
+				'date_added'      => $_date,
+				'product_count'   => (int)$_ro['product_count'],
+				'total'           => number_format((float)$_ro['total'], 0, '.', ' ') . ' ₽',
+				'status'          => $_ro['status'],
+				'order_status_id' => (int)$_ro['order_status_id'],
+				'href'            => $this->url->link('account/order/info', 'order_id=' . (int)$_ro['order_id'], true),
+			);
+		}
+		$data['logout'] = $this->url->link('account/logout', '', true);]]></add>
+        </operation>
+    </file>
+
+</modification>

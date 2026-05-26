@@ -23,11 +23,10 @@
   </nav>
 
   {# ═══════════════════════════════════════
-     PRODUCT SECTION
-     Если есть опции → 3 колонки (галерея | инфо+опции | панель покупки)
-     Если опций нет  → 2 колонки (галерея | инфо+цена+кнопки)
+     PRODUCT SECTION — всегда 3 колонки
+     галерея | инфо+опции | панель покупки
      ═══════════════════════════════════════ #}
-  <section class="product-section{% if options %} has-options{% endif %}">
+  <section class="product-section">
 
     {# ── КОЛОНКА 1: ГАЛЕРЕЯ ── #}
     <div class="gallery-wrap">
@@ -169,88 +168,13 @@
         </div>
       {% endif %}
 
-      {# ══════════════════════════════════════════
-         БЛОК ПОКУПКИ — только в 2-колоночном режиме (нет опций)
-         ══════════════════════════════════════════ #}
-      {% if not options %}
-        <div class="price-buy-block">
-
-          <div class="price-row">
-            {% if special %}
-              <span class="price-value">{{ special }}</span>
-              <span class="price-old">{{ price }}</span>
-              <span class="price-unit">/ шт.</span>
-            {% elseif price %}
-              <span class="price-value">{{ price }}</span>
-              <span class="price-unit">/ шт.</span>
-            {% endif %}
-          </div>
-
-          {% if discounts %}
-            <div class="price-discounts">
-              {% for discount in discounts %}
-                <div class="price-discount-row">
-                  <span>от {{ discount.quantity }} шт.</span>
-                  <span class="price-discount-val">{{ discount.price }}</span>
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-
-          {% if tax %}
-            <div class="price-tax">Цена с налогом: {{ tax }}</div>
-          {% endif %}
-
-          <div class="buy-actions-row">
-            <div class="qty-control" aria-label="Количество">
-              <button class="qty-btn minus" type="button" aria-label="Уменьшить количество">−</button>
-              <input class="qty-input" type="number" id="input-quantity" name="quantity"
-                     value="{{ minimum }}" min="{{ minimum }}" aria-label="Количество">
-              <button class="qty-btn plus" type="button" aria-label="Увеличить количество">+</button>
-            </div>
-            <button class="btn-cart" type="button" id="button-cart"
-                    onclick="cartAdd('{{ product_id }}', document.getElementById('input-quantity').value, {}, this)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 0 1-8 0"/>
-              </svg>
-              В корзину
-            </button>
-            <button class="btn-quick-order" type="button" id="button-quick-order"
-                    onclick="cartAdd('{{ product_id }}', document.getElementById('input-quantity').value, {}, null, true)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
-              Купить сейчас
-            </button>
-            <button class="btn-icon-action" type="button"
-                    aria-label="В избранное" title="В избранное"
-                    onclick="wishlist.add('{{ product_id }}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-              </svg>
-            </button>
-            <button class="btn-icon-action" type="button"
-                    aria-label="Сравнить" title="Сравнить"
-                    onclick="compare.add('{{ product_id }}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-            </button>
-          </div>
-
-        </div>{# /price-buy-block #}
-      {% endif %}
-
     </div>{# /product-info #}
 
 
     {# ══════════════════════════════════════════
-       КОЛОНКА 3: ПАНЕЛЬ ПОКУПКИ — только когда есть опции
+       КОЛОНКА 3: ПАНЕЛЬ ПОКУПКИ
        ══════════════════════════════════════════ #}
-    {% if options %}
-      <aside class="product-buy-panel">
+    <aside class="product-buy-panel">
 
         <div class="buy-price">
           {% if special %}
@@ -328,8 +252,7 @@
           </button>
         </div>
 
-      </aside>{# /product-buy-panel #}
-    {% endif %}
+    </aside>{# /product-buy-panel #}
 
   </section>
 
