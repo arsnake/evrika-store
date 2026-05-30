@@ -1,0 +1,203 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/account.css">
+
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Личный кабинет</span>
+  </nav>
+
+  {% if success %}
+  <div class="cab-success-banner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {{ success }}
+  </div>
+  {% endif %}
+
+  <div class="cab-layout">
+
+    <!-- САЙДБАР -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">{{ firstname is defined ? firstname|first|upper : '' }}{{ lastname is defined ? lastname|first|upper : '' }}</div>
+        <div class="cab-user-info">
+          <div class="cab-user-name">{{ firstname is defined ? firstname : '' }} {{ lastname is defined ? lastname : '' }}</div>
+          {% if customer_email is defined and customer_email %}<div class="cab-user-email">{{ customer_email }}</div>{% endif %}
+          <div class="cab-user-type">{{ customer_group is defined ? customer_group : '' }}</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link active" href="index.php?route=account/account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link" href="{{ order }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+          {% if order_processing is defined and order_processing %}
+          <span class="cab-nav-badge">{{ order_processing }}</span>
+          {% endif %}
+        </a>
+        <a class="cab-nav-link" href="{{ wishlist }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+          {% if wishlist_total is defined and wishlist_total %}
+          <span class="cab-nav-badge" style="background:var(--ink-30)">{{ wishlist_total }}</span>
+          {% endif %}
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="{{ edit }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link" href="{{ address }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="{{ logout is defined ? logout : 'index.php?route=account/logout' }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+    <div class="cab-main">
+
+      <h1 class="cab-page-title">Добро пожаловать{% if firstname is defined and firstname %}, {{ firstname }}{% endif %}!</h1>
+
+      <!-- СТАТИСТИКА -->
+      <div class="cab-stats">
+        <div class="cab-stat">
+          <div class="cab-stat-label">Заказов всего</div>
+          <div class="cab-stat-value">{{ order_total is defined ? order_total : 0 }}</div>
+          <div class="cab-stat-sub">за всё время</div>
+        </div>
+        <div class="cab-stat cab-stat--primary">
+          <div class="cab-stat-label">В обработке</div>
+          <div class="cab-stat-value">{{ order_processing is defined ? order_processing : 0 }}</div>
+          <div class="cab-stat-sub">активных заказа</div>
+        </div>
+        <div class="cab-stat cab-stat--accent">
+          <div class="cab-stat-label">Потрачено</div>
+          <div class="cab-stat-value">{{ order_spent is defined ? order_spent : 0 }}</div>
+          <div class="cab-stat-sub">рублей за всё время</div>
+        </div>
+        <div class="cab-stat">
+          <div class="cab-stat-label">Избранное</div>
+          <div class="cab-stat-value">{{ wishlist_total is defined ? wishlist_total : 0 }}</div>
+          <div class="cab-stat-sub">товаров отложено</div>
+        </div>
+      </div>
+
+      <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+      <div class="cab-section-head">
+        <div class="cab-section-title">Быстрые действия</div>
+      </div>
+      <div class="cab-quick-links">
+        <a class="cab-quick-link" href="{{ order }}">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Мои заказы</span>
+            <span class="cab-quick-link-sub">Посмотреть историю и статус</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="{{ wishlist }}">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Избранное</span>
+            <span class="cab-quick-link-sub">{% if wishlist_total is defined and wishlist_total %}{{ wishlist_total }} сохранённых товаров{% else %}Сохранённые товары{% endif %}</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="{{ edit }}">
+          <div class="cab-quick-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Редактировать профиль</span>
+            <span class="cab-quick-link-sub">Имя, email, пароль</span>
+          </div>
+        </a>
+        <a class="cab-quick-link" href="{{ address }}">
+          <div class="cab-quick-link-icon" style="background:rgba(212,98,26,.1);color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <span class="cab-quick-link-title">Адреса доставки</span>
+            <span class="cab-quick-link-sub">Добавить или изменить</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ПОСЛЕДНИЕ ЗАКАЗЫ -->
+      {% if recent_orders is defined and recent_orders %}
+      <div class="cab-section-head" style="margin-top:24px">
+        <div class="cab-section-title">Последние заказы</div>
+        <a class="cab-section-link" href="{{ order }}">Все заказы →</a>
+      </div>
+
+      <table class="cab-orders-table">
+        <thead>
+          <tr>
+            <th>№ заказа</th>
+            <th>Дата</th>
+            <th>Состав</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ord in recent_orders %}
+          <tr>
+            <td><a class="cab-order-num" href="{{ ord.href }}">#{{ ord.order_id }}</a></td>
+            <td>{{ ord.date_added }}</td>
+            <td style="color:var(--ink-50);font-size:12px">{{ ord.product_count }} {{ ord.product_count == 1 ? 'позиция' : (ord.product_count in [2,3,4] ? 'позиции' : 'позиций') }}</td>
+            <td><span class="cab-order-price">{{ ord.total }}</span></td>
+            <td>
+              <span class="cab-status
+                {%- if ord.order_status_id == 1 %} cab-status--new
+                {%- elseif ord.order_status_id in [2, 15] %} cab-status--process
+                {%- elseif ord.order_status_id == 3 %} cab-status--sent
+                {%- elseif ord.order_status_id == 5 %} cab-status--done
+                {%- else %} cab-status--cancel{%- endif %}">
+                <span class="cab-status-dot"></span>{{ ord.status }}
+              </span>
+            </td>
+            <td><a href="{{ ord.href }}" style="font-size:12px;color:var(--primary);text-decoration:none">Подробнее</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <div class="cab-section-head" style="margin-top:24px">
+        <div class="cab-section-title">Последние заказы</div>
+        <a class="cab-section-link" href="{{ order }}">Все заказы →</a>
+      </div>
+      <div class="cab-empty">
+        <div class="cab-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="cab-empty-title">Заказов пока нет</div>
+        <div class="cab-empty-text">Перейдите в каталог, чтобы сделать первый заказ</div>
+        <a href="index.php?route=product/category" class="btn-primary">Перейти в каталог</a>
+      </div>
+      {% endif %}
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+{{ footer }}

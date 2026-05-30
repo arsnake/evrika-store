@@ -36,16 +36,22 @@
       <add position="before"><![CDATA[			// ── Evrika: price range filter ──
 			$_price_min_get = isset($this->request->get['price_min']) ? (float)$this->request->get['price_min'] : null;
 			$_price_max_get = isset($this->request->get['price_max']) ? (float)$this->request->get['price_max'] : null;
+			// Наценка группы клиента (для перевода базовых цен в отображаемые)
+			$_pf_cg_id  = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+			$_pf_cg_q   = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $_pf_cg_id . "'");
+			$_pf_markup = isset($_pf_cg_q->row['markup_percent']) ? (float)$_pf_cg_q->row['markup_percent'] : 0;
+			$_pf_factor = 1 + $_pf_markup / 100;
 			$_prange = $this->db->query("SELECT MIN(p.price) AS mn, MAX(p.price) AS mx FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON p.product_id = p2c.product_id WHERE p2c.category_id = '" . (int)$category_id . "' AND p.status = '1'");
-			$_cat_price_min = isset($_prange->row['mn']) && $_prange->row['mn'] !== null ? (float)$_prange->row['mn'] : 0;
-			$_cat_price_max = isset($_prange->row['mx']) && $_prange->row['mx'] !== null ? (float)$_prange->row['mx'] : 0;
+			$_cat_price_min = isset($_prange->row['mn']) && $_prange->row['mn'] !== null ? (float)$_prange->row['mn'] * $_pf_factor : 0;
+			$_cat_price_max = isset($_prange->row['mx']) && $_prange->row['mx'] !== null ? (float)$_prange->row['mx'] * $_pf_factor : 0;
 			$data['price_range_min'] = (int)floor($_cat_price_min);
 			$data['price_range_max'] = (int)ceil($_cat_price_max);
 			$data['price_sel_min'] = ($_price_min_get !== null) ? (int)$_price_min_get : (int)floor($_cat_price_min);
 			$data['price_sel_max'] = ($_price_max_get !== null) ? (int)$_price_max_get : (int)ceil($_cat_price_max);
 			$data['show_price_filter'] = ($_cat_price_max > $_cat_price_min);
-			if ($_price_min_get !== null) $filter_data['filter_price_min'] = $_price_min_get;
-			if ($_price_max_get !== null) $filter_data['filter_price_max'] = $_price_max_get;
+			// Пользователь вводит цены с наценкой — конвертируем в базовые для SQL-фильтра
+			if ($_price_min_get !== null) $filter_data['filter_price_min'] = $_price_min_get / $_pf_factor;
+			if ($_price_max_get !== null) $filter_data['filter_price_max'] = $_price_max_get / $_pf_factor;
 ]]></add>
     </operation>
   </file>

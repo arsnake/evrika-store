@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Customer Group Markup % — Admin</name>
+    <code>evrika-customer-group-markup-admin</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет поле markup_percent в интерфейс групп клиентов.
+        Требует SQL-миграции: sql/add_markup_percent.sql
+        Патчит:
+          - admin/model/customer/customer_group.php (INSERT + UPDATE)
+          - admin/controller/customer/customer_group.php (getForm → $data)
+          - admin/view/template/customer/customer_group_form.twig (поле ввода)
+    -->
+
+    <!-- ① Модель: INSERT при создании группы -->
+    <file path="admin/model/customer/customer_group.php">
+        <operation>
+            <search><![CDATA[customer_group SET approval = '" . (int)$data['approval'] . "', sort_order = '" . (int)$data['sort_order'] . "'");]]></search>
+            <add position="replace" trim="true"><![CDATA[
+			customer_group SET approval = '" . (int)$data['approval'] . "', sort_order = '" . (int)$data['sort_order'] . "', markup_percent = '" . (float)$data['markup_percent'] . "'");]]></add>
+        </operation>
+
+        <!-- ② Модель: UPDATE при редактировании группы -->
+        <operation>
+            <search><![CDATA[customer_group SET approval = '" . (int)$data['approval'] . "', sort_order = '" . (int)$data['sort_order'] . "' WHERE customer_group_id = '" . (int)$customer_group_id . "'");]]></search>
+            <add position="replace" trim="true"><![CDATA[
+			customer_group SET approval = '" . (int)$data['approval'] . "', sort_order = '" . (int)$data['sort_order'] . "', markup_percent = '" . (float)$data['markup_percent'] . "' WHERE customer_group_id = '" . (int)$customer_group_id . "'");]]></add>
+        </operation>
+    </file>
+
+    <!-- ③ Контроллер: передать markup_percent в шаблон формы -->
+    <file path="admin/controller/customer/customer_group.php">
+        <operation>
+            <search><![CDATA[if (isset($this->request->post['sort_order'])) {]]></search>
+            <add position="before"><![CDATA[		if (isset($this->request->post['markup_percent'])) {
+			$data['markup_percent'] = (float)$this->request->post['markup_percent'];
+		} elseif (!empty($customer_group_info)) {
+			$data['markup_percent'] = $customer_group_info['markup_percent'];
+		} else {
+			$data['markup_percent'] = 0;
+		}
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ④ Шаблон формы: поле ввода наценки -->
+    <file path="admin/view/template/customer/customer_group_form.twig">
+        <operation>
+            <search><![CDATA[</form>]]></search>
+            <add position="before"><![CDATA[          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-markup-percent">Наценка (%)</label>
+            <div class="col-sm-10">
+              <input type="number" name="markup_percent" value="{{ markup_percent }}" placeholder="0.00" id="input-markup-percent" class="form-control" min="0" step="0.01" />
+              <span class="help-block">Наценка к базовой цене товара. Итоговая цена = Базовая цена × (1 + Наценка&nbsp;/&nbsp;100). Пример: наценка 100% → цена удваивается; 75% → цена × 1.75; 0% → базовая цена.</span>
+            </div>
+          </div>
+]]></add>
+        </operation>
+    </file>
+
+</modification>

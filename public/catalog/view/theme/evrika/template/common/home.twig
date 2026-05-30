@@ -2,6 +2,7 @@
 
 <main id="page-home">
 <div class="wrap">
+<h1 class="home-h1">Канцелярские товары оптом в Мелитополе</h1>
 
   <!-- PROMO BANNER -->
   <div class="promo-section">
@@ -11,7 +12,7 @@
 
 
       <div class="promo-side">
-        <div class="promo-card orange">
+        <a class="promo-card orange"{% if promo1_link is defined and promo1_link %} href="{{ promo1_link }}"{% endif %}>
           <div>
             <div class="promo-card-title">{{ promo1_title is defined ? promo1_title : 'Открой своё дело' }}</div>
             <div class="promo-card-sub">{{ promo1_desc is defined ? promo1_desc : 'Франшиза КанцПарк — от 1 млн ₽' }}</div>
@@ -21,8 +22,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{{ promo1_icon_svg|raw }}</svg>
           </div>
           {% endif %}
-        </div>
-        <div class="promo-card dark">
+        </a>
+        <a class="promo-card dark"{% if promo2_link is defined and promo2_link %} href="{{ promo2_link }}"{% endif %}>
           <div>
             <div class="promo-card-title">{{ promo2_title is defined ? promo2_title : 'Коллекция 2026' }}</div>
             <div class="promo-card-sub">{{ promo2_desc is defined ? promo2_desc : 'Школьный текстиль — уже в продаже' }}</div>
@@ -32,7 +33,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{{ promo2_icon_svg|raw }}</svg>
           </div>
           {% endif %}
-        </div>
+        </a>
       </div>
     </div>
   </div>

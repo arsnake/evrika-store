@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Customer Group Markup — Cart &amp; Checkout</name>
+    <code>evrika-customer-group-markup-cart</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Применяет наценку группы клиента в корзине и чекауте.
+        ① system/library/cart/cart.php — наценка в getProducts(); все downstream (getTotal, getTaxes, confirm, success) подхватывают автоматически
+        ② catalog/controller/common/cart.php — убирает 2 isLogged gate (с системой наценок все видят цены)
+        ③ catalog/controller/checkout/cart.php — убирает 4 isLogged gate
+    -->
+
+    <!-- ① Cart Library — Op1: загрузить markup_percent один раз перед циклом по товарам -->
+    <file path="system/library/cart/cart.php">
+        <operation>
+            <search trim="true"><![CDATA[foreach ($cart_query->rows as $cart) {]]></search>
+            <add position="before"><![CDATA[		// Evrika: customer group markup — load once before products loop
+		$_evrika_cg_id  = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+		$_evrika_cg_q   = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $_evrika_cg_id . "'");
+		$_evrika_markup = isset($_evrika_cg_q->row['markup_percent']) ? (float)$_evrika_cg_q->row['markup_percent'] : 0;
+]]></add>
+        </operation>
+
+        <!-- ① Cart Library — Op2: применить наценку к price и option_price после скидок/акций, перед rewards -->
+        <operation>
+            <search trim="true"><![CDATA[// Reward Points]]></search>
+            <add position="before"><![CDATA[				// Evrika: apply customer group markup
+				if ($_evrika_markup > 0) {
+					$price        = $price        * (1 + $_evrika_markup / 100);
+					$option_price = $option_price * (1 + $_evrika_markup / 100);
+				}
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ② Common Cart (header mini-cart) — Op1: totals gate -->
+    <file path="catalog/controller/common/cart.php">
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[		if (true) {]]></add>
+        </operation>
+        <!-- ② Common Cart — Op2: per-product price gate -->
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[			if (true) {]]></add>
+        </operation>
+    </file>
+
+    <!-- ③ Checkout Cart — Op1: per-product price gate (add/index action) -->
+    <file path="catalog/controller/checkout/cart.php">
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[				if (true) {]]></add>
+        </operation>
+        <!-- ③ Checkout Cart — Op2: totals gate in index() -->
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[			if (true) {]]></add>
+        </operation>
+        <!-- ③ Checkout Cart — Op3: totals gate in add() -->
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[				if (true) {]]></add>
+        </operation>
+        <!-- ③ Checkout Cart — Op4: totals gate in remove() -->
+        <operation>
+            <search trim="true" index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace"><![CDATA[				if (true) {]]></add>
+        </operation>
+    </file>
+
+</modification>

@@ -9,6 +9,28 @@
 #section-brands { display: none; }
 #section-news   { display: none; }
 
+/* ── H1 главной страницы ── */
+.home-h1 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  padding: 20px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.home-h1::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 /* ── Промо-секция: обёртка ── */
 .promo-section  { padding: 20px 0; }
 .promo-grid     { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
@@ -190,6 +212,8 @@
 }
 
 .promo-card {
+  text-decoration: none;
+  color: inherit;
   border-radius: var(--radius-l);
   overflow: hidden;
   flex: 1;

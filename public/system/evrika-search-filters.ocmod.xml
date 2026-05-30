@@ -15,8 +15,9 @@
 			$_sf_price_max = isset($this->request->get['price_max']) ? (float)$this->request->get['price_max'] : null;
 			$_sf_manuf_id  = isset($this->request->get['manufacturer_id']) ? (int)$this->request->get['manufacturer_id'] : 0;
 
-			if ($_sf_price_min !== null) $filter_data['filter_price_min'] = $_sf_price_min;
-			if ($_sf_price_max !== null) $filter_data['filter_price_max'] = $_sf_price_max;
+			// Пользователь вводит цены с наценкой — конвертируем в базовые для SQL-фильтра
+			if ($_sf_price_min !== null) $filter_data['filter_price_min'] = $_sf_price_min / $_sf_factor;
+			if ($_sf_price_max !== null) $filter_data['filter_price_max'] = $_sf_price_max / $_sf_factor;
 			if ($_sf_manuf_id  >  0)     $filter_data['filter_manufacturer_id'] = $_sf_manuf_id;
 
 			$_sf_lang  = (int)$this->config->get('config_language_id');
@@ -43,10 +44,15 @@
 				. " LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id)"
 				. " LEFT JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p.product_id = p2s.product_id)";
 
+			// Наценка группы клиента (для перевода базовых цен в отображаемые)
+			$_sf_cg_id  = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+			$_sf_cg_q   = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $_sf_cg_id . "'");
+			$_sf_markup = isset($_sf_cg_q->row['markup_percent']) ? (float)$_sf_cg_q->row['markup_percent'] : 0;
+			$_sf_factor = 1 + $_sf_markup / 100;
 			// Price range
 			$_sf_pr = $this->db->query("SELECT MIN(p.price) AS mn, MAX(p.price) AS mx FROM " . $_sf_from . " WHERE " . $_sf_where);
-			$_sf_pmin = (isset($_sf_pr->row['mn']) && $_sf_pr->row['mn'] !== null) ? (float)$_sf_pr->row['mn'] : 0;
-			$_sf_pmax = (isset($_sf_pr->row['mx']) && $_sf_pr->row['mx'] !== null) ? (float)$_sf_pr->row['mx'] : 0;
+			$_sf_pmin = (isset($_sf_pr->row['mn']) && $_sf_pr->row['mn'] !== null) ? (float)$_sf_pr->row['mn'] * $_sf_factor : 0;
+			$_sf_pmax = (isset($_sf_pr->row['mx']) && $_sf_pr->row['mx'] !== null) ? (float)$_sf_pr->row['mx'] * $_sf_factor : 0;
 			$data['price_range_min']   = (int)floor($_sf_pmin);
 			$data['price_range_max']   = (int)ceil($_sf_pmax);
 			$data['price_sel_min']     = ($_sf_price_min !== null) ? (int)$_sf_price_min : (int)floor($_sf_pmin);

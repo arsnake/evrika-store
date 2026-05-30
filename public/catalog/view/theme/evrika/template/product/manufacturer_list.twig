@@ -1,0 +1,98 @@
+{{ header }}
+
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Бренды и производители</span>
+  </nav>
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="mfr-list-head">
+    <h1 class="mfr-list-title">Бренды и производители</h1>
+    {% if total_manufacturers is defined and total_manufacturers %}
+    <span class="mfr-list-count">{{ total_manufacturers }} брендов</span>
+    {% endif %}
+  </div>
+
+  <!-- АЛФАВИТНЫЙ УКАЗАТЕЛЬ -->
+  {% set available_letters = categories|keys %}
+  {% set latin_letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'] %}
+  {% set cyrillic_letters = ['А','Б','В','Г','Д','Е','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я'] %}
+
+  <div class="mfr-alpha-bar" id="alphaBar">
+    <button class="mfr-alpha-btn active" type="button" data-filter="all">Все</button>
+    {% for l in latin_letters %}
+      {% if l in available_letters %}
+      <button class="mfr-alpha-btn" type="button" data-filter="{{ l }}">{{ l }}</button>
+      {% else %}
+      <span class="mfr-alpha-btn disabled">{{ l }}</span>
+      {% endif %}
+    {% endfor %}
+    {% for l in cyrillic_letters %}
+      {% if l in available_letters %}
+      <button class="mfr-alpha-btn" type="button" data-filter="{{ l }}">{{ l }}</button>
+      {% else %}
+      <span class="mfr-alpha-btn disabled">{{ l }}</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div id="mfrGroups">
+
+    {% if categories %}
+      {% for key, group in categories %}
+      <div class="mfr-group" data-letter="{{ key|e }}">
+        <div class="mfr-group-letter">{{ group.name }}</div>
+        <div class="mfr-grid">
+          {% for mfr in group.manufacturer %}
+          <a class="mfr-card" href="{{ mfr.href }}">
+            <div class="mfr-card-logo">
+              <div class="mfr-logo-text">{{ mfr.name|upper }}</div>
+            </div>
+            <div class="mfr-card-name">{{ mfr.name }}</div>
+            {% if mfr.count is defined and mfr.count %}
+            <div class="mfr-card-count">{{ mfr.count }} товаров</div>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="color:var(--ink-40);padding:40px 0;text-align:center">Бренды не найдены</p>
+    {% endif %}
+
+  </div><!-- /#mfrGroups -->
+
+</div><!-- /wrap -->
+</main>
+
+<script>
+(function () {
+  var btns    = document.querySelectorAll('.mfr-alpha-btn[data-filter]');
+  var groups  = document.querySelectorAll('.mfr-group[data-letter]');
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var filter = btn.getAttribute('data-filter');
+
+      btns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      groups.forEach(function (g) {
+        if (filter === 'all' || g.getAttribute('data-letter') === filter) {
+          g.style.display = '';
+        } else {
+          g.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+{{ footer }}

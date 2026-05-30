@@ -2,7 +2,7 @@
 <modification>
     <name>Evrika: Promo Banners — admin settings for homepage cards</name>
     <code>evrika-promo-banners</code>
-    <version>1.0</version>
+    <version>1.1</version>
     <author>Evrika</author>
     <link></link>
 
@@ -24,9 +24,11 @@
 		$data['promo1_title']    = $this->config->get('evrika_promo_banner1_title') ?: 'Открой своё дело';
 		$data['promo1_desc']     = $this->config->get('evrika_promo_banner1_desc')  ?: 'Франшиза КанцПарк — от 1 млн ₽';
 		$data['promo1_icon_svg'] = isset($_evrika_icons[$_icon1]) ? $_evrika_icons[$_icon1]['svg'] : '';
+		$data['promo1_link']     = $this->config->get('evrika_promo_banner1_link')  ?: '';
 		$data['promo2_title']    = $this->config->get('evrika_promo_banner2_title') ?: 'Коллекция 2026';
 		$data['promo2_desc']     = $this->config->get('evrika_promo_banner2_desc')  ?: 'Школьный текстиль — уже в продаже';
 		$data['promo2_icon_svg'] = isset($_evrika_icons[$_icon2]) ? $_evrika_icons[$_icon2]['svg'] : '';
+		$data['promo2_link']     = $this->config->get('evrika_promo_banner2_link')  ?: '';
 ]]></add>
         </operation>
     </file>

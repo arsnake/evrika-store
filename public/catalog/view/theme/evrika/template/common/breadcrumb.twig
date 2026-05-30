@@ -9,4 +9,13 @@
     {% endif %}
   {% endfor %}
 </nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{% for breadcrumb in breadcrumbs %}{% if loop.index > 1 %},{% endif %}
+    { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ breadcrumb.text | e('js') }}", "item": "{{ breadcrumb.href }}" }{% endfor %}
+  ]
+}
+</script>
 {% endif %}

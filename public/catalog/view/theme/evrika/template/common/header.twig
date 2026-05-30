@@ -10,10 +10,12 @@
 {% if description %}<meta name="description" content="{{ description }}">{% endif %}
 {% if keywords %}<meta name="keywords" content="{{ keywords }}">{% endif %}
 <meta property="og:title" content="{{ title }}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{% if route == 'product/product' %}product{% else %}website{% endif %}">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:image" content="{{ og_image ? og_image : logo }}">
 <meta property="og:site_name" content="{{ name }}">
+{% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+<meta property="og:locale" content="ru_RU">
 
 {# jQuery + Bootstrap JS — порядок критичен: bootstrap до common.js #}
 <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -52,10 +54,39 @@
 {% for link in links %}
 <link href="{{ link.href }}" rel="{{ link.rel }}">
 {% endfor %}
+{% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
 
 {% for analytic in analytics %}
 {{ analytic }}
 {% endfor %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ name | e('js') }}",
+  "@id": "{{ base }}",
+  "url": "{{ base }}"{% if telephone %},
+  "telephone": "{{ telephone | e('js') }}"{% endif %}{% if store_address %},
+  "address": { "@type": "PostalAddress", "streetAddress": "{{ store_address | striptags | e('js') }}", "addressLocality": "Мелитополь", "addressRegion": "Запорожская область" }{% endif %},
+  "logo": "{{ logo }}"
+}
+</script>
+{% if route == 'common/home' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ name | e('js') }}",
+  "url": "{{ base }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": { "@type": "EntryPoint", "urlTemplate": "{{ base }}index.php?route=product/search&search={search_term_string}" },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% endif %}
 </head>
 <body>
 
@@ -267,14 +298,23 @@
   <div class="catalog-modal">
     <div class="cat-sidebar">
       <div class="cat-header">
-        <h3>Каталог товаров</h3>
-        <div style="display:flex;gap:6px;align-items:center">
-          <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть" type="button">
-            <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
-          </button>
-          <button class="cat-close" onclick="closeCatalog()" type="button" aria-label="Закрыть">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
+        <div class="cat-header-top">
+          <h3>Каталог товаров</h3>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="cat-close" id="btnFullscreen" onclick="toggleFullscreen()" title="Развернуть" type="button">
+              <svg id="iconExpand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5M20 8V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5M20 16v4m0 0h-4m4 0l-5-5"/></svg>
+            </button>
+            <button class="cat-close" onclick="closeCatalog()" type="button" aria-label="Закрыть">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="cat-theme-picker" id="catThemePicker" aria-label="Цветовая схема каталога">
+          <button class="cat-theme-swatch" data-theme=""        type="button" title="Зелёный"     style="--sw-color:#2D7A4F"></button>
+          <button class="cat-theme-swatch" data-theme="blue"    type="button" title="Синий"       style="--sw-color:#1A4F9C"></button>
+          <button class="cat-theme-swatch" data-theme="orange"  type="button" title="Оранжевый"   style="--sw-color:#D4621A"></button>
+          <button class="cat-theme-swatch" data-theme="neutral" type="button" title="Нейтральный"  style="--sw-color:#3D3D4A"></button>
+          <button class="cat-theme-swatch" data-theme="light"   type="button" title="Светлый"     style="--sw-color:#C8D2E0"></button>
         </div>
       </div>
       <div class="cat-list" id="catList"></div>
@@ -559,5 +599,37 @@ window.EVRIKA_CATALOG = {{ catalog_json | raw }};
     }
     return false;
   };
+})();
+</script>
+<script>
+/* ── Переключатель цветовой схемы каталога ── */
+(function () {
+  var STORAGE_KEY = 'evrika_cat_theme';
+
+  function applyTheme(theme) {
+    var modal = document.querySelector('.catalog-modal');
+    if (!modal) return;
+    if (theme) {
+      modal.setAttribute('data-cat-theme', theme);
+    } else {
+      modal.removeAttribute('data-cat-theme');
+    }
+    document.querySelectorAll('.cat-theme-swatch').forEach(function (s) {
+      s.classList.toggle('active', (s.dataset.theme || '') === (theme || ''));
+    });
+  }
+
+  // Восстановить тему из сессии
+  var saved = sessionStorage.getItem(STORAGE_KEY);
+  applyTheme(saved !== null ? saved : '');
+
+  // Клик по свотчу
+  document.addEventListener('click', function (e) {
+    var swatch = e.target.closest('.cat-theme-swatch');
+    if (!swatch) return;
+    var theme = swatch.dataset.theme || '';
+    sessionStorage.setItem(STORAGE_KEY, theme);
+    applyTheme(theme);
+  });
 })();
 </script>

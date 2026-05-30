@@ -44,8 +44,13 @@ class ControllerProductLivesearch extends Controller {
         $products_result = $this->db->query($sql);
         $products = [];
 
+        // Наценка группы клиента
+        $_ls_cg_id  = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+        $_ls_cg_q   = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $_ls_cg_id . "'");
+        $_ls_markup = isset($_ls_cg_q->row['markup_percent']) ? (float)$_ls_cg_q->row['markup_percent'] : 0;
+
         foreach ($products_result->rows as $row) {
-            $price = (float)$row['price'];
+            $price = (float)$row['price'] * (1 + $_ls_markup / 100);
             if ($row['tax_class_id']) {
                 $price = $this->tax->calculate($price, $row['tax_class_id'], $this->config->get('config_tax'));
             }

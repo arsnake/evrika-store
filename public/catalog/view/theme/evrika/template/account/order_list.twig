@@ -1,0 +1,123 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/account.css">
+
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="index.php?route=account/account">Личный кабинет</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Мои заказы</span>
+  </nav>
+
+  <div class="cab-layout">
+
+    <!-- САЙДБАР -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">{{ firstname is defined ? firstname|first|upper : '' }}{{ lastname is defined ? lastname|first|upper : '' }}</div>
+        <div class="cab-user-info">
+          <div class="cab-user-name">{{ firstname is defined ? firstname : '' }} {{ lastname is defined ? lastname : '' }}</div>
+          {% if customer_email is defined and customer_email %}<div class="cab-user-email">{{ customer_email }}</div>{% endif %}
+          <div class="cab-user-type">{{ customer_group is defined ? customer_group : '' }}</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link" href="index.php?route=account/account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link active" href="index.php?route=account/order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/wishlist">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="index.php?route=account/edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/address">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="index.php?route=account/logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+    <div class="cab-main">
+      <h1 class="cab-page-title">Мои заказы</h1>
+
+      {% if orders %}
+
+      <table class="cab-orders-table">
+        <thead>
+          <tr>
+            <th>№ заказа</th>
+            <th>Дата</th>
+            <th>Позиций</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td><a class="cab-order-num" href="{{ order.view }}">#{{ order.order_id }}</a></td>
+            <td style="white-space:nowrap;font-size:12px;color:var(--ink-50)">{{ order.date_added }}</td>
+            <td style="text-align:center;color:var(--ink-60);font-size:12px">{{ order.products }}</td>
+            <td><span class="cab-order-price">{{ order.total }}</span></td>
+            <td>
+              <span class="cab-status
+                {%- if order.order_status_id is defined and order.order_status_id == 1 %} cab-status--new
+                {%- elseif order.order_status_id is defined and order.order_status_id in [2, 15] %} cab-status--process
+                {%- elseif order.order_status_id is defined and order.order_status_id == 3 %} cab-status--sent
+                {%- elseif order.order_status_id is defined and order.order_status_id == 5 %} cab-status--done
+                {%- else %} cab-status--cancel{%- endif %}">
+                <span class="cab-status-dot"></span>{{ order.status }}
+              </span>
+            </td>
+            <td style="white-space:nowrap">
+              <a href="{{ order.view }}" style="font-size:12px;color:var(--primary);text-decoration:none">Подробнее</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if pagination %}
+      <div class="cab-pagination">{{ pagination|raw }}</div>
+      {% endif %}
+
+      {% else %}
+
+      <div class="cab-empty">
+        <div class="cab-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="cab-empty-title">Заказов пока нет</div>
+        <div class="cab-empty-text">Перейдите в каталог, чтобы сделать первый заказ</div>
+        <a href="index.php?route=product/category" class="btn-primary">Перейти в каталог</a>
+      </div>
+
+      {% endif %}
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+{{ footer }}

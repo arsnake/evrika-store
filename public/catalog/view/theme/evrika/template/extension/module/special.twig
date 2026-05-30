@@ -49,6 +49,11 @@
             {% endif %}
           </div>
 
+          <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
+            <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
+            {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
+          </div>
+
           <div class="prod-actions">
             <div class="prod-qty-ctrl">
               <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>

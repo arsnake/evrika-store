@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Customer Group Markup % — Catalog Prices</name>
+    <code>evrika-customer-group-markup-catalog</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Применяет наценку группы клиентов к базовой цене товара.
+        Формула: display_price = base_price × (1 + markup_percent / 100)
+        Все пользователи (включая гостей) видят цену с наценкой своей группы.
+        Требует SQL-миграции: sql/add_markup_percent.sql
+
+        ═══ ПОРЯДОК ПРИМЕНЕНИЯ OCMod (алфавитный) ═══
+        evrika-bestseller-extra          → патчит bestseller.php ДО нас
+        evrika-category-extra-fields     → патчит category.php ДО нас (href + доп. поля)
+        evrika-customer-group-markup-catalog ← МЫ ЗДЕСЬ
+        evrika-has-required-options      → патчит после нас (latest, bestseller, featured, special, category)
+        evrika-latest-extra-fields       → патчит latest.php ПОСЛЕ нас (href + доп. поля)
+        evrika-search-related-extra-fields → патчит search.php ПОСЛЕ нас
+
+        ═══ СТРАТЕГИЯ ДЛЯ КАЖДОГО ФАЙЛА ═══
+
+        category.php: model/manufacturer/stock/has_req_opts уже добавляются
+          evrika-category-extra-fields + evrika-has-required-options.
+          Наш OCMod: только шаги 1 (markup loading) и 2 (price replace).
+          href уже изменён category-extra-fields → step 3 не нужен.
+
+        search.php: evrika-search-related-extra-fields добавляет все поля ПОСЛЕ нас.
+          Наш OCMod: только шаги 1 и 2. Step 3 не нужен.
+
+        latest.php: evrika-latest-extra-fields и evrika-has-required-options
+          добавляют поля ПОСЛЕ нас. Наш OCMod добавляет minimum (которого не добавят
+          другие OCMod), model/manufacturer/stock (latest-extra-fields потом скипнется),
+          has_required_options=0 (has-required-options перепишет реальным значением).
+
+        bestseller.php: evrika-bestseller-extra патчит ДО нас (href уже изменён).
+          Наш OCMod: шаг 1, шаг 2 для основного цикла, шаг 2b для fallback-блока.
+          Step 3 не нужен (поля уже добавлены besteller-extra + has-required-options).
+
+        special.php: ни один из существующих OCMod не добавляет поля.
+          Наш OCMod: шаги 1, 2, 3 (все поля).
+
+        featured.php: ни один из существующих OCMod не добавляет поля.
+          Наш OCMod: шаги 1, 2, 3 (все поля).
+
+        product.php (страница товара): единственная операция — markup + price.
+    -->
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/product/category.php
+         (доп. поля уже добавлены evrika-category-extra-fields)
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/product/category.php">
+
+        <!-- Шаг 1: загрузить наценку один раз перед foreach -->
+        <operation>
+            <search><![CDATA[$results = $this->model_catalog_product->getProducts($filter_data);]]></search>
+            <add position="after"><![CDATA[			$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+			$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+			$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок расчёта цены (5 строк → 2) -->
+        <operation>
+            <search index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/product/search.php
+         (доп. поля добавляет evrika-search-related-extra-fields ПОСЛЕ нас)
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/product/search.php">
+
+        <!-- Шаг 1: загрузить наценку перед foreach -->
+        <operation>
+            <search><![CDATA[$results = $this->model_catalog_product->getProducts($filter_data);]]></search>
+            <add position="after"><![CDATA[			$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+			$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+			$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок расчёта цены -->
+        <operation>
+            <search index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/extension/module/latest.php
+         evrika-latest-extra-fields патчит ПОСЛЕ нас.
+         Добавляем minimum, который другие OCMод не добавляют.
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/extension/module/latest.php">
+
+        <!-- Шаг 1: загрузить наценку после запроса к модели -->
+        <operation>
+            <search><![CDATA[$results = $this->model_catalog_product->getLatestProducts($setting['limit']);]]></search>
+            <add position="after"><![CDATA[		$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+		$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+		$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок расчёта цены -->
+        <operation>
+            <search><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Шаг 3: добавить minimum (evrika-latest-extra-fields не добавляет его).
+             Заменяем href + закрывающий ); добавляя href, model, manufacturer, stock, minimum.
+             evrika-latest-extra-fields потом скипнется (NOT FOUND) — это нормально.
+             evrika-has-required-options найдёт 'stock' и добавит реальное has_required_options. -->
+        <operation>
+            <search><![CDATA['href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+					'href'         => $this->url->link('product/product', 'product_id=' . $result['product_id']),
+					'model'        => $result['model'],
+					'manufacturer' => $result['manufacturer'],
+					'stock'        => $result['quantity'] > 0,
+					'minimum'      => $result['minimum'] > 0 ? (int)$result['minimum'] : 1,
+				);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/extension/module/bestseller.php
+         evrika-bestseller-extra патчит ДО нас:
+           - Op1: меняет if($results) → не влияет на наш поиск
+           - Op2: добавляет fallback-блок с УСТАРЕВШЕЙ логикой цены → патчим index="1"
+           - Op3: меняет href line → step 3 нам не нужен
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/extension/module/bestseller.php">
+
+        <!-- Шаг 1: загрузить наценку после запроса к модели -->
+        <operation>
+            <search><![CDATA[$results = $this->model_catalog_product->getBestSellerProducts($setting['limit']);]]></search>
+            <add position="after"><![CDATA[		$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+		$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+		$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок цены основного цикла (index=0, первое вхождение) -->
+        <operation>
+            <search index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Шаг 2b: заменить блок цены в fallback-цикле (index=1, второе вхождение).
+             Fallback добавлен evrika-bestseller-extra Op2 и использует $fb['price'].
+             $evrika_markup уже доступна т.к. шаг 1 выполнился выше. -->
+        <operation>
+            <search index="1"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+					$evrika_fb_price = (float)$fb['price'] * (1 + $evrika_markup / 100);
+					$fb_price = $this->currency->format($this->tax->calculate($evrika_fb_price, $fb['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/extension/module/special.php
+         Нет существующих OCMod, которые добавляют доп. поля.
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/extension/module/special.php">
+
+        <!-- Шаг 1: загрузить наценку после запроса -->
+        <operation>
+            <search><![CDATA[$results = $this->model_catalog_product->getProductSpecials($filter_data);]]></search>
+            <add position="after"><![CDATA[		$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+		$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+		$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок расчёта цены -->
+        <operation>
+            <search><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Шаг 3: обогатить массив товаров
+             evrika-has-required-options позже добавит has_required_options после href,
+             создав невалидный PHP (href без запятой). Поэтому мы ЗАМЕНЯЕМ href + );
+             добавляя все нужные поля включая trailing comma. has-required-options скипнется. -->
+        <operation>
+            <search><![CDATA['href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+					'href'         => $this->url->link('product/product', 'product_id=' . $result['product_id']),
+					'model'        => $result['model'],
+					'manufacturer' => $result['manufacturer'],
+					'stock'        => $result['quantity'] > 0,
+					'minimum'      => $result['minimum'] > 0 ? (int)$result['minimum'] : 1,
+					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$result['product_id'] . "' AND required = '1'")->row['cnt'],
+				);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/extension/module/featured.php
+         Нет существующих OCMod для доп. полей. $product_info (не $result).
+         evrika-has-required-options патчит через position="after" на href —
+         если мы сделаем replace offset=1 раньше, has-req-opts скипнется.
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/extension/module/featured.php">
+
+        <!-- Шаг 1: загрузить наценку перед foreach -->
+        <operation>
+            <search><![CDATA[foreach ($products as $product_id) {]]></search>
+            <add position="before"><![CDATA[		$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+		$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+		$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;
+]]></add>
+        </operation>
+
+        <!-- Шаг 2: заменить блок расчёта цены ($product_info, 5 табов вложенности) -->
+        <operation>
+            <search><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+					$evrika_price = (float)$product_info['price'] * (1 + $evrika_markup / 100);
+					$price = $this->currency->format($this->tax->calculate($evrika_price, $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Шаг 3: обогатить массив товаров ($product_info)
+             has-required-options ищет href через position="after" — создал бы синтаксическую
+             ошибку (href без запятой + has_required_options). Мы заменяем href+); полностью. -->
+        <operation>
+            <search><![CDATA['href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+					'href'         => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+					'model'        => $product_info['model'],
+					'manufacturer' => $product_info['manufacturer'],
+					'stock'        => $product_info['quantity'] > 0,
+					'minimum'      => $product_info['minimum'] > 0 ? (int)$product_info['minimum'] : 1,
+					'has_required_options' => (bool)$this->db->query("SELECT COUNT(*) AS cnt FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int)$product_info['product_id'] . "' AND required = '1'")->row['cnt'],
+				);]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ════════════════════════════════════════════
+         catalog/controller/product/product.php
+         Страница товара: $product_info, нет foreach для цены, 3 таба.
+         evrika-search-related-extra-fields добавляет поля related-блока ПОСЛЕ нас — не конфликт.
+         ════════════════════════════════════════════ -->
+    <file path="catalog/controller/product/product.php">
+
+        <!-- Op1: основная цена товара — markup loading + price (index=0, первое вхождение isLogged) -->
+        <operation>
+            <search index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+			$evrika_cg_id = $this->customer->isLogged() ? (int)$this->customer->getGroupId() : (int)$this->config->get('config_customer_group_id');
+			$evrika_cg_q  = $this->db->query("SELECT markup_percent FROM " . DB_PREFIX . "customer_group WHERE customer_group_id = '" . $evrika_cg_id . "'");
+			$evrika_markup = isset($evrika_cg_q->row['markup_percent']) ? (float)$evrika_cg_q->row['markup_percent'] : 0;
+			$evrika_price  = (float)$product_info['price'] * (1 + $evrika_markup / 100);
+			$data['price'] = $this->currency->format($this->tax->calculate($evrika_price, $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Op2: related products — цена (теперь единственное оставшееся вхождение isLogged, index=0) -->
+        <operation>
+            <search index="0"><![CDATA[if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+				$evrika_rel_price = (float)$result['price'] * (1 + $evrika_markup / 100);
+				$price = $this->currency->format($this->tax->calculate($evrika_rel_price, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+        <!-- Op3: related products — special price с наценкой -->
+        <operation>
+            <search trim="true"><![CDATA[$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></search>
+            <add position="replace" trim="true"><![CDATA[				$evrika_rel_special = (float)$result['special'] * (1 + $evrika_markup / 100);
+				$special = $this->currency->format($this->tax->calculate($evrika_rel_special, $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);]]></add>
+        </operation>
+
+    </file>
+
+</modification>

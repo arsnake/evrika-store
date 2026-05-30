@@ -36,7 +36,7 @@
            aria-label="Увеличить изображение"
            tabindex="0">
         {% if thumb %}
-          <img src="{{ thumb }}" alt="{{ heading_title }}" id="mainImage">
+          <img src="{{ thumb }}" alt="{{ heading_title }}" id="mainImage" fetchpriority="high" decoding="async">
         {% else %}
           <div class="gallery-main-placeholder">
             <svg viewBox="0 0 80 80" fill="none" aria-hidden="true">
@@ -55,7 +55,7 @@
                     data-img="{{ popup ? popup : thumb }}"
                     data-thumb="{{ thumb }}"
                     type="button">
-              <img src="{{ thumb }}" alt="{{ heading_title }}" loading="lazy">
+              <img src="{{ thumb }}" alt="{{ heading_title }}" loading="lazy" width="80" height="80">
             </button>
           {% endif %}
           {% for image in images %}
@@ -64,7 +64,7 @@
                     data-img="{{ image.popup }}"
                     data-thumb="{{ image.thumb }}"
                     type="button">
-              <img src="{{ image.thumb }}" alt="{{ heading_title }}" loading="lazy">
+              <img src="{{ image.thumb }}" alt="{{ heading_title }}" loading="lazy" width="80" height="80">
             </button>
           {% endfor %}
         </div>
@@ -205,10 +205,6 @@
           </div>
         {% endif %}
 
-        {% if tax %}
-          <div class="price-tax">Цена с налогом: {{ tax }}</div>
-        {% endif %}
-
         {# Количество + «В корзину» иконкой #}
         <div class="buy-qty-row">
           <div class="qty-control" aria-label="Количество">
@@ -279,6 +275,7 @@
     </div>
 
     <div class="tab-panel active" id="tab-desc" role="tabpanel">
+      <h2 class="visually-hidden">Описание товара</h2>
       {% if description %}
         {{ description | raw }}
       {% else %}
@@ -295,6 +292,7 @@
 
     {% if attribute_groups %}
       <div class="tab-panel" id="tab-specs" role="tabpanel">
+        <h2 class="visually-hidden">Характеристики товара</h2>
         {% for attribute_group in attribute_groups %}
           <h3>{{ attribute_group.name }}</h3>
           <table class="specs-full-table">
@@ -313,7 +311,7 @@
 
     {% if review_status %}
       <div class="tab-panel" id="tab-reviews" role="tabpanel">
-
+        <h2 class="visually-hidden">Отзывы о товаре</h2>
         <div id="review-list"></div>
 
         <div class="reviews-empty" id="reviews-empty-state">
@@ -517,4 +515,25 @@
   </button>
 </div>
 
+{% if product_url %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ heading_title | e('js') }}"{% if thumb %},
+  "image": "{{ thumb }}"{% endif %}{% if model %},
+  "sku": "{{ model | e('js') }}"{% endif %}{% if manufacturer %},
+  "brand": { "@type": "Brand", "name": "{{ manufacturer | e('js') }}" }{% endif %}{% if description %},
+  "description": "{{ description | striptags | slice(0, 500) | e('js') }}"{% endif %},
+  "url": "{{ product_url }}",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "{{ currency_code | e('js') }}",
+    "price": "{{ price_raw }}",
+    "availability": "https://schema.org/{% if stock %}InStock{% else %}OutOfStock{% endif %}",
+    "url": "{{ product_url }}"
+  }
+}
+</script>
+{% endif %}
 {{ footer }}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Include Subcategory Products</name>
+  <code>evrika-category-sub-products</code>
+  <version>1.0</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    catalog/controller/product/category.php:
+    Добавляет filter_sub_category => true в filter_data для выборки товаров,
+    чтобы в категории показывались товары из всех дочерних категорий.
+    Использует category_path JOIN + COUNT(DISTINCT) — дубликаты исключены.
+  -->
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA['filter_filter'      => $filter,]]></search>
+      <add position="replace" trim="true"><![CDATA['filter_sub_category' => true,
+				'filter_filter'      => $filter,]]></add>
+    </operation>
+  </file>
+
+</modification>

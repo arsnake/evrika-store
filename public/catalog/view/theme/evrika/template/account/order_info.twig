@@ -1,0 +1,223 @@
+{{ header }}
+<link rel="stylesheet" href="catalog/view/theme/evrika/stylesheet/account.css">
+
+<main>
+<div class="wrap">
+
+  <!-- ХЛЕБНЫЕ КРОШКИ -->
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <a href="index.php?route=common/home">Главная</a>
+    <span class="bc-sep">›</span>
+    <a href="index.php?route=account/account">Личный кабинет</a>
+    <span class="bc-sep">›</span>
+    <a href="index.php?route=account/order">Мои заказы</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">#{{ order_id }}</span>
+  </nav>
+
+  <div class="cab-layout">
+
+    <!-- САЙДБАР -->
+    <aside class="cab-sidebar">
+      <div class="cab-user">
+        <div class="cab-avatar">{{ firstname is defined ? firstname|first|upper : '' }}{{ lastname is defined ? lastname|first|upper : '' }}</div>
+        <div class="cab-user-info">
+          <div class="cab-user-name">{{ firstname is defined ? firstname : '' }} {{ lastname is defined ? lastname : '' }}</div>
+          {% if customer_email is defined and customer_email %}<div class="cab-user-email">{{ customer_email }}</div>{% endif %}
+          <div class="cab-user-type">{{ customer_group is defined ? customer_group : '' }}</div>
+        </div>
+      </div>
+      <nav class="cab-nav">
+        <a class="cab-nav-link" href="index.php?route=account/account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Обзор
+        </a>
+        <a class="cab-nav-link active" href="index.php?route=account/order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          Мои заказы
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/wishlist">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Избранное
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link" href="index.php?route=account/edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Мои данные
+        </a>
+        <a class="cab-nav-link" href="index.php?route=account/address">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса доставки
+        </a>
+        <div class="cab-nav-divider"></div>
+        <a class="cab-nav-link cab-nav-link--danger" href="index.php?route=account/logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+    <div class="cab-main">
+
+      <!-- ЗАГОЛОВОК ЗАКАЗА -->
+      <div class="ord-header">
+        <div>
+          <div class="ord-num">Заказ #{{ order_id }}</div>
+          <div class="ord-meta">Оформлен {{ date_added }}</div>
+          <div style="margin-top:10px">
+            <span class="cab-status
+              {%- if order_status_id is defined and order_status_id == 1 %} cab-status--new
+              {%- elseif order_status_id is defined and order_status_id in [2, 15] %} cab-status--process
+              {%- elseif order_status_id is defined and order_status_id == 3 %} cab-status--sent
+              {%- elseif order_status_id is defined and order_status_id == 5 %} cab-status--done
+              {%- else %} cab-status--cancel{%- endif %}">
+              <span class="cab-status-dot"></span>{{ order_status is defined ? order_status : '' }}
+            </span>
+          </div>
+        </div>
+        {% if totals %}
+        <div class="ord-header-right">
+          {% for total in totals %}
+            {% if loop.last %}
+            <div class="ord-total-label">{{ total.title }}</div>
+            <div class="ord-total-val">{{ total.text }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ТОВАРЫ В ЗАКАЗЕ -->
+      {% if products or vouchers %}
+      <div class="ord-items">
+        <div class="ord-items-head">
+          <div>Товар</div>
+          <div style="text-align:center">Кол-во</div>
+          <div>Цена</div>
+          <div>Сумма</div>
+        </div>
+
+        {% for product in products %}
+        <div class="ord-item">
+          <div class="ord-item-info">
+            <div class="ord-item-img">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+            </div>
+            <div>
+              <div class="ord-item-name">{{ product.name }}</div>
+              <div class="ord-item-art">Арт.: {{ product.model }}{% if product.option %} ·
+                {% for option in product.option %}{{ option.name }}: {{ option.value }}{% if not loop.last %}, {% endif %}{% endfor %}
+              {% endif %}</div>
+            </div>
+          </div>
+          <div class="ord-item-qty" style="text-align:center">{{ product.quantity }} шт.</div>
+          <div class="ord-item-price">{{ product.price }}</div>
+          <div class="ord-item-total">{{ product.total }}</div>
+        </div>
+        {% endfor %}
+
+        {% for voucher in vouchers %}
+        <div class="ord-item">
+          <div class="ord-item-info" style="grid-column:1/3">
+            <div class="ord-item-img">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8"/></svg>
+            </div>
+            <div class="ord-item-name">{{ voucher.description }}</div>
+          </div>
+          <div class="ord-item-total" style="grid-column:4">{{ voucher.amount }}</div>
+        </div>
+        {% endfor %}
+
+      </div>
+      {% endif %}
+
+      <!-- ПАНЕЛИ: ДОСТАВКА / ОПЛАТА / ПОЛУЧАТЕЛЬ -->
+      <div class="ord-panels">
+        <div class="ord-panel">
+          <div class="ord-panel-title">Доставка</div>
+          {% if shipping_method %}
+          <div class="ord-panel-row">
+            <span class="ord-panel-key">Способ</span>
+            <span class="ord-panel-val">{{ shipping_method }}</span>
+          </div>
+          {% endif %}
+          {% if shipping_address %}
+          <div class="ord-panel-row">
+            <span class="ord-panel-key">Адрес</span>
+            <span class="ord-panel-val">{{ shipping_address|raw }}</span>
+          </div>
+          {% endif %}
+        </div>
+        <div class="ord-panel">
+          <div class="ord-panel-title">Оплата</div>
+          {% if payment_method %}
+          <div class="ord-panel-row">
+            <span class="ord-panel-key">Способ</span>
+            <span class="ord-panel-val">{{ payment_method }}</span>
+          </div>
+          {% endif %}
+          {% if payment_address %}
+          <div class="ord-panel-row">
+            <span class="ord-panel-key">Адрес</span>
+            <span class="ord-panel-val">{{ payment_address|raw }}</span>
+          </div>
+          {% endif %}
+        </div>
+        {% if comment %}
+        <div class="ord-panel">
+          <div class="ord-panel-title">Комментарий</div>
+          <div style="font-size:13px;color:var(--ink-60);line-height:1.5">{{ comment|raw }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ИТОГИ -->
+      {% if totals %}
+      <div class="ord-totals">
+        {% for total in totals %}
+        <div class="ord-totals-row{% if loop.last %} total{% endif %}">
+          <span>{{ total.title }}</span>
+          <span>{{ total.text }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- ИСТОРИЯ СТАТУСОВ -->
+      {% if histories %}
+      <div class="cab-form-section" style="margin-top:16px">
+        <div class="cab-form-section-head">История заказа</div>
+        <table class="cab-orders-table" style="margin-top:0">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Статус</th>
+              <th>Комментарий</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for history in histories %}
+            <tr>
+              <td style="white-space:nowrap;font-size:12px;color:var(--ink-50)">{{ history.date_added }}</td>
+              <td><span style="font-size:12px;color:var(--ink-70)">{{ history.status }}</span></td>
+              <td style="font-size:12px;color:var(--ink-50)">{{ history.comment|raw }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      <!-- ДЕЙСТВИЯ -->
+      <div class="ord-actions">
+        <a href="{{ continue }}" class="btn-outline" style="font-size:13px">← Все заказы</a>
+      </div>
+
+    </div><!-- /cab-main -->
+  </div><!-- /cab-layout -->
+
+</div><!-- /wrap -->
+</main>
+
+{{ footer }}

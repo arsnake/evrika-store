@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika Success Extras</name>
+    <code>evrika-success-extras</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/success.php">
+
+        <!-- Patch: load order data and pass to template -->
+        <operation>
+            <search><![CDATA[$data['continue'] = $this->url->link('common/home');]]></search>
+            <add position="after"><![CDATA[
+			$data['success_order_id']       = 0;
+			$data['success_email']          = '';
+			$data['success_date']           = '';
+			$data['success_shipping']       = '';
+			$data['success_shipping_addr']  = '';
+			$data['success_is_pickup']      = false;
+			$data['success_payment']        = '';
+			$data['success_order_status']   = '';
+			$data['success_products']       = array();
+			$data['success_totals']         = array();
+			$data['success_phone']          = $this->config->get('config_telephone');
+			$data['success_store_open']     = $this->config->get('config_open');
+			$data['success_orders_link']    = $this->url->link('account/order', '', true);
+
+			if (!empty($this->session->data['last_order_id'])) {
+				$this->load->model('checkout/order');
+				$this->load->model('tool/image');
+				$order_info = $this->model_checkout_order->getOrder($this->session->data['last_order_id']);
+				if ($order_info) {
+					$_months = array('января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря');
+					$_ts = strtotime($order_info['date_added']);
+					$data['success_order_id']     = $order_info['order_id'];
+					$data['success_email']        = $order_info['email'];
+					$data['success_date']         = date('j', $_ts) . ' ' . $_months[date('n', $_ts) - 1] . ' ' . date('Y, H:i', $_ts);
+					$data['success_shipping']     = $order_info['shipping_method'];
+					$data['success_payment']      = $order_info['payment_method'];
+					$data['success_order_status'] = $order_info['order_status'];
+					$_sc = strtolower($order_info['shipping_code']);
+					$data['success_is_pickup']    = (strpos($_sc, 'pickup') !== false);
+					$_parts = array_filter(array(
+						$order_info['shipping_postcode'],
+						$order_info['shipping_city'],
+						$order_info['shipping_address_1'],
+					));
+					$data['success_shipping_addr'] = implode(', ', $_parts);
+					$_prods = $this->model_checkout_order->getOrderProducts($order_info['order_id']);
+					foreach ($_prods as $_p) {
+						$_img_row = $this->db->query("SELECT image FROM `" . DB_PREFIX . "product` WHERE product_id = '" . (int)$_p['product_id'] . "'")->row;
+						$_thumb = (!empty($_img_row['image'])) ? $this->model_tool_image->resize($_img_row['image'], 56, 56) : '';
+						$data['success_products'][] = array(
+							'name'     => $_p['name'],
+							'model'    => $_p['model'],
+							'quantity' => $_p['quantity'],
+							'total'    => $this->currency->format($_p['total'], $order_info['currency_code'], $order_info['currency_value']),
+							'thumb'    => $_thumb,
+						);
+					}
+					$_totals = $this->model_checkout_order->getOrderTotals($order_info['order_id']);
+					foreach ($_totals as $_t) {
+						$data['success_totals'][] = array(
+							'title' => $_t['title'],
+							'text'  => $this->currency->format($_t['value'], $order_info['currency_code'], $order_info['currency_value']),
+							'last'  => false,
+						);
+					}
+					if ($data['success_totals']) {
+						$data['success_totals'][count($data['success_totals']) - 1]['last'] = true;
+					}
+				}
+			}
+			]]></add>
+        </operation>
+
+    </file>
+
+</modification>

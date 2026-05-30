@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Banner/Slideshow — поля description и slide_date</name>
+    <code>evrika-banner-slideshow-extra-fields</code>
+    <version>1.2</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        ВАЖНО: OCMod в OpenCart 3 ищет совпадение построчно (stripos на каждой строке).
+        Поэтому <search> должен содержать РОВНО ОДНУ строку (без переносов).
+        Для замены блока из N строк используем атрибут offset="N-1" на <add>.
+        trim="true" на <add> убирает обёрточный пробел из CDATA, не трогая внутренние отступы.
+
+        Добавляет два поля к записям слайдера/баннера:
+          - description  (текст описания новинки)
+          - slide_date   (дата новинки, свободный формат)
+
+        Патчирует:
+          - catalog/controller/extension/module/slideshow.php
+          - catalog/controller/extension/module/banner.php
+          - admin/model/design/banner.php
+          - admin/controller/design/banner.php
+          - admin/view/template/design/banner_form.twig
+
+        Перед установкой выполнить SQL: sql/add_banner_fields.sql
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Каталог: slideshow контроллер
+         Заменяем блок из 5 строк (offset="4") на блок из 7 строк.
+         ═══════════════════════════════════════════════════════════ -->
+    <!--
+        Причина смены search: если search-строка присутствует в replacement,
+        движок OCMod находит её повторно в уже замещённых строках → двойная замена → синтаксическая ошибка.
+        Новый search — последняя строка оригинального блока без trailing comma.
+        В replacement эта строка имеет trailing comma и выровненные пробелы ('image'       =>),
+        поэтому stripos её больше не находит.
+    -->
+    <file path="catalog/controller/extension/module/slideshow.php">
+        <operation>
+            <search><![CDATA['image' => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+				'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
+					'description' => isset($result['description']) ? $result['description'] : '',
+					'slide_date'  => isset($result['slide_date'])  ? $result['slide_date']  : '',
+				);
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Каталог: banner контроллер (та же структура, что slideshow)
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="catalog/controller/extension/module/banner.php">
+        <operation>
+            <search><![CDATA['image' => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])]]></search>
+            <add position="replace" offset="1" trim="true"><![CDATA[
+				'image'       => $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']),
+					'description' => isset($result['description']) ? $result['description'] : '',
+					'slide_date'  => isset($result['slide_date'])  ? $result['slide_date']  : '',
+				);
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Админ: model/design/banner.php
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/model/design/banner.php">
+
+        <!-- getBannerImages: блок из 6 строк (offset="5") → 8 строк -->
+        <operation>
+            <search><![CDATA[$banner_image_data[$banner_image['language_id']][] = array(]]></search>
+            <add position="replace" offset="5" trim="true"><![CDATA[
+			$banner_image_data[$banner_image['language_id']][] = array(
+				'title'       => $banner_image['title'],
+				'link'        => $banner_image['link'],
+				'image'       => $banner_image['image'],
+				'description' => isset($banner_image['description']) ? $banner_image['description'] : '',
+				'slide_date'  => isset($banner_image['slide_date'])  ? $banner_image['slide_date']  : '',
+				'sort_order'  => $banner_image['sort_order'],
+			);
+]]></add>
+        </operation>
+
+        <!-- addBanner INSERT: одна строка, уникальна двойными пробелами ".  (int)" перед sort_order -->
+        <operation>
+            <search><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" .  $this->db->escape($banner_image['title']) . "', link = '" .  $this->db->escape($banner_image['link']) . "', image = '" .  $this->db->escape($banner_image['image']) . "', sort_order = '" .  (int)$banner_image['sort_order'] . "'");]]></search>
+            <add position="replace" trim="true"><![CDATA[
+					$this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" . $this->db->escape($banner_image['title']) . "', link = '" . $this->db->escape($banner_image['link']) . "', image = '" . $this->db->escape($banner_image['image']) . "', description = '" . $this->db->escape(isset($banner_image['description']) ? $banner_image['description'] : '') . "', slide_date = '" . $this->db->escape(isset($banner_image['slide_date']) ? $banner_image['slide_date'] : '') . "', sort_order = '" . (int)$banner_image['sort_order'] . "'");
+]]></add>
+        </operation>
+
+        <!-- editBanner INSERT: одна строка, уникальна одним пробелом ". (int)" перед sort_order -->
+        <operation>
+            <search><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" .  $this->db->escape($banner_image['title']) . "', link = '" .  $this->db->escape($banner_image['link']) . "', image = '" .  $this->db->escape($banner_image['image']) . "', sort_order = '" . (int)$banner_image['sort_order'] . "'");]]></search>
+            <add position="replace" trim="true"><![CDATA[
+					$this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" . $this->db->escape($banner_image['title']) . "', link = '" . $this->db->escape($banner_image['link']) . "', image = '" . $this->db->escape($banner_image['image']) . "', description = '" . $this->db->escape(isset($banner_image['description']) ? $banner_image['description'] : '') . "', slide_date = '" . $this->db->escape(isset($banner_image['slide_date']) ? $banner_image['slide_date'] : '') . "', sort_order = '" . (int)$banner_image['sort_order'] . "'");
+]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Админ: controller/design/banner.php — getForm
+         Блок из 7 строк (offset="6") → 9 строк
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/controller/design/banner.php">
+        <operation>
+            <search><![CDATA[$data['banner_images'][$key][] = array(]]></search>
+            <add position="replace" offset="6" trim="true"><![CDATA[
+				$data['banner_images'][$key][] = array(
+					'title'       => $banner_image['title'],
+					'link'        => $banner_image['link'],
+					'image'       => $image,
+					'thumb'       => $this->model_tool_image->resize($thumb, 100, 100),
+					'description' => isset($banner_image['description']) ? $banner_image['description'] : '',
+					'slide_date'  => isset($banner_image['slide_date'])  ? $banner_image['slide_date']  : '',
+					'sort_order'  => $banner_image['sort_order'],
+				);
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Админ: view/template/design/banner_form.twig
+         ═══════════════════════════════════════════════════════════ -->
+    <file path="admin/view/template/design/banner_form.twig">
+
+        <!-- Заголовок таблицы: вставляем колонки Описание и Дата перед {{ entry_link }}.
+             Строка уникальна: в строках данных нет standalone {{ entry_link }} в <td>. -->
+        <operation>
+            <search><![CDATA[<td class="text-left">{{ entry_link }}</td>]]></search>
+            <add position="before"><![CDATA[                    <td class="text-left">Описание</td>
+                    <td class="text-left" style="width:12%">Дата</td>]]></add>
+        </operation>
+
+        <!-- Строка существующего слайда: одна строка → три td.
+             Строка уникальна: только здесь name=...][link] и value="{{ banner_image.link }}". -->
+        <operation>
+            <search><![CDATA[<td class="text-left" style="width: 30%;"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" class="form-control" /></td>]]></search>
+            <add position="replace" trim="true"><![CDATA[
+                    <td class="text-left"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][description]" value="{{ banner_image.description }}" placeholder="Описание новинки" class="form-control" /></td>
+                    <td class="text-left" style="width:12%"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][slide_date]" value="{{ banner_image.slide_date }}" placeholder="15 мая 2026" class="form-control" /></td>
+                    <td class="text-left" style="width:25%"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" class="form-control" /></td>
+]]></add>
+        </operation>
+
+        <!-- JS addImage(): заменяем строку с [link] на три строки (description + date + link).
+             Строка уникальна: только здесь ][link]" value="" placeholder="{{ entry_link }}". -->
+        <operation>
+            <search><![CDATA[html += '  <td class="text-left" style="width: 30%;"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][link]" value="" placeholder="{{ entry_link }}" class="form-control" /></td>';]]></search>
+            <add position="replace" trim="true"><![CDATA[
+	html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][description]" value="" placeholder="Описание новинки" class="form-control" /></td>';
+	html += '  <td class="text-left" style="width:12%"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][slide_date]" value="" placeholder="15 мая 2026" class="form-control" /></td>';
+	html += '  <td class="text-left" style="width:25%"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][link]" value="" placeholder="{{ entry_link }}" class="form-control" /></td>';
+]]></add>
+        </operation>
+
+    </file>
+
+</modification>

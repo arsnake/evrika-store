@@ -40,6 +40,65 @@
 .scroll-top:hover  { background: var(--primary-mid); transform: translateY(-3px); }
 .scroll-top svg    { width: 20px; height: 20px; color: #fff; }
 
+/* ── Темы каталога (цвет сайдбара) ── */
+.catalog-modal {
+  /* sidebar palette */
+  --cat-primary:        var(--primary);
+  --cat-primary-dark:   var(--primary-dark);
+  --cat-primary-light:  var(--primary-light);
+  /* sidebar UI tokens */
+  --cat-fg:             #fff;
+  --cat-hdr-overlay:    rgba(0,0,0,.25);
+  --cat-divider:        rgba(255,255,255,.1);
+  --cat-item-hover:     rgba(255,255,255,.12);
+  --cat-item-active:    rgba(255,255,255,.18);
+  --cat-icon-bg:        rgba(255,255,255,.15);
+  --cat-btn-bg:         rgba(255,255,255,.15);
+  --cat-btn-hover:      rgba(255,255,255,.3);
+  --cat-count-bg:       rgba(255,255,255,.2);
+  --cat-scrollthumb:    rgba(255,255,255,.3);
+  --cat-scrollthumb-h:  rgba(255,255,255,.55);
+  --cat-picker-sep:     rgba(255,255,255,.2);
+  /* акцент для правой (белой) части — совпадает с основным цветом сайдбара */
+  --cat-accent:         var(--cat-primary);
+  --cat-accent-light:   var(--cat-primary-light);
+}
+.catalog-modal[data-cat-theme="blue"] {
+  --cat-primary:        #1A4F9C;
+  --cat-primary-dark:   #133C7A;
+  --cat-primary-light:  #EBF2FF;
+}
+.catalog-modal[data-cat-theme="orange"] {
+  --cat-primary:        #D4621A;
+  --cat-primary-dark:   #B04E10;
+  --cat-primary-light:  #FFF3EB;
+}
+.catalog-modal[data-cat-theme="neutral"] {
+  --cat-primary:        #3D3D4A;
+  --cat-primary-dark:   #28282F;
+  --cat-primary-light:  #F0F0F5;
+}
+.catalog-modal[data-cat-theme="light"] {
+  --cat-primary:        #EEF2F7;
+  --cat-primary-dark:   #D5DCE8;
+  --cat-primary-light:  #E3ECFF;
+  --cat-fg:             #1A1F28;
+  --cat-hdr-overlay:    rgba(0,0,0,.06);
+  --cat-divider:        rgba(0,0,0,.08);
+  --cat-item-hover:     rgba(0,0,0,.06);
+  --cat-item-active:    rgba(0,0,0,.1);
+  --cat-icon-bg:        rgba(0,0,0,.07);
+  --cat-btn-bg:         rgba(0,0,0,.07);
+  --cat-btn-hover:      rgba(0,0,0,.14);
+  --cat-count-bg:       rgba(0,0,0,.1);
+  --cat-scrollthumb:    rgba(0,0,0,.2);
+  --cat-scrollthumb-h:  rgba(0,0,0,.38);
+  --cat-picker-sep:     rgba(0,0,0,.15);
+  /* в светлой теме сайдбар бесцветный — для акцентов берём сайтовый primary */
+  --cat-accent:         var(--primary);
+  --cat-accent-light:   var(--primary-light);
+}
+
 /* ── Модалка каталога ── */
 .modal-overlay {
   position: fixed; inset: 0;
@@ -71,37 +130,51 @@
 }
 
 /* Левая панель каталога */
-.cat-sidebar       { width: 260px; flex-shrink: 0; background: var(--primary); overflow-y: auto; padding: 0; }
-.cat-header        { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: rgba(0,0,0,.25); border-bottom: 1px solid rgba(255,255,255,.1); }
-.cat-header h3     { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .3px; }
-.cat-close         { width: 32px; height: 32px; background: rgba(255,255,255,.15); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
-.cat-close:hover   { background: rgba(255,255,255,.3); }
-.cat-close svg     { width: 18px; height: 18px; color: #fff; }
+.cat-sidebar       { width: 260px; flex-shrink: 0; background: var(--cat-primary); overflow-y: auto; padding: 0; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--cat-scrollthumb) rgba(0,0,0,.08); }
+.cat-sidebar::-webkit-scrollbar       { width: 5px; }
+.cat-sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,.08); }
+.cat-sidebar::-webkit-scrollbar-thumb { background: var(--cat-scrollthumb); border-radius: 3px; }
+.cat-sidebar::-webkit-scrollbar-thumb:hover { background: var(--cat-scrollthumb-h); }
+.cat-header        { display: flex; flex-direction: column; gap: 10px; padding: 14px 20px 12px; background: var(--cat-hdr-overlay); border-bottom: 1px solid var(--cat-divider); }
+.cat-header-top    { display: flex; align-items: center; justify-content: space-between; }
+.cat-header h3     { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--cat-fg); text-transform: uppercase; letter-spacing: .3px; }
+.cat-close         { width: 32px; height: 32px; background: var(--cat-btn-bg); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.cat-close:hover   { background: var(--cat-btn-hover); }
+.cat-close svg     { width: 18px; height: 18px; color: var(--cat-fg); }
+/* Переключатель темы каталога */
+.cat-theme-picker  { display: flex; gap: 6px; align-items: center; }
+.cat-theme-swatch  { width: 18px; height: 18px; border-radius: 50%; background: var(--sw-color, #888); border: 2px solid var(--cat-picker-sep); cursor: pointer; padding: 0; transition: border-color .15s, transform .15s, box-shadow .15s; flex-shrink: 0; }
+.cat-theme-swatch:hover  { transform: scale(1.2); border-color: var(--cat-fg); opacity: .85; }
+.cat-theme-swatch.active { border-color: var(--cat-fg); box-shadow: 0 0 0 2px color-mix(in srgb, var(--cat-fg) 40%, transparent); transform: scale(1.1); }
 .cat-list          { padding: 8px 0; }
 .cat-item          { display: flex; align-items: center; gap: 12px; padding: 10px 20px; cursor: pointer; transition: background .2s; border-left: 3px solid transparent; }
 .cat-item:hover,
-.cat-item.active   { background: rgba(255,255,255,.12); border-left-color: #fff; }
-.cat-item.active   { background: rgba(255,255,255,.18); }
-.cat-item-icon     { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.cat-item-icon svg { width: 16px; height: 16px; color: #fff; }
-.cat-item-name     { font-size: 12px; color: rgba(255,255,255,.9); font-weight: 500; line-height: 1.3; }
-.cat-item-count    { margin-left: auto; font-size: 10px; color: rgba(255,255,255,.5); flex-shrink: 0; }
+.cat-item.active   { background: var(--cat-item-hover); border-left-color: var(--cat-fg); }
+.cat-item.active   { background: var(--cat-item-active); }
+.cat-item-icon     { width: 28px; height: 28px; border-radius: 6px; background: var(--cat-icon-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cat-item-icon svg { width: 16px; height: 16px; color: var(--cat-fg); }
+.cat-item-name     { font-size: 12px; color: var(--cat-fg); font-weight: 500; line-height: 1.3; }
+.cat-item-count    { margin-left: auto; font-size: 10px; background: var(--cat-count-bg); color: var(--cat-fg); padding: 1px 6px; border-radius: 10px; flex-shrink: 0; }
 
 /* Правая часть каталога */
-.cat-content      { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.cat-content      { flex: 1; overflow-y: auto; padding: 20px 24px; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--cat-accent) var(--ink-10); }
+.cat-content::-webkit-scrollbar       { width: 5px; }
+.cat-content::-webkit-scrollbar-track { background: var(--ink-10); border-radius: 3px; }
+.cat-content::-webkit-scrollbar-thumb { background: var(--cat-accent); border-radius: 3px; opacity: .6; transition: background .2s; }
+.cat-content::-webkit-scrollbar-thumb:hover { background: var(--cat-primary-dark); }
 .cat-chips        { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--ink-10); }
-.cat-chip         { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--ink-30); background: transparent; font-size: 11px; color: var(--ink-60); cursor: pointer; transition: all .2s; }
-.cat-chip:hover   { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.cat-chip         { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--cat-accent-light); background: var(--cat-accent-light); font-size: 11px; color: var(--cat-accent); font-weight: 500; cursor: pointer; transition: all .2s; }
+.cat-chip:hover   { border-color: var(--cat-accent); color: #fff; background: var(--cat-accent); }
 a.cat-chip        { text-decoration: none; }
 .cat-sub-grid     { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
-.cat-sub-group h4 { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--primary); display: inline-block; }
+.cat-sub-group h4 { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--cat-accent); display: inline-block; }
 .cat-sub-group h4 a { color: inherit; text-decoration: none; }
-.cat-sub-group h4 a:hover { color: var(--primary); }
+.cat-sub-group h4 a:hover { color: var(--cat-accent); }
 .cat-sub-group ul { list-style: none; }
 .cat-sub-group li { margin-bottom: 5px; }
 .cat-sub-group li a { font-size: 12px; color: var(--ink-60); display: flex; justify-content: space-between; align-items: center; padding: 2px 0; transition: color .2s; gap: 8px; }
-.cat-sub-group li a:hover { color: var(--primary); }
-.cat-sub-group li a .cnt  { font-size: 10px; color: var(--ink-30); flex-shrink: 0; }
+.cat-sub-group li a:hover { color: var(--cat-accent); }
+.cat-sub-group li a .cnt  { font-size: 10px; color: var(--cat-accent); background: var(--cat-accent-light); padding: 1px 6px; border-radius: 8px; font-weight: 600; flex-shrink: 0; }
 
 /* ── Пагинация ── */
 .pagination-wrap { display: flex; flex-direction: column; align-items: center; padding: 24px 0; gap: 12px; }

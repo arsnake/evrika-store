@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika — Category Filter Empty Chips</name>
+  <code>evrika-category-filter-chips</code>
+  <version>1.0</version>
+  <author>Evrika</author>
+  <link></link>
+
+  <!--
+    catalog/controller/product/category.php:
+    Исключает подкатегории без товаров (включая вложенные) и без дочерних категорий
+    из блока чипсов/подразделов (VID C).
+  -->
+
+  <file path="catalog/controller/product/category.php">
+    <operation>
+      <search><![CDATA[$data['categories'][] = array(]]></search>
+      <add position="replace" trim="true"><![CDATA[$_chip_total   = (int)$this->model_catalog_product->getTotalProducts($filter_data);
+				$_chip_has_sub = count($this->model_catalog_category->getCategories($result['category_id'])) > 0;
+				if ($_chip_total > 0 || $_chip_has_sub) $data['categories'][] = array(]]></add>
+    </operation>
+  </file>
+
+</modification>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Evrika SEO: Canonical URL и данные для шаблона</name>
+  <version>1.0</version>
+  <author>arsnake</author>
+  <code>evrika-seo-canonical</code>
+  <file path="catalog/controller/common/header.php">
+    <operation>
+      <search><![CDATA[return $this->load->view('common/header', $data);]]></search>
+      <add position="before"><![CDATA[
+$_seo_scheme = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] != 'off') ? 'https' : 'http';
+$_seo_host   = isset($this->request->server['HTTP_HOST']) ? $this->request->server['HTTP_HOST'] : '';
+$_seo_uri    = isset($this->request->server['REQUEST_URI']) ? $this->request->server['REQUEST_URI'] : '/';
+$_seo_full   = $_seo_scheme . '://' . $_seo_host . $_seo_uri;
+parse_str((string)parse_url($_seo_full, PHP_URL_QUERY), $_seo_qp);
+foreach (['sort', 'order', 'limit', 'page'] as $_seo_strip) { unset($_seo_qp[$_seo_strip]); }
+$_seo_path         = strtok($_seo_full, '?');
+$data['canonical'] = $_seo_path . ($_seo_qp ? '?' . http_build_query($_seo_qp) : '');
+$data['store_address'] = $this->config->get('config_address');
+$data['route']     = isset($this->request->get['route']) ? $this->request->get['route'] : 'common/home';
+]]></add>
+    </operation>
+  </file>
+</modification>

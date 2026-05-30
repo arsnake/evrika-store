@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika: Category Module — Top-6 by count with icons</name>
+    <code>evrika-category-module-top6-icon</code>
+    <version>1.1</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Патчит catalog/controller/extension/module/category.php:
+        Заменяет стандартный вывод категорий на топ-6 по количеству товаров
+        (включая дочерние), с SVG-иконками и склонением числа товаров.
+        Использует функции из catalog/view/theme/evrika/php/icons.php.
+
+        search = одна строка (L28), offset="4" — заменяет строки 28-32 (5 строк).
+        Остаток файла (L33-L82) остаётся: тело цикла foreach ($categories_orig as $category)
+        + закрывающие фигурные скобки — синтаксически корректный PHP, но мёртвый код.
+    -->
+    <file path="catalog/controller/extension/module/category.php">
+        <operation>
+            <search><![CDATA[$data['categories'] = array();]]></search>
+            <add position="replace" offset="4" trim="true"><![CDATA[
+		require_once(DIR_TEMPLATE . '../../../catalog/view/theme/evrika/php/icons.php');
+
+		$list = array();
+
+		$categories = $this->model_catalog_category->getCategories(0);
+
+		foreach ($categories as $category) {
+			$filter_data = array(
+				'filter_category_id'  => $category['category_id'],
+				'filter_sub_category' => true,
+			);
+
+			$total = $this->model_catalog_product->getTotalProducts($filter_data);
+
+			$list[] = array(
+				'category_id' => $category['category_id'],
+				'name'        => $category['name'],
+				'icon_svg'    => evrika_icon_svg(isset($category['icon']) ? $category['icon'] : ''),
+				'total'       => $total,
+				'total_label' => evrika_plural_products($total),
+				'href'        => $this->url->link('product/category', 'path=' . $category['category_id']),
+			);
+		}
+
+		usort($list, function($a, $b) { return $b['total'] - $a['total']; });
+
+		$data['categories'] = array_slice($list, 0, 6);
+
+		return $this->load->view('extension/module/category', $data);
+
+		// unreachable: original loop kept for PHP structural validity
+		$categories_orig = $this->model_catalog_category->getCategories(0);
+
+		foreach ($categories_orig as $category) {]]></add>
+        </operation>
+    </file>
+</modification>

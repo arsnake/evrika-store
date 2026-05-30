@@ -36,7 +36,7 @@ class ControllerExtensionModuleEvrikaPromo extends Controller {
 		$data['evrika_icons'] = evrika_get_icons();
 
 		foreach (array(1, 2) as $n) {
-			foreach (array('title', 'desc', 'icon') as $field) {
+			foreach (array('title', 'desc', 'icon', 'link') as $field) {
 				$key = 'evrika_promo_banner' . $n . '_' . $field;
 				if (isset($this->request->post[$key])) {
 					$data[$key] = $this->request->post[$key];

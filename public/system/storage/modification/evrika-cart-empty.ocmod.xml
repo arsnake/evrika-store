@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika Cart Empty State</name>
+    <code>evrika-cart-empty</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="catalog/controller/checkout/cart.php">
+
+        <!-- Patch: render checkout/cart instead of error/not_found when cart is empty -->
+        <operation>
+            <search><![CDATA[$this->response->setOutput($this->load->view('error/not_found', $data));]]></search>
+            <add position="replace"><![CDATA[$data['products']      = array();
+				$data['totals']        = array();
+				$data['heading_title'] = $this->language->get('heading_title');
+				$data['error_warning'] = '';
+				$data['success']       = '';
+				$data['attention']     = '';
+				$this->response->setOutput($this->load->view('checkout/cart', $data));]]></add>
+        </operation>
+
+    </file>
+
+</modification>

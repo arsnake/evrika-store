@@ -257,7 +257,7 @@
 
             <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
               {% if product.thumb %}
-                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
+                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="300" height="300">
               {% else %}
                 <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
               {% endif %}
@@ -346,7 +346,7 @@
 
             <a href="{{ product.href }}" class="pli-img" aria-label="{{ product.name }}">
               {% if product.thumb %}
-                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
+                <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="300" height="300">
               {% else %}
                 <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
               {% endif %}
@@ -485,4 +485,16 @@
 {% endif %}
 </script>
 
+{% if products %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ heading_title | e('js') }}",
+  "itemListElement": [{% for product in products %}{% if loop.index > 1 %},{% endif %}
+    { "@type": "ListItem", "position": {{ loop.index }}, "url": "{{ product.href }}", "name": "{{ product.name | e('js') }}" }{% endfor %}
+  ]
+}
+</script>
+{% endif %}
 {{ footer }}

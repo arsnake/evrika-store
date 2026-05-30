@@ -2,7 +2,7 @@
 <modification>
     <name>Evrika: Catalog Modal — header data (root categories, icons, counts, sub-groups)</name>
     <code>evrika-catalog-header</code>
-    <version>1.2</version>
+    <version>1.3</version>
     <author>Evrika</author>
     <link></link>
 
@@ -45,7 +45,8 @@
 					foreach ($_grand_cats as $_gc) {
 						$_gc_id = (int)$_gc['category_id'];
 						$_gc_total = $this->model_catalog_product->getTotalProducts(array('filter_category_id' => $_gc_id, 'filter_sub_category' => true));
-						if ($_gc_total == 0) continue;
+						$_gc_sub = $this->model_catalog_category->getCategories($_gc_id);
+						if ($_gc_total == 0 && count($_gc_sub) == 0) continue;
 						$_grand_items[] = array((string)$_gc['name'], (int)$_gc_total, (string)$this->url->link('product/category', 'path=' . $_rc_id . '_' . $_sc_id . '_' . $_gc_id));
 					}
 					$_sub_groups[] = array('title' => (string)$_sc['name'], 'href' => (string)$_sc_href, 'items' => $_grand_items);
