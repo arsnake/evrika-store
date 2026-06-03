@@ -44,9 +44,9 @@ footer {
 
 /* Социальные иконки */
 .footer-social  { display: flex; gap: 8px; }
-.social-btn     { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s; }
-.social-btn:hover { background: var(--primary); }
-.social-btn svg { width: 16px; height: 16px; color: #fff; }
+.social-btn     { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity .2s; text-decoration: none; flex-shrink: 0; }
+.social-btn:hover { opacity: .8; }
+.social-btn svg { width: 16px; height: 16px; color: #fff; fill: #fff; stroke: #fff; }
 
 /* Powered by (скрываем) */
 .footer-powered { display: none; }

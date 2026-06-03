@@ -6,12 +6,12 @@
   ║             bestseller.twig, special.twig, featured.twig            ║
   ╚══════════════════════════════════════════════════════════════════════╝
 
-  Использование (если OcStore поддерживает {% from %}):
-    {% from 'product/product_card.twig' import prod_card %}
-    {{ prod_card(product, 'new', 'Новинка') }}
-    {{ prod_card(product, 'hit', 'Популярное') }}
-    {{ prod_card(product, 'sale', 'Акция') }}
-    {{ prod_card(product, null, null) }}
+  ⚠️  OcStore НЕ поддерживает {% from %} / {% include %} между шаблонами.
+  Этот файл — эталон для ручной синхронизации. При изменении карточки:
+    1. Правишь макрос здесь
+    2. Вручную копируешь тело (без macro/endmacro) во все места использования:
+       category.twig, search.twig, product.twig (related),
+       latest.twig, bestseller.twig, special.twig, featured.twig
 
   Параметры макроса:
     product    — объект товара:

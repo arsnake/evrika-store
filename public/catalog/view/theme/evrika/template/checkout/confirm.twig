@@ -87,8 +87,23 @@
 </div>
 {% endif %}
 
+{# ── Согласие с офертой (обязательно, ГК РФ ст.437) ── #}
+<div class="consent-row consent-row--required" style="margin-top:16px;">
+  <input type="checkbox" id="confirmAgreeOferta" class="consent-checkbox" required aria-required="true">
+  <label class="consent-label" for="confirmAgreeOferta">
+    Я ознакомлен(-а) и принимаю условия
+    <a href="{{ base }}oferta" target="_blank" rel="noopener" class="agree">Публичной оферты</a>
+    <span class="consent-required-mark">*</span>
+  </label>
+</div>
+<p class="consent-note">
+  Нажимая «Подтвердить заказ», вы подтверждаете согласие на
+  <a href="{{ base }}pd-consent" target="_blank" rel="noopener">обработку персональных данных</a>
+  в соответствии с 152-ФЗ.
+</p>
+
 {# ── КНОПКА ПОДТВЕРДИТЬ ── #}
-<div class="co-step-actions" style="margin-top:20px;">
+<div class="co-step-actions" style="margin-top:16px;">
   <button type="button" id="button-confirm-order" class="btn-accent co-btn-confirm" data-payment-code="{{ payment_code }}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
     Подтвердить заказ

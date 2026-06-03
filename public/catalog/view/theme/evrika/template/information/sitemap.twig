@@ -1,0 +1,83 @@
+{{ header }}
+<main>
+<div class="wrap">
+
+<nav class="breadcrumb" aria-label="Хлебные крошки">
+  {% for breadcrumb in breadcrumbs %}
+    {% if loop.first %}
+      <a href="{{ breadcrumb.href }}">Главная</a>
+    {% else %}
+      <span class="bc-sep">›</span>
+      {% if loop.last %}
+        <span class="bc-current">{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</nav>
+
+<h1 style="margin:0 0 24px;font-size:1.5rem;font-weight:700;">{{ heading_title }}</h1>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px 48px;max-width:860px;">
+
+  <div>
+    <h2 style="font-size:1rem;font-weight:700;margin:0 0 12px;color:var(--ink);">Каталог товаров</h2>
+    <ul style="list-style:none;padding:0;margin:0;line-height:2;">
+      {% for category_1 in categories %}
+      <li>
+        <a href="{{ category_1.href }}" style="color:var(--accent);text-decoration:none;">{{ category_1.name }}</a>
+        {% if category_1.children %}
+        <ul style="list-style:none;padding-left:16px;margin:0;">
+          {% for category_2 in category_1.children %}
+          <li>
+            <a href="{{ category_2.href }}" style="color:var(--accent);text-decoration:none;">{{ category_2.name }}</a>
+            {% if category_2.children %}
+            <ul style="list-style:none;padding-left:16px;margin:0;">
+              {% for category_3 in category_2.children %}
+              <li><a href="{{ category_3.href }}" style="color:var(--accent);text-decoration:none;">{{ category_3.name }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div>
+    <h2 style="font-size:1rem;font-weight:700;margin:0 0 12px;color:var(--ink);">Навигация</h2>
+    <ul style="list-style:none;padding:0;margin:0;line-height:2;">
+      <li><a href="{{ special }}" style="color:var(--accent);text-decoration:none;">{{ text_special }}</a></li>
+      <li>
+        <a href="{{ account }}" style="color:var(--accent);text-decoration:none;">{{ text_account }}</a>
+        <ul style="list-style:none;padding-left:16px;margin:0;">
+          <li><a href="{{ edit }}" style="color:var(--accent);text-decoration:none;">{{ text_edit }}</a></li>
+          <li><a href="{{ password }}" style="color:var(--accent);text-decoration:none;">{{ text_password }}</a></li>
+          <li><a href="{{ address }}" style="color:var(--accent);text-decoration:none;">{{ text_address }}</a></li>
+          <li><a href="{{ history }}" style="color:var(--accent);text-decoration:none;">{{ text_history }}</a></li>
+          <li><a href="{{ download }}" style="color:var(--accent);text-decoration:none;">{{ text_download }}</a></li>
+        </ul>
+      </li>
+      <li><a href="{{ checkout }}" style="color:var(--accent);text-decoration:none;">{{ text_checkout }}</a></li>
+      <li><a href="{{ search }}" style="color:var(--accent);text-decoration:none;">{{ text_search }}</a></li>
+      <li>
+        {{ text_information }}
+        <ul style="list-style:none;padding-left:16px;margin:0;">
+          {% for information in informations %}
+          <li><a href="{{ information.href }}" style="color:var(--accent);text-decoration:none;">{{ information.title }}</a></li>
+          {% endfor %}
+          <li><a href="{{ contact }}" style="color:var(--accent);text-decoration:none;">{{ text_contact }}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+</div><!-- /wrap -->
+</main>
+{{ footer }}

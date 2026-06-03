@@ -63,6 +63,9 @@
   .promo-card-sub     { font-size: 10px; }
   .promo-card-icon svg { width: 44px; height: 44px; }
 
+  /* Новинки / Популярные на главной — только 4 карточки (2×2) */
+  .products-row-home .prod-card:nth-child(n+5) { display: none; }
+
   /* Чипсы */
   .chips-row          { gap: 6px; padding: 8px 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .chips-row::-webkit-scrollbar { display: none; }

@@ -358,6 +358,11 @@ function _updateSidebarTotal() {
 //  PAGE LOAD: initial AJAX
 // ============================================================
 $(document).ready(function() {
+    // Сброс outline на consent-чекбоксах при изменении
+    $(document).on('change', '.consent-checkbox', function() {
+        $(this).closest('.consent-row').css('outline', '');
+    });
+
     {% if not logged %}
     $.ajax({
         url: 'index.php?route=checkout/login',
@@ -398,6 +403,22 @@ $(document).delegate('#button-new-customer', 'click', function() {
         $('#fg-reg-email').addClass('co-form-error');
         valid = false;
     }
+
+    // Проверка обязательных согласий (152-ФЗ и пользовательское соглашение)
+    var pdCheck    = document.getElementById('co-agreePD');
+    var termsCheck = document.getElementById('co-agreeTerms');
+    if (pdCheck && !pdCheck.checked) {
+        pdCheck.closest('.consent-row').style.outline = '2px solid var(--accent)';
+        valid = false;
+    }
+    if (termsCheck && !termsCheck.checked) {
+        termsCheck.closest('.consent-row').style.outline = '2px solid var(--accent)';
+        valid = false;
+    }
+    if (!valid && (pdCheck && !pdCheck.checked || termsCheck && !termsCheck.checked)) {
+        showErr('collapse-checkout-option', 'Необходимо принять обязательные согласия');
+    }
+
     if (!valid) return;
 
     $.ajax({
@@ -655,6 +676,13 @@ $(document).delegate('#button-confirm-order', 'click', function() {
         showErr('collapse-checkout-confirm', 'Не выбран способ оплаты');
         return;
     }
+    var ofertaCheck = document.getElementById('confirmAgreeOferta');
+    if (ofertaCheck && !ofertaCheck.checked) {
+        showErr('collapse-checkout-confirm', 'Необходимо принять условия Публичной оферты');
+        ofertaCheck.closest('.consent-row').style.outline = '2px solid var(--accent)';
+        ofertaCheck.scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+    }
     var $btn = $(this).prop('disabled', true);
     var btnHtml = $btn.html();
     $btn.html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4"/></svg> Оформляем...');
@@ -686,7 +714,7 @@ $(document).off('click', '.agree');
 $(document).on('click', '.agree', function(e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    window.open($(this).attr('href'), 'agree', 'width=720,height=540,scrollbars=yes,resizable=yes,left=200,top=100');
+    window.open($(this).attr('href'), '_blank', 'noopener,noreferrer');
 });
 </script>
 {{ footer }}

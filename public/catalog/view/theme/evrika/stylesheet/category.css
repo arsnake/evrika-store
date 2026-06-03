@@ -375,6 +375,13 @@
   gap: 14px;
 }
 
+/* Products grid (5 columns — related / recently viewed) */
+.products-row-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
 /* List view modifier on the same grid container */
 .products-row-3.list-view {
   grid-template-columns: 1fr;
@@ -485,6 +492,7 @@
   .page-with-sidebar { grid-template-columns: 200px 1fr; }
   .products-row-3 { grid-template-columns: repeat(2, 1fr); }
   .products-row-4 { grid-template-columns: repeat(2, 1fr); }
+  .products-row-5 { grid-template-columns: repeat(3, 1fr); }
   .prod-list-item { grid-template-columns: 100px 1fr; }
   .pli-action { grid-column: 2; }
 }
@@ -521,6 +529,7 @@
   .cat-page-title { font-size: 16px; }
   .products-row-3 { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .products-row-4 { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .products-row-5 { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .tree-grid { grid-template-columns: 1fr; }
   .cat-per-page { display: none; }
   .sort-bar { gap: 8px; }

@@ -343,7 +343,22 @@
             <label for="review-text">Текст отзыва</label>
             <textarea id="review-text" name="text" placeholder="Расскажите о своём опыте использования товара..."></textarea>
           </div>
-          <button type="button" class="btn-submit" onclick="review.save()">Отправить отзыв</button>
+          {# Согласие на распространение ПД — 152-ФЗ ст.10.1 #}
+          <div style="display:flex;align-items:flex-start;gap:8px;margin:14px 0 10px;padding:6px 10px;background:color-mix(in srgb,var(--accent) 5%,transparent);border:1px solid var(--accent);border-radius:var(--radius-s);">
+            <input type="checkbox" id="reviewConsentPD" name="review_consent_pd" value="1"
+                   style="flex-shrink:0;margin-top:2px;width:15px;height:15px;cursor:pointer;accent-color:var(--accent);"
+                   required aria-required="true">
+            <label for="reviewConsentPD"
+                   style="display:inline;font-size:12px;line-height:1.5;color:var(--ink);cursor:pointer;font-weight:normal;">
+              Даю
+              <a href="{{ base }}pd-public-consent" target="_blank" rel="noopener"
+                 style="color:var(--accent);text-decoration:underline;white-space:nowrap;">согласие на публикацию</a>
+              имени и города в качестве подписи к отзыву
+              <span style="color:var(--accent);font-weight:700;margin-left:2px;">*</span>
+            </label>
+          </div>
+
+          <button type="button" class="btn-submit" onclick="reviewSubmitWithConsent()">Отправить отзыв</button>
         </form>
 
       </div>
@@ -360,95 +375,182 @@
       <div class="section-head">
         <h2 class="section-title">Похожие товары</h2>
       </div>
-      <div class="related-slider-wrap">
+      <div class="products-row-5">
+        {% for product in products %}
+        <div class="prod-card" data-pid="{{ product.product_id }}">
 
-        <button class="slider-prev" type="button" aria-label="Назад">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
+          <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
+            {% if product.thumb %}
+              <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="300" height="300">
+            {% else %}
+              <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
+            {% endif %}
+          </a>
 
-        <div class="related-slider" role="list">
-          {% for product in products %}
-            <div class="prod-card" role="listitem" data-pid="{{ product.product_id }}">
+          <div class="prod-info">
+            {% if product.model %}
+              <div class="prod-sku">Код: <span>{{ product.model }}</span></div>
+            {% endif %}
 
-              <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
-                {% if product.thumb %}
-                  <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy">
-                {% else %}
-                  <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
-                {% endif %}
-              </a>
+            {% if product.manufacturer %}
+              <div class="prod-brand">{{ product.manufacturer }}</div>
+            {% endif %}
 
-              <div class="prod-info">
-                {% if product.model %}<div class="prod-sku">Код: <span>{{ product.model }}</span></div>{% endif %}
-                {% if product.manufacturer %}<div class="prod-brand">{{ product.manufacturer }}</div>{% endif %}
-                <a href="{{ product.href }}" class="prod-name">{{ product.name }}</a>
+            <a href="{{ product.href }}" class="prod-name">{{ product.name }}</a>
 
-                {% if product.price %}
-                  <div class="prod-price-block">
-                    {% if product.special %}
-                      <span class="prod-price-old">{{ product.price }}</span>
-                      <div class="prod-price-row">
-                        <span class="prod-price">{{ product.special }}</span>
-                        <span class="prod-price-unit">/ шт.</span>
-                      </div>
-                    {% else %}
-                      <div class="prod-price-row">
-                        <span class="prod-price">{{ product.price }}</span>
-                        <span class="prod-price-unit">/ шт.</span>
-                      </div>
-                    {% endif %}
-                  </div>
-                  <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
-                    <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
-                    {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
-                  </div>
-                  <div class="prod-actions">
-                    <div class="prod-qty-ctrl">
-                      <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
-                      <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
-                      <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
-                    </div>
-                    <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
-                      onclick="wishlist.add('{{ product.product_id }}')">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </button>
-                    <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
-                      data-pid="{{ product.product_id }}"
-                      data-href="{{ product.href }}"
-                      data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
-                      onclick="cardCartAdd(this, false)">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    </button>
-                    <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
-                      data-pid="{{ product.product_id }}"
-                      data-href="{{ product.href }}"
-                      data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
-                      onclick="cardCartAdd(this, true)">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    </button>
+            {% if product.price %}
+              <div class="prod-price-block">
+                {% if product.special %}
+                  <span class="prod-price-old">{{ product.price }}</span>
+                  <div class="prod-price-row">
+                    <span class="prod-price">{{ product.special }}</span>
+                    <span class="prod-price-unit">/ шт.</span>
                   </div>
                 {% else %}
-                  <div class="prod-auth">
-                    Чтобы увидеть цены —
-                    <a href="index.php?route=account/login">авторизуйтесь</a>
-                    или
-                    <a href="index.php?route=account/register">зарегистрируйтесь</a>
+                  <div class="prod-price-row">
+                    <span class="prod-price">{{ product.price }}</span>
+                    <span class="prod-price-unit">/ шт.</span>
                   </div>
                 {% endif %}
               </div>
 
-            </div>
-          {% endfor %}
+              <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
+                <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
+                {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
+              </div>
+
+              <div class="prod-actions">
+                <div class="prod-qty-ctrl">
+                  <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
+                  <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
+                  <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
+                </div>
+                <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
+                  onclick="wishlist.add('{{ product.product_id }}')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+                <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
+                  data-pid="{{ product.product_id }}"
+                  data-href="{{ product.href }}"
+                  data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                  onclick="cardCartAdd(this, false)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </button>
+                <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
+                  data-pid="{{ product.product_id }}"
+                  data-href="{{ product.href }}"
+                  data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                  onclick="cardCartAdd(this, true)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </button>
+              </div>
+
+            {% else %}
+              <div class="prod-auth">
+                Чтобы увидеть цены —
+                <a href="index.php?route=account/login">авторизуйтесь</a>
+                или
+                <a href="index.php?route=account/register">зарегистрируйтесь</a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 
-        <button class="slider-next" type="button" aria-label="Вперёд">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
+  {# ═══════════════════════════════════════
+     ПРОСМОТРЕННЫЕ ТОВАРЫ
+     ═══════════════════════════════════════ #}
+  {% if recently_viewed %}
+    <section class="related-section" aria-label="Просмотренные товары">
+      <div class="section-head">
+        <h2 class="section-title">Вы смотрели</h2>
+      </div>
+      <div class="products-row-5">
+        {% for product in recently_viewed %}
+        <div class="prod-card" data-pid="{{ product.product_id }}">
 
+          <a href="{{ product.href }}" class="prod-img" aria-label="{{ product.name }}">
+            {% if product.thumb %}
+              <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" width="300" height="300">
+            {% else %}
+              <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="8" width="50" height="64" rx="6" fill="#EBF5EF"/><path d="M25 20h30M25 30h20" stroke="#9ABFAA" stroke-width="3" stroke-linecap="round"/></svg>
+            {% endif %}
+          </a>
+
+          <div class="prod-info">
+            {% if product.model %}
+              <div class="prod-sku">Код: <span>{{ product.model }}</span></div>
+            {% endif %}
+
+            {% if product.manufacturer %}
+              <div class="prod-brand">{{ product.manufacturer }}</div>
+            {% endif %}
+
+            <a href="{{ product.href }}" class="prod-name">{{ product.name }}</a>
+
+            {% if product.price %}
+              <div class="prod-price-block">
+                {% if product.special %}
+                  <span class="prod-price-old">{{ product.price }}</span>
+                  <div class="prod-price-row">
+                    <span class="prod-price">{{ product.special }}</span>
+                    <span class="prod-price-unit">/ шт.</span>
+                  </div>
+                {% else %}
+                  <div class="prod-price-row">
+                    <span class="prod-price">{{ product.price }}</span>
+                    <span class="prod-price-unit">/ шт.</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="prod-stock {% if product.stock %}in-stock{% else %}out-stock{% endif %}">
+                <svg viewBox="0 0 8 8" width="7" height="7" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="4"/></svg>
+                {% if product.stock %}В наличии{% else %}Нет в наличии{% endif %}
+              </div>
+
+              <div class="prod-actions">
+                <div class="prod-qty-ctrl">
+                  <button class="prod-qty-btn minus" aria-label="Уменьшить" type="button">−</button>
+                  <input class="prod-qty-input" type="number" value="{{ product.minimum|default(1) }}" min="{{ product.minimum|default(1) }}" aria-label="Количество">
+                  <button class="prod-qty-btn plus" aria-label="Увеличить" type="button">+</button>
+                </div>
+                <button class="prod-fav-btn" aria-label="В избранное" title="В избранное" type="button"
+                  onclick="wishlist.add('{{ product.product_id }}')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+                <button class="prod-cart-btn" aria-label="В корзину" title="В корзину" type="button"
+                  data-pid="{{ product.product_id }}"
+                  data-href="{{ product.href }}"
+                  data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                  onclick="cardCartAdd(this, false)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </button>
+                <button class="prod-quick-btn" aria-label="Купить сейчас" title="Купить сейчас" type="button"
+                  data-pid="{{ product.product_id }}"
+                  data-href="{{ product.href }}"
+                  data-has-opts="{{ product.has_required_options ? '1' : '0' }}"
+                  onclick="cardCartAdd(this, true)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </button>
+              </div>
+
+            {% else %}
+              <div class="prod-auth">
+                Чтобы увидеть цены —
+                <a href="index.php?route=account/login">авторизуйтесь</a>
+                или
+                <a href="index.php?route=account/register">зарегистрируйтесь</a>
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+        {% endfor %}
       </div>
     </section>
   {% endif %}
@@ -477,6 +579,51 @@
 </div>
 
 <script src="catalog/view/theme/evrika/js/product.js" type="text/javascript"></script>
+<script type="text/javascript">
+// Обёртка для отправки отзыва с проверкой согласия (152-ФЗ ст.10.1)
+function reviewSubmitWithConsent() {
+  var consent = document.getElementById('reviewConsentPD');
+  if (consent && !consent.checked) {
+    var row = consent.closest('.consent-row');
+    if (row) {
+      row.style.outline = '2px solid var(--accent)';
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    alert('Необходимо дать согласие на публикацию имени.');
+    return;
+  }
+  if (typeof review !== 'undefined' && typeof review.save === 'function') {
+    review.save();
+  } else {
+    // Fallback: стандартный OcStore submit через $.ajax
+    $.ajax({
+      url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+      type: 'post',
+      data: $('#form-review').serialize(),
+      dataType: 'json',
+      success: function(json) {
+        if (json['error']) {
+          alert(json['error']);
+        }
+        if (json['success']) {
+          alert(json['success']);
+          $('#form-review')[0].reset();
+        }
+      }
+    });
+  }
+}
+// Убираем outline при изменении чекбокса
+document.addEventListener('DOMContentLoaded', function() {
+  var consent = document.getElementById('reviewConsentPD');
+  if (consent) {
+    consent.addEventListener('change', function() {
+      var row = this.closest('.consent-row');
+      if (row) row.style.outline = '';
+    });
+  }
+});
+</script>
 
 {# ── МОБИЛЬНАЯ ПАНЕЛЬ ПОКУПКИ — видна только на мобиле, прикреплена над mob-nav ── #}
 <div class="mob-buy-bar" id="mob-buy-bar" aria-label="Быстрая покупка">

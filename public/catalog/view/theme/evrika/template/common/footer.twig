@@ -36,39 +36,41 @@
 
       <div class="footer-col">
         <h4>О компании</h4>
-        <a href="#">О компании</a>
-        <a href="#">Реквизиты</a>
+        <a href="{{ base }}about_us">О компании</a>
+        <a href="{{ base }}about_us">Реквизиты</a>
       </div>
 
       <div class="footer-col">
         <h4>Новым клиентам</h4>
         <a href="#">Почему мы</a>
-        <a href="#">Зарегистрироваться</a>
-        <a href="#">Доставка и оплата</a>
+        <a href="{{ base }}index.php?route=account/register">Зарегистрироваться</a>
+        <a href="{{ base }}delivery">Доставка и оплата</a>
+        <a href="{{ base }}return-rules">Правила возврата</a>
       </div>
 
       <div class="footer-col">
-        <h4>Помощь</h4>
-        <a href="#">Вопросы и ответы</a>
-        <a href="#">Карта сайта</a>
-        <a href="#">Политика конфиденциальности</a>
-        <a href="#">Договор оферты</a>
+        <h4>Документы</h4>
+        <a href="{{ base }}privacy">Политика конфиденциальности</a>
+        <a href="{{ base }}terms">Пользовательское соглашение</a>
+        <a href="{{ base }}oferta">Публичная оферта</a>
+        <a href="{{ base }}return-rules">Правила возврата и обмена</a>
+        <a href="{{ base }}index.php?route=information/sitemap">Карта сайта</a>
       </div>
 
     </div>
 
     <div class="footer-bottom">
-      <p>© {{ year is defined ? year : '2026' }} {{ store_name is defined ? store_name : 'Эврика' }}. Все права защищены.</p>
+      <p>© {{ year is defined ? year : '2026' }} {{ store_name is defined ? store_name : 'Эврика' }}. Все права защищены. ИП Иванов И.И., ИНН 612301234567</p>
       <div class="footer-social">
-        <div class="social-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-        </div>
-        <div class="social-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.976 0C5.364 0 0 5.364 0 11.976c0 5.292 3.432 9.804 8.208 11.376.6.108.816-.264.816-.576v-2.016c-3.348.72-4.044-1.608-4.044-1.608-.552-1.392-1.344-1.764-1.344-1.764-1.092-.744.084-.72.084-.72 1.212.084 1.848 1.236 1.848 1.236 1.08 1.848 2.82 1.308 3.504 1.008.108-.78.42-1.308.756-1.608-2.664-.3-5.46-1.332-5.46-5.928 0-1.308.468-2.376 1.236-3.216-.12-.3-.54-1.524.12-3.168 0 0 1.008-.324 3.3 1.236.96-.264 1.98-.396 3-.396s2.04.132 3 .396c2.292-1.56 3.3-1.236 3.3-1.236.66 1.644.24 2.868.12 3.168.768.84 1.236 1.908 1.236 3.216 0 4.608-2.808 5.616-5.484 5.916.432.372.816 1.104.816 2.22v3.288c0 .316.216.696.828.576C20.568 21.78 24 17.268 24 11.976 24 5.364 18.588 0 11.976 0z"/></svg>
-        </div>
-        <div class="social-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm-3.07 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm5.2-9a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg>
-        </div>
+        <a class="social-btn" href="https://t.me/+bGC49k-VtxIzM2Ri" target="_blank" rel="noopener" aria-label="Telegram-канал Эврика" style="background:#2CA5E0;">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <a class="social-btn" href="https://t.me/+YC8Dr6Ah-J9mMDBi" target="_blank" rel="noopener" aria-label="Telegram-чат Эврика" style="background:#1A73C9;">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <a class="social-btn" href="mailto:manager@evrikamlt.ru" aria-label="Написать на email" style="background:#34A853;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 7l10 7 10-7"/></svg>
+        </a>
       </div>
     </div>
 
@@ -79,6 +81,20 @@
 <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" type="button" aria-label="Наверх">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
 </button>
+
+{# ── Cookie-баннер ── #}
+<div id="cookie-banner" role="region" aria-label="Уведомление об использовании файлов cookie" style="display:none;">
+  <span class="cookie-icon" aria-hidden="true">🍪</span>
+  <div class="cookie-text">
+    Мы используем файлы cookie для корректной работы сайта и аналитики.
+    Продолжая использование сайта, вы соглашаетесь с
+    <a href="{{ base }}privacy" target="_blank" rel="noopener">Политикой конфиденциальности</a>.
+  </div>
+  <div class="cookie-actions">
+    <button id="cookie-accept-all" class="cookie-btn cookie-btn--accept" type="button">Принять все</button>
+    <button id="cookie-accept-essential" class="cookie-btn cookie-btn--essential" type="button">Только необходимые</button>
+  </div>
+</div>
 
 </div>{# /site-content #}
 
@@ -95,6 +111,9 @@
 
 {# Основной JS темы #}
 <script src="catalog/view/theme/evrika/js/main.js" type="text/javascript"></script>
+
+{# Cookie consent #}
+<script src="catalog/view/theme/evrika/js/cookie.js" type="text/javascript"></script>
 
 </body>
 </html>

@@ -53,7 +53,40 @@
       <input type="text" id="input-reg-telephone" name="reg_telephone" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
     </div>
 
-    <button type="button" id="button-new-customer" class="btn btn-primary" style="width:100%;margin-top:4px;">
+    {# Согласие на обработку ПД — обязательно (152-ФЗ ст.9) #}
+    <div class="consent-row consent-row--required consent-row--compact" style="margin-top:10px;">
+      <input type="checkbox" id="co-agreePD" name="co_agree_pd" value="1"
+             class="consent-checkbox" required aria-required="true">
+      <label class="consent-label" for="co-agreePD">
+        Даю согласие на обработку
+        <a href="/pd-consent" target="_blank" rel="noopener">персональных данных</a>
+        <span class="consent-required-mark">*</span>
+      </label>
+    </div>
+
+    {# Пользовательское соглашение — обязательно #}
+    <div class="consent-row consent-row--required consent-row--compact">
+      <input type="checkbox" id="co-agreeTerms" name="co_agree_terms" value="1"
+             class="consent-checkbox" required aria-required="true">
+      <label class="consent-label" for="co-agreeTerms">
+        Принимаю условия
+        <a href="/terms" target="_blank" rel="noopener">Пользовательского соглашения</a>
+        <span class="consent-required-mark">*</span>
+      </label>
+    </div>
+
+    {# Рекламная рассылка — добровольно (38-ФЗ ст.18) #}
+    <div class="consent-row consent-row--compact">
+      <input type="checkbox" id="co-agreeNewsletter" name="co_newsletter" value="1"
+             class="consent-checkbox">
+      <label class="consent-label" for="co-agreeNewsletter">
+        Согласен получать
+        <a href="/newsletter-consent" target="_blank" rel="noopener">рекламные рассылки</a>
+        (необязательно)
+      </label>
+    </div>
+
+    <button type="button" id="button-new-customer" class="btn btn-primary" style="width:100%;margin-top:8px;">
       Продолжить
     </button>
   </div>

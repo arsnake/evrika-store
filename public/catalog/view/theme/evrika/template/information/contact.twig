@@ -191,6 +191,17 @@
       <div class="contact-field">{{ captcha }}</div>
       {% endif %}
 
+      {# Согласие на обработку ПД — обязательно (152-ФЗ ст.9) #}
+      <div class="consent-row consent-row--required" style="margin-bottom:12px;">
+        <input type="checkbox" id="contactAgreePD" name="contact_agree_pd" value="1"
+               class="consent-checkbox" required aria-required="true">
+        <label class="consent-label" for="contactAgreePD">
+          Даю согласие на обработку
+          <a href="/pd-consent" target="_blank" rel="noopener">персональных данных</a>
+          <span class="consent-required-mark">*</span>
+        </label>
+      </div>
+
       <button type="submit" class="btn-primary contact-submit">Отправить сообщение</button>
 
     </form>

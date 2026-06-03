@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika — Recently Viewed Products</name>
+    <code>evrika_recently_viewed</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Добавляет $data['recently_viewed'] на страницу товара.
+        Логика:
+          1. Текущий товар добавляется в начало сессионного списка recently_viewed
+          2. Список обрезается до 20 позиций
+          3. В шаблон передаются последние 10 просмотренных (без текущего)
+        Инъекция: после строки updateViewed — уникальной строки в этом методе.
+    -->
+
+    <file path="catalog/controller/product/product.php">
+        <operation>
+            <search><![CDATA[$this->model_catalog_product->updateViewed($this->request->get['product_id']);]]></search>
+            <add position="after" trim="true"><![CDATA[
+				// ── Evrika: recently viewed tracking ────────────────────────
+				$_ev_current_id = (int)$this->request->get['product_id'];
+
+				// Инициализация сессионного списка
+				if (!isset($this->session->data['recently_viewed'])) {
+					$this->session->data['recently_viewed'] = array();
+				}
+
+				// Убираем текущий из середины и вставляем в начало
+				$_ev_viewed = array_values(array_diff(
+					$this->session->data['recently_viewed'],
+					array($_ev_current_id)
+				));
+				array_unshift($_ev_viewed, $_ev_current_id);
+
+				// Храним не более 20 позиций
+				$this->session->data['recently_viewed'] = array_slice($_ev_viewed, 0, 20);
+
+				// Собираем данные для шаблона (до 10 товаров, без текущего)
+				$data['recently_viewed'] = array();
+				$_ev_count = 0;
+				foreach ($this->session->data['recently_viewed'] as $_ev_pid) {
+					if ($_ev_pid == $_ev_current_id) continue;
+					if ($_ev_count >= 10) break;
+
+					$_ev_info = $this->model_catalog_product->getProduct($_ev_pid);
+					if (!$_ev_info || !$_ev_info['status']) continue;
+
+					if ($_ev_info['image']) {
+						$_ev_thumb = $this->model_tool_image->resize(
+							$_ev_info['image'],
+							$this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'),
+							$this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')
+						);
+					} else {
+						$_ev_thumb = $this->model_tool_image->resize(
+							'placeholder.png',
+							$this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'),
+							$this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')
+						);
+					}
+
+					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+						$_ev_price = $this->currency->format(
+							$this->tax->calculate($_ev_info['price'], $_ev_info['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+					} else {
+						$_ev_price = false;
+					}
+
+					if (!is_null($_ev_info['special']) && (float)$_ev_info['special'] >= 0) {
+						$_ev_special = $this->currency->format(
+							$this->tax->calculate($_ev_info['special'], $_ev_info['tax_class_id'], $this->config->get('config_tax')),
+							$this->session->data['currency']
+						);
+					} else {
+						$_ev_special = false;
+					}
+
+					$data['recently_viewed'][] = array(
+						'product_id'           => $_ev_info['product_id'],
+						'thumb'                => $_ev_thumb,
+						'name'                 => $_ev_info['name'],
+						'model'                => $_ev_info['model'],
+						'manufacturer'         => $_ev_info['manufacturer'],
+						'price'                => $_ev_price,
+						'special'              => $_ev_special,
+						'stock'                => (int)$_ev_info['quantity'] > 0,
+						'minimum'              => $_ev_info['minimum'] > 0 ? (int)$_ev_info['minimum'] : 1,
+						'has_required_options' => isset($_ev_info['has_required_options']) ? (int)$_ev_info['has_required_options'] : 0,
+						'href'                 => $this->url->link('product/product', 'product_id=' . $_ev_info['product_id'])
+					);
+					$_ev_count++;
+				}
+				// ── /Evrika: recently viewed ─────────────────────────────────
+]]></add>
+        </operation>
+    </file>
+
+</modification>

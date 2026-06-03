@@ -113,18 +113,42 @@
       </fieldset>
 
       <div class="reg-agree">
-        <label class="auth-checkbox-row">
-          <input type="checkbox" name="newsletter" value="1" class="auth-checkbox-input" {% if newsletter %}checked{% endif %}>
-          <span class="auth-checkbox-box"></span>
-          <span class="auth-checkbox-lbl">Получать информацию об акциях и новых поступлениях</span>
-        </label>
-        <label class="auth-checkbox-row">
-          <input type="checkbox" id="agreeTerms" class="auth-checkbox-input" required>
-          <span class="auth-checkbox-box"></span>
-          <span class="auth-checkbox-lbl">
-            Я принимаю условия пользовательского соглашения <span class="req">*</span>
-          </span>
-        </label>
+
+        {# Согласие на обработку ПД — обязательно (152-ФЗ ст.9) #}
+        <div class="consent-row consent-row--required">
+          <input type="checkbox" id="agreePD" name="agree" value="1"
+                 class="consent-checkbox" required
+                 aria-required="true">
+          <label class="consent-label" for="agreePD">
+            Я даю согласие на обработку
+            <a href="{{ base }}pd-consent" target="_blank" rel="noopener">персональных данных</a>
+            <span class="consent-required-mark">*</span>
+          </label>
+        </div>
+
+        {# Пользовательское соглашение — обязательно #}
+        <div class="consent-row consent-row--required">
+          <input type="checkbox" id="agreeTerms" name="agree_terms" value="1"
+                 class="consent-checkbox" required
+                 aria-required="true">
+          <label class="consent-label" for="agreeTerms">
+            Я принимаю условия
+            <a href="{{ base }}terms" target="_blank" rel="noopener">Пользовательского соглашения</a>
+            <span class="consent-required-mark">*</span>
+          </label>
+        </div>
+
+        {# Рекламная рассылка — добровольно (38-ФЗ ст.18) #}
+        <div class="consent-row">
+          <input type="checkbox" id="agreeNewsletter" name="newsletter" value="1"
+                 class="consent-checkbox" {% if newsletter %}checked{% endif %}>
+          <label class="consent-label" for="agreeNewsletter">
+            Согласен получать
+            <a href="{{ base }}newsletter-consent" target="_blank" rel="noopener">рекламные рассылки</a>
+            об акциях и новых поступлениях (необязательно)
+          </label>
+        </div>
+
       </div>
 
       <div class="reg-actions">

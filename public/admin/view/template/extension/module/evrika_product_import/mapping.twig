@@ -1,0 +1,584 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+
+    {# Шаги #}
+    <div class="panel panel-default">
+      <div class="panel-body" style="padding:12px 20px;">
+        <div style="display:flex; gap:8px; align-items:center; font-size:13px;">
+          <span style="background:#5cb85c; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;"><i class="fa fa-check" style="font-size:11px;"></i></span>
+          <span style="color:#5cb85c;">{{ text_step1 }}</span>
+          <span style="color:#ccc; margin:0 4px;">→</span>
+          <span style="background:#337ab7; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:700;">2</span>
+          <strong>{{ text_step2 }}</strong>
+          <span style="color:#ccc; margin:0 4px;">→</span>
+          <span style="background:#eee; color:#999; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;">3</span>
+          <span style="color:#999;">{{ text_step3 }}</span>
+        </div>
+      </div>
+    </div>
+
+    {# Файл #}
+    <div class="alert alert-info">
+      <i class="fa fa-file-excel-o"></i>
+      <strong>Файл:</strong> {{ filename }}
+      &nbsp;|&nbsp;
+      <strong>Строк данных:</strong> {{ preview_rows | length }} показано (первые 5)
+      &nbsp;&nbsp;
+      <a href="{{ action_back }}" class="btn btn-default btn-xs">
+        <i class="fa fa-arrow-left"></i> {{ button_back }}
+      </a>
+    </div>
+
+    {# Превью данных #}
+    {% if preview_rows %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-table"></i> {{ text_preview }}</h3>
+        </div>
+        <div class="panel-body" style="padding:0; overflow-x:auto;">
+          <table class="table table-bordered table-condensed" style="margin:0; font-size:12px; white-space:nowrap;">
+            <thead style="background:#f5f5f5;">
+              <tr>
+                {% for colIdx, colName in header_row %}
+                  <th>{{ colName }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in preview_rows %}
+                <tr>
+                  {% for colIdx, colName in header_row %}
+                    <td>{{ row[colIdx] is defined ? row[colIdx] : '' }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
+    {# Форма маппинга + настроек #}
+    <form id="import-form">
+      <input type="hidden" name="user_token" value="{{ user_token }}">
+
+      <div class="row">
+        {# Левая колонка: маппинг столбцов #}
+        <div class="col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading" style="display:flex; align-items:center; justify-content:space-between;">
+              <h3 class="panel-title"><i class="fa fa-random"></i> {{ text_mapping }}</h3>
+              {# Пресеты #}
+              {% if presets %}
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <select id="preset-select" class="form-control input-sm" style="width:auto;">
+                    <option value="">Загрузить пресет...</option>
+                    {% for preset in presets %}
+                      <option value="{{ preset.preset_id }}">{{ preset.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="button" id="btn-load-preset" class="btn btn-default btn-sm">
+                    <i class="fa fa-download"></i> Загрузить
+                  </button>
+                </div>
+              {% endif %}
+            </div>
+            <div class="panel-body">
+              <p class="text-muted small">{{ text_mapping_hint }}</p>
+              <table class="table table-hover" style="font-size:13px;">
+                <thead>
+                  <tr>
+                    <th style="width:25%;">{{ column_from_file }}</th>
+                    <th style="width:30%;">{{ column_sample }}</th>
+                    <th style="width:45%;">{{ column_oc_field }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for colIdx, colName in header_row %}
+                    {% if colName is not empty %}
+                      <tr>
+                        <td style="vertical-align:middle; font-weight:600;">{{ colName }}</td>
+                        <td style="vertical-align:middle; color:#888; font-size:11px;">
+                          {% if column_samples[colIdx] is defined %}
+                            {{ column_samples[colIdx] | join(', ') }}
+                          {% endif %}
+                        </td>
+                        <td style="vertical-align:middle;">
+                          <select name="mapping[{{ colIdx }}]"
+                                  class="form-control input-sm mapping-select"
+                                  data-col="{{ colIdx }}">
+                            {% for fieldKey, fieldLabel in available_fields %}
+                              <option value="{{ fieldKey }}"
+                                {% if mapping[colIdx] is defined and mapping[colIdx] == fieldKey %}selected{% endif %}>
+                                {{ fieldLabel }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            {# Сохранить пресет #}
+            <div class="panel-footer">
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input type="text" id="preset-name" class="form-control input-sm"
+                       placeholder="{{ text_preset_name }}" style="max-width:280px;">
+                <button type="button" id="btn-save-preset" class="btn btn-default btn-sm">
+                  <i class="fa fa-bookmark"></i> {{ button_save_preset }}
+                </button>
+                <span id="preset-saved-msg" class="text-success" style="display:none;">
+                  <i class="fa fa-check"></i> Сохранено
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {# Правая колонка: настройки #}
+        <div class="col-md-4">
+
+          {# Настройки импорта #}
+          <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-cog"></i> {{ text_import_settings }}</h3></div>
+            <div class="panel-body">
+
+              <div class="form-group">
+                <label class="control-label">{{ entry_import_mode }}</label>
+                <select name="mode" class="form-control input-sm" id="setting-mode">
+                  <option value="both">{{ text_mode_both }}</option>
+                  <option value="create">{{ text_mode_create }}</option>
+                  <option value="update">{{ text_mode_update }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">{{ entry_key_field }}</label>
+                <select name="key_field" class="form-control input-sm" id="setting-key">
+                  <option value="model">Код товара (model)</option>
+                  <option value="sku">SKU / Артикул</option>
+                  <option value="upc">UPC / Штрихкод</option>
+                  <option value="name">Название товара</option>
+                </select>
+                <span class="help-block" style="font-size:11px;">По этому полю будем искать существующий товар.</span>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">{{ entry_default_status }}</label>
+                <select name="default_status" class="form-control input-sm" id="setting-status">
+                  <option value="1">{{ text_status_enabled }}</option>
+                  <option value="0">{{ text_status_disabled }}</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          {# Категория по умолчанию #}
+          <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-folder"></i> {{ text_category_section }}</h3></div>
+            <div class="panel-body">
+              <p class="text-muted small">{{ text_category_hint }}</p>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="control-label">{{ entry_default_category }}</label>
+                <select name="default_category[]"
+                        id="setting-category"
+                        multiple="multiple"
+                        style="width:100%;">
+
+                  {# Рекомендованные (score > 0) #}
+                  {% set has_recommended = false %}
+                  {% for cat in categories %}
+                    {% if cat.score > 0 %}{% set has_recommended = true %}{% endif %}
+                  {% endfor %}
+
+                  {% if has_recommended %}
+                    <optgroup label="★ {{ text_recommended }}">
+                      {% for cat in categories %}
+                        {% if cat.score > 0 %}
+                          <option value="{{ cat.category_id }}" data-score="{{ cat.score }}">
+                            {{ cat.name }} — {{ cat.score }} {{ text_matches }}
+                          </option>
+                        {% endif %}
+                      {% endfor %}
+                    </optgroup>
+                    <optgroup label="{{ text_all_categories }}">
+                      {% for cat in categories %}
+                        {% if cat.score == 0 %}
+                          <option value="{{ cat.category_id }}">{{ cat.name }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </optgroup>
+                  {% else %}
+                    {% for cat in categories %}
+                      <option value="{{ cat.category_id }}">{{ cat.name }}</option>
+                    {% endfor %}
+                  {% endif %}
+
+                </select>
+                <span class="help-block" style="font-size:11px;">Можно выбрать несколько категорий. Начните вводить название для поиска.</span>
+              </div>
+            </div>
+          </div>
+
+          {# Кнопка запуска #}
+          <button type="button" id="btn-start-import" class="btn btn-success btn-lg btn-block">
+            <i class="fa fa-play-circle"></i> {{ button_start_import }}
+          </button>
+
+        </div>
+      </div>
+
+      {# Категории по типам товаров #}
+      {% if product_groups %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="fa fa-tags"></i> Категории по типам товаров
+            <small style="font-weight:normal; margin-left:8px;">Укажите категорию для каждого типа товаров. Пустое = использовать категорию по умолчанию.</small>
+          </h3>
+        </div>
+        <div class="panel-body" style="padding:0; overflow-x:auto;">
+          <table class="table table-condensed table-striped" style="margin:0;">
+            <thead>
+              <tr>
+                <th style="width:160px;">Тип товара</th>
+                <th style="width:50px; text-align:center;">Кол-во</th>
+                <th style="width:200px;">Авто-рекомендация</th>
+                <th>Категория</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for group in product_groups %}
+              <tr>
+                <td><strong>{{ group.key }}</strong></td>
+                <td style="text-align:center;"><span class="badge">{{ group.count }}</span></td>
+                <td>
+                  {% if group.category_id %}
+                    <span class="label label-info">{{ group.category_name }}</span>
+                  {% else %}
+                    <span style="color:#aaa; font-size:12px;">не определена</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <select class="group-category-select" data-group="{{ group.key_normalized }}" multiple="multiple" style="width:100%; max-width:400px;">
+                    {% for cat in categories %}
+                    <option value="{{ cat.category_id }}" {% if cat.category_id == group.category_id and group.category_id > 0 %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+
+      {# Прогресс-блок (скрыт до начала) #}
+      <div id="import-progress" style="display:none;">
+        <div class="panel panel-primary">
+          <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-spinner fa-spin"></i> {{ text_importing }}</h3></div>
+          <div class="panel-body">
+            <div class="progress" style="height:24px; margin-bottom:10px;">
+              <div id="progress-bar" class="progress-bar progress-bar-striped active"
+                   style="width:0%; min-width:30px; font-size:13px; line-height:24px;">0%</div>
+            </div>
+            <p id="progress-text" class="text-muted text-center" style="margin:0;">
+              {{ text_please_wait }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+(function() {
+  // Инициализация Select2 для мультиселекта категорий
+  $(document).ready(function() {
+    $('#setting-category').select2({
+      placeholder: 'Поиск по категориям...',
+      allowClear: true,
+      width: '100%',
+      language: {
+        noResults: function() { return 'Категории не найдены'; },
+        searching: function() { return 'Поиск...'; }
+      }
+    });
+
+    // Автовыбор рекомендованных (score > 0) при первой загрузке
+    var recommended = [];
+    $('#setting-category option[data-score]').each(function() {
+      recommended.push($(this).val());
+    });
+    if (recommended.length > 0) {
+      $('#setting-category').val(recommended).trigger('change');
+    }
+
+    // Select2 для мультиселекторов групп товаров
+    if (typeof $.fn.select2 !== 'undefined') {
+      $('.group-category-select').select2({
+        placeholder: '— По умолчанию —',
+        allowClear: true,
+        width: '100%',
+        language: {
+          noResults: function() { return 'Категории не найдены'; },
+          searching: function() { return 'Поиск...'; }
+        }
+      });
+    }
+  });
+
+  var actionImport     = '{{ action_import }}'.replace(/&amp;/g, '&');
+  var actionSavePreset = '{{ action_save_preset }}'.replace(/&amp;/g, '&');
+  var actionLoadPreset = '{{ action_load_preset }}'.replace(/&amp;/g, '&');
+
+  // ── Загрузить пресет ──────────────────────────────────────────────────────
+  var btnLoadPreset = document.getElementById('btn-load-preset');
+  if (btnLoadPreset) {
+    btnLoadPreset.addEventListener('click', function() {
+      var presetId = document.getElementById('preset-select').value;
+      if (!presetId) return;
+
+      fetch(actionLoadPreset + '&preset_id=' + presetId)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.success) { alert(data.error || 'Ошибка загрузки пресета'); return; }
+
+          var mapping = data.mapping || {};
+          // Применяем маппинг к select-ам
+          document.querySelectorAll('.mapping-select').forEach(function(sel) {
+            var col = sel.getAttribute('data-col');
+            if (mapping[col] !== undefined) {
+              sel.value = mapping[col];
+            }
+          });
+
+          // Применяем настройки
+          if (data.settings) {
+            var s = data.settings;
+            if (s.mode          && document.getElementById('setting-mode'))     document.getElementById('setting-mode').value     = s.mode;
+            if (s.key_field     && document.getElementById('setting-key'))      document.getElementById('setting-key').value      = s.key_field;
+            if (s.default_status !== undefined && document.getElementById('setting-status')) document.getElementById('setting-status').value = s.default_status;
+            if (s.default_category && document.getElementById('setting-category')) document.getElementById('setting-category').value = s.default_category;
+          }
+
+          // Применяем group_categories из пресета (значения — массивы)
+          if (data.settings && data.settings.group_categories) {
+            var gc = data.settings.group_categories;
+            document.querySelectorAll('.group-category-select').forEach(function(sel) {
+              var key = sel.getAttribute('data-group');
+              if (key && gc[key] !== undefined) {
+                var vals = Array.isArray(gc[key]) ? gc[key] : [gc[key]];
+                $(sel).val(vals).trigger('change');
+              }
+            });
+          }
+        });
+    });
+  }
+
+  // ── Сохранить пресет ──────────────────────────────────────────────────────
+  document.getElementById('btn-save-preset').addEventListener('click', function() {
+    var name = document.getElementById('preset-name').value.trim();
+    if (!name) { alert('{{ error_preset_name }}'); return; }
+
+    var mapping  = collectMapping();
+    var settings = collectSettings();
+
+    var fd = new FormData();
+    fd.append('preset_name', name);
+    fd.append('user_token', '{{ user_token }}');
+    Object.keys(mapping).forEach(function(k) { fd.append('mapping[' + k + ']', mapping[k]); });
+    Object.keys(settings).forEach(function(k) {
+      if (k === 'default_category' || k === 'group_categories') return;
+      fd.append('settings[' + k + ']', settings[k]);
+    });
+    var presetCats = settings['default_category'] || [];
+    if (!Array.isArray(presetCats)) { presetCats = [presetCats]; }
+    presetCats.forEach(function(cid) { fd.append('settings[default_category][]', cid); });
+    var presetGroupCats = settings['group_categories'] || {};
+    Object.keys(presetGroupCats).forEach(function(k) {
+      var vals = Array.isArray(presetGroupCats[k]) ? presetGroupCats[k] : [presetGroupCats[k]];
+      vals.forEach(function(v) {
+        if (v) { fd.append('settings[group_categories][' + k + '][]', v); }
+      });
+    });
+
+    fetch(actionSavePreset, { method: 'POST', body: fd })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          var msg = document.getElementById('preset-saved-msg');
+          msg.style.display = 'inline';
+          setTimeout(function() { msg.style.display = 'none'; }, 3000);
+        } else {
+          alert(data.error || 'Ошибка сохранения');
+        }
+      });
+  });
+
+  // ── Запуск импорта ────────────────────────────────────────────────────────
+  document.getElementById('btn-start-import').addEventListener('click', function() {
+    var mapping  = collectMapping();
+    var settings = collectSettings();
+
+    document.getElementById('import-progress').style.display = 'block';
+    document.getElementById('btn-start-import').disabled = true;
+    document.getElementById('import-form').querySelectorAll('select, input, button').forEach(function(el) {
+      el.disabled = true;
+    });
+
+    var totals = { created: 0, updated: 0, skipped: 0, errors: [], results: [] };
+    runBatch(0, mapping, settings, totals);
+  });
+
+  function runBatch(batchIndex, mapping, settings, totals) {
+    var fd = new FormData();
+    fd.append('batch', batchIndex);
+    fd.append('user_token', '{{ user_token }}');
+    fd.append('total_created', totals.created);
+    fd.append('total_updated', totals.updated);
+    fd.append('total_skipped', totals.skipped);
+    fd.append('all_errors', JSON.stringify(totals.errors));
+    fd.append('all_results', JSON.stringify(totals.results));
+    Object.keys(mapping).forEach(function(k) { fd.append('mapping[' + k + ']', mapping[k]); });
+    // Передаём все настройки, кроме default_category и group_categories (обрабатываем отдельно)
+    Object.keys(settings).forEach(function(k) {
+      if (k === 'default_category' || k === 'group_categories') return;
+      fd.append('settings[' + k + ']', settings[k]);
+    });
+    // default_category — массив
+    var cats = settings['default_category'] || [];
+    if (!Array.isArray(cats)) { cats = [cats]; }
+    cats.forEach(function(cid) { fd.append('settings[default_category][]', cid); });
+    // group_categories — объект {normKey: [id, id, ...]}
+    var groupCats = settings['group_categories'] || {};
+    Object.keys(groupCats).forEach(function(k) {
+      var vals = Array.isArray(groupCats[k]) ? groupCats[k] : [groupCats[k]];
+      vals.forEach(function(v) {
+        if (v) { fd.append('settings[group_categories][' + k + '][]', v); }
+      });
+    });
+
+    fetch(actionImport, { method: 'POST', body: fd })
+      .then(function(r) {
+        var ct = r.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') === -1) {
+          // Сервер вернул не JSON — скорее всего истекла сессия
+          throw new Error('session_expired');
+        }
+        return r.json();
+      })
+      .then(function(data) {
+        if (!data.success) {
+          alert('Ошибка импорта: ' + (data.error || 'Неизвестная ошибка'));
+          return;
+        }
+
+        // Обновляем счётчики
+        totals.created += data.created || 0;
+        totals.updated += data.updated || 0;
+        totals.skipped += data.skipped || 0;
+        if (data.errors && data.errors.length) {
+          totals.errors = totals.errors.concat(data.errors);
+        }
+        if (data.results && data.results.length) {
+          totals.results = totals.results.concat(data.results);
+        }
+
+        // Прогресс-бар
+        var pct = data.total > 0 ? Math.round((data.processed / data.total) * 100) : 100;
+        document.getElementById('progress-bar').style.width = pct + '%';
+        document.getElementById('progress-bar').textContent = pct + '%';
+        document.getElementById('progress-text').textContent =
+          'Обработано ' + data.processed + ' из ' + data.total + ' товаров';
+
+        if (data.done) {
+          // Готово — переходим на страницу отчёта
+          window.location.href = data.redirect.replace(/&amp;/g, '&');
+        } else {
+          // Следующий батч
+          runBatch(data.next_batch, mapping, settings, totals);
+        }
+      })
+      .catch(function(err) {
+        if (String(err).indexOf('session_expired') !== -1) {
+          alert('Сессия администратора истекла.\nПожалуйста, обновите страницу и войдите снова, затем загрузите файл заново.');
+        } else {
+          alert('Сетевая ошибка: ' + err);
+        }
+        document.getElementById('btn-start-import').disabled = false;
+      });
+  }
+
+  // ── Вспомогательные ──────────────────────────────────────────────────────
+  function collectMapping() {
+    var result = {};
+    document.querySelectorAll('.mapping-select').forEach(function(sel) {
+      result[sel.getAttribute('data-col')] = sel.value;
+    });
+    return result;
+  }
+
+  function collectSettings() {
+    // Собираем выбранные категории как массив
+    var selectedCategories = [];
+    var catSelect = document.getElementById('setting-category');
+    if (catSelect) {
+      for (var i = 0; i < catSelect.options.length; i++) {
+        if (catSelect.options[i].selected) {
+          selectedCategories.push(catSelect.options[i].value);
+        }
+      }
+    }
+    // Собираем категории по группам (мультиселект — массив значений)
+    var groupCats = {};
+    document.querySelectorAll('.group-category-select').forEach(function(sel) {
+      var key = sel.getAttribute('data-group');
+      if (!key) return;
+      var vals = [];
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].selected && sel.options[i].value) {
+          vals.push(sel.options[i].value);
+        }
+      }
+      if (vals.length > 0) {
+        groupCats[key] = vals;
+      }
+    });
+
+    return {
+      mode:             document.getElementById('setting-mode')   ? document.getElementById('setting-mode').value   : 'both',
+      key_field:        document.getElementById('setting-key')    ? document.getElementById('setting-key').value    : 'model',
+      default_status:   document.getElementById('setting-status') ? document.getElementById('setting-status').value : '1',
+      default_category: selectedCategories,
+      group_categories: groupCats,
+    };
+  }
+})();
+</script>
+
+{{ footer }}

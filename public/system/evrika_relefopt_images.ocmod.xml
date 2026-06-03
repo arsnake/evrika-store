@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika — РельефОпт Image Parser Panel</name>
+    <code>evrika_relefopt_images</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <!--
+        Инжектирует панель парсера изображений РельефОпт в вкладку «Изображения»
+        редактора товара. Поиск идёт по уникальной строке в блоке <script>
+        в нижней части product_form.twig. Весь UI создаётся через JS —
+        это надёжнее чем HTML-инъекция внутри структуры таблицы.
+
+        Ищем: var image_row = {{ image_row }};  (строка 1638, уникальна)
+        Вставляем: после этой строки, внутри того же <script> блока.
+    -->
+
+    <file path="admin/view/template/catalog/product_form.twig">
+        <operation>
+            <search><![CDATA[var image_row = {{ image_row }};]]></search>
+            <add position="after"><![CDATA[
+  // ── Evrika: РельефОпт Image Parser ──────────────────────────────
+  $(document).ready(function() {
+
+    // ── Создаём панель и добавляем в #tab-image ──
+    var rp = ''
+      + '<div id="relefopt-panel" style="margin:20px 0 0;border:1px solid #31b0d5;border-radius:4px;">'
+      +   '<div style="background:#5bc0de;color:#fff;padding:10px 15px;border-radius:3px 3px 0 0;display:flex;justify-content:space-between;align-items:center;">'
+      +     '<span><i class="fa fa-search"></i> <strong>Поиск изображений на РельефОпт</strong></span>'
+      +     '<a href="index.php?route=extension/module/relefopt_images&user_token={{ user_token }}" target="_blank" style="color:#fff;font-size:12px;opacity:.8;"><i class="fa fa-cog"></i> Настройки</a>'
+      +   '</div>'
+      +   '<div style="padding:14px 15px;">'
+      +     '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">'
+      +       '<span style="color:#555;">Код товара:</span>'
+      +       '<strong id="rp-code" style="font-size:14px;color:#333;">—</strong>'
+      +       '<button type="button" id="rp-search-btn" class="btn btn-info btn-sm">'
+      +         '<i class="fa fa-search"></i> Найти изображения'
+      +       '</button>'
+      +     '</div>'
+      +     '<div id="rp-status" style="display:none;padding:6px 0;color:#666;font-size:13px;"></div>'
+      +     '<div id="rp-results" style="display:none;margin-top:10px;">'
+      +       '<div id="rp-grid" style="margin-bottom:12px;"></div>'
+      +       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
+      +         '<button type="button" id="rp-import-all" class="btn btn-success btn-sm">'
+      +           '<i class="fa fa-download"></i> Прикрепить все'
+      +         '</button>'
+      +         '<button type="button" id="rp-import-sel" class="btn btn-default btn-sm">'
+      +           '<i class="fa fa-check-square-o"></i> Прикрепить выбранные'
+      +         '</button>'
+      +         '<span id="rp-progress" style="color:#666;font-size:13px;"></span>'
+      +       '</div>'
+      +     '</div>'
+      +   '</div>'
+      + '</div>';
+
+    $('#tab-image').append(rp);
+
+    // ── Обновляем отображение кода при переключении на вкладку ──
+    function rpUpdateCode() {
+      var code = $('input[name="model"]').val().trim();
+      $('#rp-code').text(code || '(не задан)');
+    }
+    rpUpdateCode();
+    $('a[href="#tab-image"]').on('shown.bs.tab', rpUpdateCode);
+
+    // ── Поиск ──
+    $('#rp-search-btn').on('click', function() {
+      var code = $('input[name="model"]').val().trim();
+      if (!code) {
+        alert('Сначала заполните поле «Артикул» на вкладке «Данные»');
+        return;
+      }
+      rpUpdateCode();
+      $('#rp-search-btn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Поиск...');
+      $('#rp-status').show().html('<i class="fa fa-spinner fa-spin"></i> Выполняется поиск на РельефОпт...');
+      $('#rp-results').hide();
+
+      $.ajax({
+        url: 'index.php?route=extension/module/relefopt_images/search&user_token={{ user_token }}',
+        type: 'POST',
+        data: { code: code },
+        dataType: 'json',
+        success: function(json) {
+          if (json.error) {
+            $('#rp-status').html('<span style="color:#a94442"><i class="fa fa-exclamation-triangle"></i> ' + json.error + '</span>');
+            return;
+          }
+          rpRenderResults(json.products, json.message);
+        },
+        error: function() {
+          $('#rp-status').html('<span style="color:#a94442"><i class="fa fa-exclamation-triangle"></i> Ошибка соединения с сервером</span>');
+        },
+        complete: function() {
+          $('#rp-search-btn').prop('disabled', false).html('<i class="fa fa-search"></i> Найти изображения');
+        }
+      });
+    });
+
+    // ── Рендер результатов поиска ──
+    function rpRenderResults(products, message) {
+      var $grid = $('#rp-grid').empty();
+      if (!products || !products.length) {
+        $('#rp-status').html('<i class="fa fa-info-circle"></i> ' + (message || 'Ничего не найдено на РельефОпт'));
+        $('#rp-results').hide();
+        return;
+      }
+
+      var totalPhotos = 0;
+      $.each(products, function(pi, product) {
+        var $block = $('<div style="margin-bottom:14px;"></div>');
+        $block.append(
+          '<div style="font-weight:600;margin-bottom:8px;color:#333;border-bottom:1px solid #eee;padding-bottom:4px;">'
+          + '<i class="fa fa-tag" style="color:#5bc0de;"></i> ' + product.name
+          + ' <small style="color:#888;font-weight:400;">&nbsp;[код: ' + product.code + ']</small>'
+          + '</div>'
+        );
+
+        var $imgs = $('<div style="display:flex;flex-wrap:wrap;gap:8px;"></div>');
+        $.each(product.photos, function(idx, photoUrl) {
+          var isMain = (idx === 0);
+          var $lbl = $('<label></label>').css({
+            cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center',
+            gap: '4px', border: '2px solid #5bc0de', borderRadius: '4px',
+            padding: '4px', background: '#f5fbff', width: '96px'
+          });
+          var $cb = $('<input type="checkbox" checked>').css('margin', '0')
+            .data('url', photoUrl).data('is-main', isMain);
+          var $img = $('<img>').attr('src', photoUrl).css({
+            width: '80px', height: '80px', objectFit: 'cover', borderRadius: '2px'
+          });
+          var badge = isMain
+            ? '<span style="background:#337ab7;color:#fff;font-size:9px;padding:1px 5px;border-radius:2px;">Главное</span>'
+            : '<span style="font-size:10px;color:#999;">#' + (idx + 1) + '</span>';
+          $lbl.append($cb).append($img).append($(badge));
+
+          // toggle border on click
+          $lbl.on('click', function(e) {
+            if ($(e.target).is('input')) return;
+            $cb.prop('checked', !$cb.prop('checked'));
+            $lbl.css('border-color', $cb.prop('checked') ? '#5bc0de' : '#ddd');
+          });
+          $imgs.append($lbl);
+          totalPhotos++;
+        });
+
+        $block.append($imgs);
+        $grid.append($block);
+      });
+
+      $('#rp-status').html(
+        '<i class="fa fa-check" style="color:#3c763d;"></i> '
+        + 'Найдено: <strong>' + totalPhotos + '</strong> фото в <strong>' + products.length + '</strong> товарах. '
+        + 'Снимите галочку с фото которые не нужны, затем нажмите «Прикрепить».'
+      );
+      $('#rp-results').show();
+    }
+
+    // ── Прикрепить все ──
+    $('#rp-import-all').on('click', function() {
+      rpImport($('#rp-grid input[type=checkbox]'));
+    });
+
+    // ── Прикрепить выбранные ──
+    $('#rp-import-sel').on('click', function() {
+      rpImport($('#rp-grid input[type=checkbox]:checked'));
+    });
+
+    function rpImport($checks) {
+      var items = [];
+      $checks.each(function() {
+        items.push({ url: $(this).data('url'), is_main: $(this).data('is-main') });
+      });
+      if (!items.length) { alert('Не выбрано ни одного изображения'); return; }
+
+      $('#rp-import-all, #rp-import-sel').prop('disabled', true);
+      var done = 0;
+      var sortIdx = 0;
+      var mainSet = false;
+
+      function rpNext() {
+        if (done >= items.length) {
+          $('#rp-import-all, #rp-import-sel').prop('disabled', false);
+          $('#rp-progress').html(
+            '<span style="color:#3c763d"><i class="fa fa-check-circle"></i> '
+            + 'Загружено ' + done + ' из ' + items.length + ' фото. '
+            + '<strong>Не забудьте сохранить товар!</strong></span>'
+          );
+          return;
+        }
+
+        var item = items[done];
+        $('#rp-progress').text('Загружается ' + (done + 1) + ' / ' + items.length + '...');
+
+        $.ajax({
+          url: 'index.php?route=extension/module/relefopt_images/importImage&user_token={{ user_token }}',
+          type: 'POST',
+          data: { url: item.url, sort_order: sortIdx },
+          dataType: 'json',
+          success: function(json) {
+            if (json.error) {
+              console.warn('[RelefOpt] Ошибка загрузки:', json.error, item.url);
+            } else if (item.is_main && !mainSet) {
+              // Устанавливаем как главное изображение товара
+              $('#input-image').val(json.path);
+              $('#thumb-image img').attr('src', json.thumb);
+              mainSet = true;
+            } else {
+              // Добавляем как дополнительное изображение
+              rpAddImageRow(json.path, json.thumb, sortIdx);
+              sortIdx++;
+            }
+          },
+          error: function() {
+            console.warn('[RelefOpt] Сетевая ошибка:', item.url);
+          },
+          complete: function() { done++; rpNext(); }
+        });
+      }
+
+      rpNext();
+    }
+
+    function rpAddImageRow(path, thumbUrl, sort) {
+      var r = image_row;
+      var html = '<tr id="image-row' + r + '">';
+      html += '<td class="text-left">';
+      html += '<a href="" id="thumb-image' + r + '" data-toggle="image" class="img-thumbnail">';
+      html += '<img src="' + thumbUrl + '" alt="" title="" data-placeholder="{{ placeholder }}" />';
+      html += '</a>';
+      html += '<input type="hidden" name="product_image[' + r + '][image]" value="' + path + '" id="input-image' + r + '" />';
+      html += '</td>';
+      html += '<td class="text-right">';
+      html += '<input type="text" name="product_image[' + r + '][sort_order]" value="' + sort + '" placeholder="{{ entry_sort_order }}" class="form-control" />';
+      html += '</td>';
+      html += '<td class="text-left">';
+      html += '<button type="button" onclick="$(\'#image-row' + r + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger">';
+      html += '<i class="fa fa-minus-circle"></i></button>';
+      html += '</td>';
+      html += '</tr>';
+      $('#images tbody').append(html);
+      image_row++;
+    }
+
+  }); // end $(document).ready
+  // ── /Evrika: РельефОпт Image Parser ─────────────────────────────
+]]></add>
+        </operation>
+    </file>
+
+</modification>

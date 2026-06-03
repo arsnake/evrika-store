@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Evrika — Импорт из XLS в меню Каталога</name>
+    <code>evrika_product_import_menu</code>
+    <version>1.0</version>
+    <author>Evrika</author>
+    <link></link>
+
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <!--
+                Ищем уникальную строку: URL каталога/информация (последний пункт раздела Каталог).
+                offset="3" сдвигает вставку на 3 строки вниз от найденной:
+                  найдена строка → +1 ('children') → +2 (');') → +3 ('}')
+                Итого вставляем ПОСЛЕ закрывающей скобки блока catalog/information.
+            -->
+            <search><![CDATA['href'     => $this->url->link('catalog/information', 'user_token=' . $this->session->data['user_token'], true),]]></search>
+            <add position="after" offset="3"><![CDATA[
+			if ($this->user->hasPermission('access', 'extension/module/evrika_product_import')) {
+				$catalog[] = array(
+					'name'     => 'Импорт из XLS',
+					'href'     => $this->url->link('extension/module/evrika_product_import', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}]]></add>
+        </operation>
+    </file>
+
+</modification>

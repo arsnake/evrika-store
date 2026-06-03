@@ -1,0 +1,84 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ action }}" class="btn btn-primary" onclick="this.closest('form').submit(); return false;">
+          <i class="fa fa-save"></i> Сохранить
+        </a>
+        <a href="{{ cancel }}" class="btn btn-default">
+          <i class="fa fa-reply"></i> Отмена
+        </a>
+      </div>
+      <h1><i class="fa fa-image"></i> РельефОпт — Парсер изображений</h1>
+      <ul class="breadcrumb">
+        <li><a href="{{ cancel }}">Расширения</a></li>
+        <li class="active">РельефОпт Парсер изображений</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if success %}
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <i class="fa fa-check-circle"></i> {{ success }}
+      </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Настройки подключения к РельефОпт</h3></div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" class="form-horizontal">
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Bearer Token</label>
+            <div class="col-sm-9">
+              <textarea name="relefopt_images_token" class="form-control" rows="5"
+                style="font-family:monospace;font-size:11px;">{{ relefopt_token }}</textarea>
+              <p class="help-block">
+                Вставьте токен из заголовка <code>Authorization: Bearer ...</code>.<br>
+                Как получить: откройте <a href="https://relefopt.ru" target="_blank">relefopt.ru</a>,
+                нажмите F12 → Network → найдите любой запрос к <code>/v3/</code> →
+                скопируйте значение заголовка <strong>Authorization</strong> (без слова Bearer).
+              </p>
+            </div>
+          </div>
+
+          <hr>
+          <h4 style="margin:0 0 15px 0;padding:0 15px;">Автообновление токена (опционально)</h4>
+          <p class="help-block" style="padding:0 15px 10px;">
+            Если указать client_id + client_secret, модуль будет автоматически получать новый токен
+            при истечении текущего. Значения берутся из <code>window.__data.apiAuth</code> на сайте РельефОпт.
+          </p>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Client ID</label>
+            <div class="col-sm-4">
+              <input type="text" name="relefopt_images_client_id" class="form-control"
+                value="{{ relefopt_client_id }}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Client Secret</label>
+            <div class="col-sm-6">
+              <input type="text" name="relefopt_images_client_secret" class="form-control"
+                style="font-family:monospace;" value="{{ relefopt_client_secret }}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save"></i> Сохранить настройки
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
